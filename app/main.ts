@@ -1,7 +1,7 @@
 import Vue from 'nativescript-vue'
 import routes from './router';
-import BackendService from './services/BackendService'
 import AuthService from './services/AuthService'
+import BackendService from "./services/BackendService";
 
 import * as firebase from 'nativescript-plugin-firebase'
 
@@ -26,5 +26,5 @@ firebase.init()
 // v.config.silent = (TNS_ENV === 'production');
 
 new v({
-  render: h => h('frame', [h(backendService.isLoggedIn() ? routes.home : routes.login)])
+  render: h => h('frame', [h(authService.isLoggedIn() ? routes.home : routes.login)])
 }).$start();

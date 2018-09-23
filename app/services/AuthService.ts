@@ -2,23 +2,34 @@
 import BackendService from './BackendService';
 import * as firebase from 'nativescript-plugin-firebase';
 import { firestore } from "nativescript-plugin-firebase";
-import { backendService } from "../main";
 import User from "../models/User";
 import Player from "../models/Player";
+import { getString } from "tns-core-modules/application-settings";
 
 export default class AuthService extends BackendService {
 
+  public playerWrapper: {player: Player} = { player: undefined };
+
   private playerRef: firestore.DocumentReference;
+  private playerLoginUnsubscribe;
+
+  isLoggedIn() {
+    if (!!getString(this.userKey)) {
+      // TODO move this out of this function
+      this.playerWrapper.player = this.user.player;
+      this.listenToPlayerUpdates(this.user.id);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   async register(user) {
     const createdUser = await firebase.createUser({
       email: user.email,
       password: user.password
     });
-    console.log("Created user: " + JSON.stringify(createdUser));
-    return await firebase.firestore.add("players", {
-      id: createdUser.uid
-    });
+    return await firebase.firestore.set("players", createdUser.uid, {});
   }
 
   async login(fUser) {
@@ -29,34 +40,50 @@ export default class AuthService extends BackendService {
         password: fUser.password
       }
     });
-    console.log("Logged in user: " + JSON.stringify(firebaseUser));
-
-    const snapshot = await firebase.firestore
-        .collection("players")
-        .where("id", "==", firebaseUser.uid)
-        .get();
 
     const user = <User>{
+      id: firebaseUser.uid,
       email: firebaseUser.email
     };
 
-    // there will be only 1 record actually
-    snapshot.forEach(playerDoc => {
-      user.player = <Player>playerDoc.data();
-      user.player.id = playerDoc.id;
-    });
+    this.user = user;
 
-    console.log("User: " + JSON.stringify(user));
+    const playerDoc = await firebase.firestore.getDocument("players", firebaseUser.uid);
+    await this.syncPlayerData(playerDoc);
 
-    backendService.user = user;
+    this.listenToPlayerUpdates(firebaseUser.uid);
     return user;
   }
 
-  async updatePlayerDataInFirebase(playerData) {
-    // lazy loading
-    if (!this.playerRef) {
-      this.playerRef = firebase.firestore.collection("players").doc(backendService.user.player.id);
+  private listenToPlayerUpdates(id: string) {
+    this.playerRef = firebase.firestore.collection("players").doc(id);
+
+    this.playerLoginUnsubscribe = this.playerRef.onSnapshot(doc => {
+      if (doc.exists) {
+        this.syncPlayerData(doc);
+      } else {
+        console.log("No such document!");
+      }
+    });
+    return null;
+  }
+
+  private async syncPlayerData(doc: firestore.DocumentSnapshot) {
+    console.log("Document data:", JSON.stringify(doc.data()));
+    const playerData = doc.data();
+    const user = this.user;
+    user.player = <Player>playerData;
+    const lastScores: firestore.DocumentReference = playerData.lastscores;
+    if (lastScores) {
+      user.player.lastscoresData = (await lastScores.get()).data();
+      playerData.lastscoresData = user.player.lastscoresData;
     }
+    this.playerWrapper.player = <Player>playerData;
+    this.user = user;
+    return null;
+  }
+
+  async updatePlayerDataInFirebase(playerData) {
     return this.playerRef.update(playerData);
   }
 
@@ -68,7 +95,8 @@ export default class AuthService extends BackendService {
   }
 
   async logout() {
-    backendService.user = null;
+    this.user = null;
+    this.playerLoginUnsubscribe();
     return firebase.logout();
   }
 }

@@ -19,6 +19,7 @@ exports.onMeasurementWrite = functions.firestore.document("players/{playerId}/me
   } else {
     // Calculate the scores
     const scores: any = {
+      TOTAL: 95,
       PAC: calculateMeasurementScore("PAC", measurementData),
       DRI: calculateMeasurementScore("DRI", measurementData),
       SHO: calculateMeasurementScore("SHO", measurementData)
@@ -28,7 +29,7 @@ exports.onMeasurementWrite = functions.firestore.document("players/{playerId}/me
     return player.collection("scores").doc(measurement.id).set(scores).then(() => {
       // create or update the reference
       return player.update({
-        lastscore: player.collection("scores").doc(measurement.id),
+        lastscores: player.collection("scores").doc(measurement.id),
         lastupdate: firebase.firestore.FieldValue.serverTimestamp() // this makes sure the player is updated, so listeners (in the app) get updated
       });
     });

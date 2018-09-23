@@ -10,3 +10,5 @@ platforms
 
 app/**/*.js
 !app/router/index.js
+
+firebase/functions/lib
