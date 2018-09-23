@@ -30,6 +30,7 @@
     "babylon": "6.18.0",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
+    "cryptiles": "~4.1.2",
     "css-hot-loader": "^1.4.2",
     "css-loader": "^1.0.0",
     "lazy": "1.0.11",
