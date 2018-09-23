@@ -64,6 +64,8 @@ module.exports = env => {
                 appResourcesFullPath,
                 // Don't watch hidden files
                 "**/.*",
+                // Nor TypeScript files
+                "**/.ts",
             ],
         },
         target: nativescriptTarget,

@@ -16,4 +16,14 @@ tns debug <platform> --bundle
 
 # Build, watch for changes and run the application
 tns run <platform> --bundle
+
+# Build, watch for changes and run the application on an emulator
+tns run <platform> --bundle --emulator
+```
+
+### HMR support
+You can also try this to save a little time:
+
+```bash
+tns run android --hmr
 ```

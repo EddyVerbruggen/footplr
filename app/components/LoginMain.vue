@@ -63,7 +63,10 @@
       return {
         isLoggingIn: true,
         isAuthenticating: false,
-        user: new User()
+        user: {
+          email: "eddyverbruggen@gmail.com",
+          password: "xs4all"
+        }
       }
     },
     watch: {

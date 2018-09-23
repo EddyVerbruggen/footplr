@@ -3,7 +3,7 @@
         <ActionBar title="" flat="false">
             <GridLayout columns="*, 6, *" width="100%" horizontalAlignment="center" style="padding-right: 54">
                 <Img col="0" src="~/assets/images/botafogo.png" width="24" height="24" horizontalAlignment="right" style="opacity: 0.9"/>
-                <Label col="2" text="footplr" class="title" horizontalAlignment="left"/>
+                <Label col="2" text="footplr" class="title bold" horizontalAlignment="left"/>
             </GridLayout>
 
             <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 1" />
@@ -94,6 +94,8 @@ export default {
     console.log("App created");
   },
   data() {
+    console.log(">>> backendService.user: " + backendService.user);
+    console.log(">>> backendService.user.player: " + backendService.user.player);
     const player = backendService.user.player;
     const birthdate = new Date(player.birthdate);
     return {

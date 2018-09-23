@@ -14,12 +14,12 @@
     }
   },
   "dependencies": {
-    "nativescript-plugin-firebase": "^7.0.1",
-    "nativescript-shimmer": "^2.0.0",
-    "nativescript-theme-core": "^1.0.4",
-    "nativescript-vue": "^2.0.0-rc.0",
-    "tns-core-modules": "^4.2.0",
-    "vue-hot-reload-api": "^2.3.0"
+    "nativescript-plugin-firebase": "~7.0.1",
+    "nativescript-shimmer": "~2.0.0",
+    "nativescript-theme-core": "~1.0.4",
+    "nativescript-vue": "~2.0.0",
+    "tns-core-modules": "~4.2.1",
+    "vue-hot-reload-api": "~2.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -34,8 +34,8 @@
     "css-loader": "^1.0.0",
     "lazy": "1.0.11",
     "mini-css-extract-plugin": "^0.4.1",
-    "nativescript-dev-webpack": "^0.17.0-2018-09-12-01",
-    "nativescript-vue-template-compiler": "^2.0.0-alpha.3",
+    "nativescript-dev-webpack": "^0.17.0-2018-09-21-02",
+    "nativescript-vue-template-compiler": "~2.0.0",
     "nativescript-worker-loader": "~0.9.0",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.1.0",

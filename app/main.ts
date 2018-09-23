@@ -3,26 +3,28 @@ import routes from './router';
 import BackendService from './services/BackendService'
 import AuthService from './services/AuthService'
 
-import firebase from 'nativescript-plugin-firebase'
+import * as firebase from 'nativescript-plugin-firebase'
 
 // To include the stylesheets, use this:
 // import './styles.scss';
 
-export const backendService = new BackendService()
-export const authService = new AuthService()
+export const backendService = new BackendService();
+export const authService = new AuthService();
 
-Vue.registerElement('Shimmer', () => require('nativescript-shimmer').Shimmer)
+const v = <any>Vue;
+declare const TNS_ENV: any;
 
-Vue.prototype.$authService = authService
+v.registerElement('Shimmer', () => require('nativescript-shimmer').Shimmer);
+
+v.prototype.$authService = authService;
 
 firebase.init()
   .then(instance => console.log("firebase.init done"))
   .catch(error => console.log(`firebase.init error: ${error}`));
 
 // Prints Vue logs when --env.production is *NOT* set while building
-Vue.config.silent = (TNS_ENV === 'production')
-// Vue.config.debug = (TNS_ENV === 'development');
+// v.config.silent = (TNS_ENV === 'production');
 
-new Vue({
+new v({
   render: h => h('frame', [h(backendService.isLoggedIn() ? routes.home : routes.login)])
-}).$start()
+}).$start();
