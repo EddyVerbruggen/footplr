@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "232924271603",
+    "firebase_url": "https://foorball-player-ratings.firebaseio.com",
+    "project_id": "foorball-player-ratings",
+    "storage_bucket": "foorball-player-ratings.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232924271603:android:c245637ec65e3b6d",
+        "android_client_info": {
+          "package_name": "com.footballplayerratings.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232924271603-d0dv0b0dhfscq9p6rb516qvcgsl8dmic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKAkonx9JxVQHTD6jDdQgqOuSBZBnn-BQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
