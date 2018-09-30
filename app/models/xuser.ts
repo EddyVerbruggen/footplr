@@ -3,7 +3,7 @@ import Scores from "~/models/Scores";
 
 export type PlayerPosition = "GK" | "CF" | "CAM"; // TODO
 
-export default interface User {
+export default interface Xuser {
   club: firestore.DocumentReference; // Club
   playsin: firestore.DocumentReference; // Team
   trains: Array<firestore.DocumentReference>; // Array<Team>
