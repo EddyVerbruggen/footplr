@@ -74,9 +74,9 @@ export default class AuthService extends BackendService {
     const userData = <User>doc.data();
     const user = this.user;
     user.admin = userData.admin;
-    user.birthDate = userData.birthDate;
+    user.birthdate = userData.birthdate;
     user.club = userData.club;
-    user.playsIn = userData.playsIn;
+    user.playsin = userData.playsin;
     user.trains = userData.trains;
     user.firstname = userData.firstname;
     user.lastname = userData.lastname;

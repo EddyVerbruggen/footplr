@@ -6,7 +6,7 @@ import BackendService from "./services/BackendService";
 import * as firebase from 'nativescript-plugin-firebase'
 
 // To include the stylesheets, use this:
-// import './styles.scss';
+import './styles.scss';
 
 export const backendService = new BackendService();
 export const authService = new AuthService();

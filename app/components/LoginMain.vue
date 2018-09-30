@@ -187,7 +187,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .login {
         .main-container {
             height: 425;
