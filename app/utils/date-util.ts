@@ -10,6 +10,6 @@ export function getMonthsSince(date: Date): number {
   if (monthsElapsedThisYear > date.getMonth()) {
     return monthsElapsedThisYear - date.getMonth() - dayCompensation;
   } else {
-    return monthsElapsedThisYear + (12 - date.getMonth()) - dayCompensation;
+    return monthsElapsedThisYear + (13 - date.getMonth()) - dayCompensation;
   }
 }

@@ -33,7 +33,7 @@
             <GridLayout rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
               <StackLayout colSpan="2" verticalAlignment="center">
                 <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"/>
-                <Label :text="playerWrapper.player.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"/>
+                <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"/>
                 <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"/>
               </StackLayout>
               <StackLayout col="0" colSpan="4" horizontalAlignment="center" class="card-photo" @tap="selectImage">
@@ -94,22 +94,22 @@
     },
     data() {
       return {
-        playerWrapper: authService.playerWrapper,
-        tab1Msg: "Hello World 😬😬😬",
+        userWrapper: authService.userWrapper,
+        tab1Msg: "Hello World 😬",
         shimmerEnabled: false,
         tabIndex: 1, // setting this initially makes dev a little easier
         tabView: undefined, // set below
         score: type => {
-          if (authService.playerWrapper.player.lastscoresData) {
-            const currentScore = authService.playerWrapper.player.lastscoresData[type];
+          if (authService.userWrapper.user.scores) {
+            const currentScore = authService.userWrapper.user.scores[type];
             return currentScore ? currentScore : "--";
           }
         },
         // hmm.. might as well move these to 'methods'?
-        playerName: () => this.playerWrapper.player.firstname + " " + this.playerWrapper.player.lastname,
-        playerAgeYears: () => getYearsSince(new Date(this.playerWrapper.player.birthdate)) + " jaar",
+        playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
+        playerAgeYears: () => getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar",
         playerAgeMonths: () => {
-          const months = getMonthsSince(new Date(this.playerWrapper.player.birthdate));
+          const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
           return `${months} ${months === 1 ? "maand" : "maanden"}`;
         }
       };
@@ -211,10 +211,6 @@
     text-align: center;
     font-size: 20;
     color: #333333;
-  }
-
-  .p-40 {
-    padding: 40;
   }
 
   .card-score {

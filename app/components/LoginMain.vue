@@ -46,13 +46,12 @@
 </template>
 
 <script>
-  import {Animation} from 'ui/animation'
-  import {prompt} from "ui/dialogs"
-  import {Color} from 'tns-core-modules/color'
-  import {connectionType, getConnectionType} from 'tns-core-modules/connectivity'
-  import User from '../models/User'
-  import alert from '../utils/alert'
-  import routes from '../router';
+  import {Animation} from "tns-core-modules/ui/animation"
+  import {prompt} from "tns-core-modules/ui/dialogs"
+  import {Color} from "tns-core-modules/color"
+  import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
+  import alert from "../utils/alert"
+  import routes from "../router";
 
   export default {
     name: 'login-main',
@@ -73,8 +72,10 @@
       visible: function (val) {
         // when element turns visible, start animations
         if (val) {
-          const animations = []
-          animations.push({target: this.$refs.mainContainer.nativeView, opacity: 1, duration: 500})
+          const animations = [];
+
+          animations.push({target: this.$refs.mainContainer.nativeView, opacity: 1, duration: 500});
+
           // Slide up the form controls and sign up container.
           animations.push({
             target: this.$refs.signUpStack.nativeView,
@@ -82,16 +83,18 @@
             opacity: 1,
             delay: 500,
             duration: 150
-          })
+          });
+
           animations.push({
             target: this.$refs.formControls.nativeView,
             translate: {x: 0, y: 0},
             opacity: 1,
             delay: 650,
             duration: 150
-          })
+          });
+
           // Kick off the animation queue
-          new Animation(animations, false).play()
+          new Animation(animations, false).play();
         }
       }
     },

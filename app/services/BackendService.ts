@@ -1,5 +1,5 @@
 import { getString, remove, setString } from "tns-core-modules/application-settings"
-import User from "../models/User";
+import User from "~/models/user";
 
 export default class BackendService {
   protected userKey = "user";

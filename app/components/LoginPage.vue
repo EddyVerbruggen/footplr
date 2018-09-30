@@ -1,7 +1,7 @@
 <template>
 <Page ref="page" :class="pageClasses" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
   <GridLayout class='login'>
-    
+
     <LoginInitial ref="loginInitial" @login="showMainContent()" :visible="state === 'initial'"></LoginInitial>
     <LoginMain ref="loginMain" :visible="state === 'main'"></LoginMain>
 
@@ -13,10 +13,11 @@
 </Page>
 </template>
 <script>
-import * as platformModule from 'tns-core-modules/platform'
-import LoginInitial from './LoginInitial.vue'
-import LoginMain from './LoginMain.vue'
-import * as enums from 'ui/enums'
+import * as platformModule from "tns-core-modules/platform"
+import LoginInitial from "./LoginInitial.vue"
+import LoginMain from "./LoginMain.vue"
+import * as enums from "tns-core-modules/ui/enums";
+
 export default {
   components: {
     LoginInitial,

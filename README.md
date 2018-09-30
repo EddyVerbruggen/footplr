@@ -1,6 +1,6 @@
 # NativeScript-Vue Application
 
-> A native application built with NativeScript-Vue
+> A native application built with NativeScript-Vue, using Firebase!
 
 ## Usage
 

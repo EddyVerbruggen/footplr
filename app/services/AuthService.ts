@@ -3,21 +3,22 @@ import BackendService from './BackendService';
 import * as firebase from 'nativescript-plugin-firebase';
 import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
-import Player from "../models/Player";
 import { getString } from "tns-core-modules/application-settings";
 
 export default class AuthService extends BackendService {
 
-  public playerWrapper: {player: Player} = { player: undefined };
+  public userWrapper: {user: User} = { user: undefined };
 
-  private playerRef: firestore.DocumentReference;
-  private playerLoginUnsubscribe;
+  private userRef: firestore.DocumentReference;
+  private userLoginUnsubscribe;
 
   isLoggedIn() {
+    console.log(">>> isLoggedIn");
     if (!!getString(this.userKey)) {
       // TODO move this out of this function
-      this.playerWrapper.player = this.user.player;
-      this.listenToPlayerUpdates(this.user.id);
+      console.log(">>> this.userWrapper");
+      this.userWrapper.user = this.user;
+      this.listenToUserUpdates(this.user.id);
       return true;
     } else {
       return false;
@@ -29,11 +30,11 @@ export default class AuthService extends BackendService {
       email: user.email,
       password: user.password
     });
-    return await firebase.firestore.set("players", createdUser.uid, {});
+    return await firebase.firestore.set("users", createdUser.uid, {});
   }
 
   async login(fUser) {
-    const firebaseUser = await firebase.login({
+    const firebaseUser: firebase.User = await firebase.login({
       type: firebase.LoginType.PASSWORD,
       passwordOptions: {
         email: fUser.email,
@@ -41,26 +42,26 @@ export default class AuthService extends BackendService {
       }
     });
 
-    const user = <User>{
-      id: firebaseUser.uid,
-      email: firebaseUser.email
-    };
 
+    const userDoc = await firebase.firestore.getDocument("users", firebaseUser.uid);
+
+    const user = <User>userDoc.data();
+    user.id = firebaseUser.uid;
+    user.email = firebaseUser.email;
     this.user = user;
 
-    const playerDoc = await firebase.firestore.getDocument("players", firebaseUser.uid);
-    await this.syncPlayerData(playerDoc);
+    await this.syncUserData(userDoc);
 
-    this.listenToPlayerUpdates(firebaseUser.uid);
+    this.listenToUserUpdates(firebaseUser.uid);
     return user;
   }
 
-  private listenToPlayerUpdates(id: string) {
-    this.playerRef = firebase.firestore.collection("players").doc(id);
+  private listenToUserUpdates(id: string) {
+    this.userRef = firebase.firestore.collection("users").doc(id);
 
-    this.playerLoginUnsubscribe = this.playerRef.onSnapshot(doc => {
+    this.userLoginUnsubscribe = this.userRef.onSnapshot(doc => {
       if (doc.exists) {
-        this.syncPlayerData(doc);
+        this.syncUserData(doc);
       } else {
         console.log("No such document!");
       }
@@ -68,23 +69,34 @@ export default class AuthService extends BackendService {
     return null;
   }
 
-  private async syncPlayerData(doc: firestore.DocumentSnapshot) {
-    console.log("Document data:", JSON.stringify(doc.data()));
-    const playerData = doc.data();
+  private async syncUserData(doc: firestore.DocumentSnapshot): Promise<void> {
+    console.log("User document data:", JSON.stringify(doc.data()));
+    const userData = <User>doc.data();
     const user = this.user;
-    user.player = <Player>playerData;
-    const lastScores: firestore.DocumentReference = playerData.lastscores;
-    if (lastScores) {
-      user.player.lastscoresData = (await lastScores.get()).data();
-      playerData.lastscoresData = user.player.lastscoresData;
-    }
-    this.playerWrapper.player = <Player>playerData;
+    user.admin = userData.admin;
+    user.birthDate = userData.birthDate;
+    user.club = userData.club;
+    user.playsIn = userData.playsIn;
+    user.trains = userData.trains;
+    user.firstname = userData.firstname;
+    user.lastname = userData.lastname;
+    user.height = userData.height;
+    user.weight = userData.weight;
+    user.picture = userData.picture;
+    user.position = userData.position;
+    user.scores = userData.scores;
+    // const lastScores: firestore.DocumentReference = userData.lastscores;
+    // if (lastScores) {
+    //   user.player.lastscoresData = (await lastScores.get()).data();
+    //   userData.lastscoresData = user.player.lastscoresData;
+    // }
+    this.userWrapper.user = <User>userData;
     this.user = user;
     return null;
   }
 
-  async updatePlayerDataInFirebase(playerData) {
-    return this.playerRef.update(playerData);
+  async updateUserDataInFirebase(userData) {
+    return this.userRef.update(userData);
   }
 
   async resetPassword(email) {
@@ -96,7 +108,7 @@ export default class AuthService extends BackendService {
 
   async logout() {
     this.user = null;
-    this.playerLoginUnsubscribe();
+    this.userLoginUnsubscribe();
     return firebase.logout();
   }
 }
