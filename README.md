@@ -4,6 +4,8 @@
 
 ## Usage
 
+Note that this project works best with NativeScript 5.x which is not released yet, so: `npm i -g nativescript@next`.
+
 ``` bash
 # Install dependencies
 npm install
@@ -22,7 +24,7 @@ tns run <platform> --bundle --emulator
 ```
 
 ### HMR support
-You can also try this to save a little time:
+You can also try this to save a little time (not available on NativeScript < 5):
 
 ```bash
 tns run android --hmr
