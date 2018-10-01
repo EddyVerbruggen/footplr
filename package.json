@@ -13,6 +13,10 @@
       "version": "4.2.0"
     }
   },
+  "scripts": {
+    "ios": "tns run ios --bundle",
+    "android": "tns run android --bundle"
+  },
   "dependencies": {
     "nativescript-iqkeyboardmanager": "~1.3.0",
     "nativescript-plugin-firebase": "~7.1.1",
