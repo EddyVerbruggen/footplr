@@ -1,5 +1,4 @@
-// import Vue from 'nativescript-vue'
-import BackendService from './BackendService';
+import BackendService from "./BackendService";
 import * as firebase from 'nativescript-plugin-firebase';
 import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";

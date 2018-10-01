@@ -14,8 +14,8 @@
 </template>
 <script>
 import * as platformModule from "tns-core-modules/platform"
-import LoginInitial from "./LoginInitial.vue"
-import LoginMain from "./LoginMain.vue"
+import LoginInitial from "./components/LoginInitial.vue"
+import LoginMain from "./components/LoginMain.vue"
 import * as enums from "tns-core-modules/ui/enums";
 
 export default {

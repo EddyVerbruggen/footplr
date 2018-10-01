@@ -44,8 +44,8 @@
 </template>
 
 <script>
-  import {authService} from "../main";
-  import {getYearsSince, getMonthsSince} from "../utils/date-util";
+  import {authService} from "~/main";
+  import {getYearsSince, getMonthsSince} from "~/utils/date-util";
   import {action} from "tns-core-modules/ui/dialogs";
 
   export default {

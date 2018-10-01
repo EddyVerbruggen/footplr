@@ -50,8 +50,8 @@
   import {prompt} from "tns-core-modules/ui/dialogs"
   import {Color} from "tns-core-modules/color"
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
-  import alert from "../utils/alert"
-  import routes from "../router";
+  import alert from "~/utils/alert"
+  import routes from "~/router";
 
   export default {
     name: 'login-main',

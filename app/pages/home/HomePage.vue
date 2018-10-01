@@ -39,9 +39,9 @@
 </template>
 
 <script>
-  import routes from "../router";
-  import Measurements from "./Measurements.vue"
-  import ScoreCard from "./ScoreCard.vue"
+  import routes from "~/router";
+  import Measurements from "./components/Measurements.vue"
+  import ScoreCard from "./components/ScoreCard.vue"
 
   export default {
     components: {

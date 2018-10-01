@@ -9,8 +9,8 @@
     <GridLayout rows="auto, auto, *, auto" colums="*" verticalAlignment="top" height="100%" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'">
       <GridLayout row="1" columns="*, *, *">
         <Label col="0" text="Datum" class="bold"/>
-        <Label col="1" text="Oefening"/>
-        <Label col="2" text="Score"/>
+        <Label col="1" text="Oefening" class="bold"/>
+        <Label col="2" text="Score" class="bold"/>
       </GridLayout>
 
       <ListView row="2" :items="measurements" @itemTap="onItemTap">
