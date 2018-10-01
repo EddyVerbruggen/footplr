@@ -1,8 +1,8 @@
-import { Exercise } from "./exercises";
+import { ExerciseType } from "./exercises";
 
-export default interface Measurement {
-  measuredby: any; // docRef
-  exercise: Exercise;
+export interface Measurement {
+  measuredby?: any; // docRef
+  exercise: ExerciseType;
   date: Date;
   score: number;
   official: boolean;

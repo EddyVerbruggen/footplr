@@ -61,7 +61,7 @@
         // tabView: undefined, // set below
         score: type => {
           if (authService.userWrapper.user.scores) {
-            const currentScore = authService.userWrapper.user.scores[type];
+            const currentScore = authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
             return currentScore ? currentScore : "--";
           }
         },
@@ -97,9 +97,8 @@
             picked = picked.substring(0, picked.indexOf(" ("));
             // this.playerPosition = picked;
             authService.updateUserDataInFirebase({
-                  position: picked
-                })
-                .then(() => console.log("Updated!"));
+              position: picked
+            }).then(() => console.log("Updated!"));
           }
         });
       }

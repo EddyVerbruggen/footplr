@@ -1,14 +1,12 @@
 import { firestore } from "nativescript-plugin-firebase";
-import Scores from "../shared/Scores";
+import { SharedUser } from "~/shared/shared-user";
 
 export type PlayerPosition = "GK" | "CF" | "CAM"; // TODO
 
-export default interface User {
+export default interface User extends SharedUser {
   club: firestore.DocumentReference; // Club
   playsin: firestore.DocumentReference; // Team
   trains: Array<firestore.DocumentReference>; // Array<Team>
-  scores?: Scores;
-  id: string;
   email: string;
   firstname?: string;
   lastname?: string;
