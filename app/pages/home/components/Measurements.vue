@@ -58,9 +58,14 @@
       },
       fetchMeasurements(filterExercise = undefined) {
         const result = [];
-        this.getAuthService2().userRef.collection("measurements")
-            // .where("exercise", "==", "CA") // TODO in case of filter
-            .orderBy("date", "desc")
+        let query = this.getAuthService2().userRef.collection("measurements")
+            .orderBy("date", "desc");
+
+        if (filterExercise) {
+          query = query.where("exercise", "==", filterExercise);
+        }
+
+        query
             .limit(200) // we need to limit it somewhere, right?
             .get()
             .then(m => {
@@ -68,25 +73,24 @@
                 const measurementData = s.data();
                 result.push({
                   date: formatDate(measurementData.date),
-                  exercise: measurementData.exercise.id, // TODO perhaps it's better to not reference a doc, but use a constant and keep the logic in the app
+                  exercise: measurementData.exercise, // TODO enum to nice name
                   score: measurementData.score,
                   official: measurementData.official ? "☑️" : ""
                 });
               });
               this.measurements = result
-            });
+            })
+            .catch(err => console.log(err));
       },
       filterExercise() {
-        const options = ["Alle oefeningen", "dribbling", "juggling"];
+        const options = ["Alle oefeningen", "DRIBBLING", "JUGGLING"];
         action({
           title: "Kies een oefening",
           actions: options
         }).then(picked => {
-          console.log("Picked option: " + picked);
-          if (picked) {
+          if (picked && picked !== this.exercise) {
             this.exercise = picked;
-            // TODO
-            // this.fetchMeasurements(picked)
+            this.fetchMeasurements(picked === "Alle oefeningen" ? undefined : picked)
           }
         });
       }

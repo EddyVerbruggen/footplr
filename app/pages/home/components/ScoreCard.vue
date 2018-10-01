@@ -55,17 +55,13 @@
     data() {
       return {
         userWrapper: authService.userWrapper,
-        // tab1Msg: "Hello World 😬",
         shimmerEnabled: false,
-        // tabIndex: 1, // setting this initially makes dev a little easier
-        // tabView: undefined, // set below
         score: type => {
           if (authService.userWrapper.user.scores) {
             const currentScore = authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
             return currentScore ? currentScore : "--";
           }
         },
-        // hmm.. might as well move these to 'methods'?
         playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
         playerAgeYears: () => getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar",
         playerAgeMonths: () => {
