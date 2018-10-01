@@ -26,7 +26,7 @@
         <Measurements ref="measurements" :visible="tabIndex === 2"></Measurements>
       </TabViewItem>
 
-      <TabViewItem textTransform="none" title="invoeren" iconSource="res://truck1">
+      <TabViewItem textTransform="none" title="invoer" iconSource="res://truck1">
         <GridLayout rows="*" colums="*" @loaded="onTab3Loaded" verticalAlignment="center">
           <StackLayout>
             <Label class="message" :text="tab1Msg"/>

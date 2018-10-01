@@ -1,5 +1,5 @@
 import { firestore } from "nativescript-plugin-firebase";
-import Scores from "~/models/Scores";
+import Scores from "../shared/Scores";
 
 export type PlayerPosition = "GK" | "CF" | "CAM"; // TODO
 

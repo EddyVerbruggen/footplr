@@ -1,11 +1,11 @@
-import { Category } from "~/models/category";
+import { Category } from "../shared/category";
 
-export type ScoreType = "SPEED" | "POINTS" | "TIMES" | "TIME";
+export type ScoreTypeOLD = "SPEED" | "POINTS" | "TIMES" | "TIME";
 
-export default interface Exercise {
+export default interface ExerciseOLD {
   categories: Array<Category>;
   name: string;
   description: string;
-  scoretype: ScoreType;
+  scoretype: ScoreTypeOLD;
   factor: number;
 }

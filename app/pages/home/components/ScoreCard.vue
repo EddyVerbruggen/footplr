@@ -87,7 +87,6 @@
         console.log("TODO: pick image and store in Firebase");
       },
       selectRole() {
-        console.log("TODO: pick role and store in Firebase");
         const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
         action({
           title: "Op welke positie speel je?",
@@ -97,8 +96,7 @@
           if (picked) {
             picked = picked.substring(0, picked.indexOf(" ("));
             // this.playerPosition = picked;
-            authService
-                .updateUserDataInFirebase({
+            authService.updateUserDataInFirebase({
                   position: picked
                 })
                 .then(() => console.log("Updated!"));

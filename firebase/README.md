@@ -8,20 +8,28 @@ See the functions/src folder.
 Inspiration [here](https://github.com/firebase/functions-samples).
 
 ### Install
+
 ```bash
- npm install -g firebase-tools
+npm install -g firebase-tools
 ```
 
-### Deploy
-
-##### Everything
+### Login to the Firebase CLI
 
 ```bash
-firebase deploy
+firebase logout # if needed
+firebase login # pick info@combidesk.com in the OAuth flow
 ```
 
-##### Functions only
+### Run
 
 ```bash
-firebase deploy --only functions
+cd functions
+npm run 
+```
+
+### Deploy Functions
+
+```bash
+cd functions
+npm run deploy
 ```

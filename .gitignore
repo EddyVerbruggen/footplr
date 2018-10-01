@@ -12,4 +12,5 @@ app/**/*.js
 !app/router/index.js
 
 firebase/functions/lib
+firebase/functions/src/shared
 firebase/functions/src/**/*.js

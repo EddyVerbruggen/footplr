@@ -1,5 +1,5 @@
 import BackendService from "./BackendService";
-import * as firebase from 'nativescript-plugin-firebase';
+import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
 import { getString } from "tns-core-modules/application-settings";

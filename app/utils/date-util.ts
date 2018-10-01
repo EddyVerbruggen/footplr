@@ -1,3 +1,5 @@
+const MONTHNAMES = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+
 export function getYearsSince(date: Date): number {
   const diffMs = Date.now() - date.getTime();
   const d = new Date(diffMs);
@@ -12,4 +14,8 @@ export function getMonthsSince(date: Date): number {
   } else {
     return monthsElapsedThisYear + (13 - date.getMonth()) - dayCompensation;
   }
+}
+
+export function formatDate(date: Date): string {
+  return `${date.getDate()} ${MONTHNAMES[date.getMonth()]} '${("" + date.getFullYear()).substring(2)}`;
 }
