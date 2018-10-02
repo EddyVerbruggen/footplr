@@ -1,61 +1,82 @@
 <template>
-  <StackLayout style="background-color: #B8FFBD">
+  <StackLayout style="background-color: #fff" class="p-b-10">
 
-    <SegmentedBar row="0" style="margin: 10" width="80%" height="30" color="white" borderWidth="1" borderRadius="4" borderColor="darkgreen" backgroundColor="green" selectedBackgroundColor="darkgreen" v-model="selectedListOrGraphIndex">
+    <SegmentedBar row="0" class="m-y-15" width="60%" height="28" color="#7EBC89" borderWidth="1" borderRadius="4" borderColor="#7EBC89" backgroundColor="#fff" selectedBackgroundColor="#7EBC89" v-model="selectedListOrGraphIndex">
       <SegmentedBarItem title="Lijst"/>
       <SegmentedBarItem title="Grafiek"/>
     </SegmentedBar>
 
-    <GridLayout rows="auto, auto, *, auto" colums="*" verticalAlignment="top" height="100%" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'">
-      <GridLayout row="1" columns="2*, 3*, 2*, 2*" class="m-x-8 scoreTable">
-        <Label col="0" text="Datum" class="m-l-10 p-10 bold"/>
-        <Label col="1" :text="exercise + ' ▽'" class="p-10 bold" @tap="filterExercise"/>
-        <Label col="2" text="Score" class=" p-10 bold" horizontalAlignment="right"/>
-        <Label col="3" text="Officieel" class="m-r-10 p-10 bold" horizontalAlignment="right"/>
-      </GridLayout>
+    <!-- list -->
+    <MeasurementsList ref="measurementsList" :visible="selectedListOrGraphIndex === 0" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'"></MeasurementsList>
 
-      <ListView row="2" :items="measurements" @itemTap="onItemTap" class="m-x-8 c-bg-white scoreTable" style="border-radius: 4; border-width: 1px; border-color: #ddd">
-        <v-template>
-          <GridLayout columns="2*, 3*, 2*, 2*">
-            <Label col="0" :text="item.date" class="m-l-10 p-10"/>
-            <Label col="1" :text="item.exercise" class="p-10"/>
-            <Label col="2" :text="item.score" class="p-10" horizontalAlignment="right"/>
-            <Label col="3" :text="item.official" class="m-r-10 p-10" horizontalAlignment="right"/>
-          </GridLayout>
-        </v-template>
-      </ListView>
-
-      <Button row="3" @tap="add()" text="Toevoegen!"/>
+    <!-- graph, TODO extract -->
+    <GridLayout rows="auto, *" colums="*" verticalAlignment="top" height="100%" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'">
+      <Label row="0" text="filter by exercises / timespan here.."></Label>
+      <WebView row="1" :src="webViewSRC"></WebView>
     </GridLayout>
 
   </StackLayout>
 </template>
 
 <script>
+  import MeasurementsList from "./MeasurementsList.vue"
   import {formatDate} from "~/utils/date-util";
   import {action} from "tns-core-modules/ui/dialogs";
 
-  const measurements = [];
+  let amountPerHourFull = new Map();
+  let amountPerHourFull2 = new Map();
+  for (let i = 10; i <= 20; i++) {
+    amountPerHourFull.set(i + ":00", 5 + i);
+    amountPerHourFull2.set(i + ":00", 3 + i);
+  }
 
+  const series = [];
+
+  series.push({
+    type: "line",
+    color: "purple",
+    lineWidth: 3,
+    name: "Dribbelen",
+    data: Array.from(amountPerHourFull.values())
+  });
+
+  series.push({
+    type: "line",
+    color: "blue",
+    lineWidth: 3,
+    name: "Hooghouden",
+    data: Array.from(amountPerHourFull2.values())
+  });
+
+  const data = {
+    webViewHeight: 400,
+    xAxisCategories: Array.from(amountPerHourFull.keys()),
+    series
+  };
+
+  // console.log(`~/pages/home/components/graph.html?${JSON.stringify(data)}`);
   export default {
+    components: {
+      MeasurementsList,
+    },
+
     created() {
       console.log("Measurements created");
       this.fetchMeasurements();
     },
+
     data() {
       return {
+        webViewSRC: `~/assets/graph.html?${JSON.stringify(data)}`,
         exercise: "Alle oefeningen",
         player: undefined,
         selectedListOrGraphIndex: 0,
-        measurements,
         getAuthService: this.$authService,
         getAuthService2: () => this.$authService
       }
     },
+
     methods: {
-      add() {
-        console.log("add..");
-      },
       fetchMeasurements(filterExercise = undefined) {
         const result = [];
         let query = this.getAuthService2().userRef.collection("measurements")

@@ -3,7 +3,7 @@ export default interface Scores {
   PAC?: number;
   DRI?: number;
   SHO?: number;
-  DEF?: number;
+  TEC?: number;
   PAS?: number;
   PHY?: number;
 }

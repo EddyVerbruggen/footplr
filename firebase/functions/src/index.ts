@@ -60,26 +60,27 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   return null;
 });
 
+// TODO the actual calculation ;)
 function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Scores {
-  const PAC = !measurements.DRIBBLING ? 0 : Math.round(measurements.DRIBBLING.score * Excercises.DRIBBLING.factor);
-  const DEF = !measurements.JUGGLING ? 0 : Math.round(measurements.JUGGLING.score * Excercises.JUGGLING.factor);
-  const DRI = !measurements.DRIBBLING ? 0 : Math.round(measurements.DRIBBLING.score * Excercises.DRIBBLING.factor);
-  const PAS = !measurements.JUGGLING ? 0 : Math.round(measurements.JUGGLING.score * Excercises.JUGGLING.factor);
-  const PHY = !measurements.DRIBBLING ? 0 : Math.round(measurements.DRIBBLING.score * Excercises.DRIBBLING.factor);
-  const SHO = !measurements.JUGGLING ? 0 : Math.round(measurements.JUGGLING.score * Excercises.JUGGLING.factor);
+  const PAC = !measurements.STAMINA ? 0 : Math.round(measurements.STAMINA.score * Excercises.STAMINA.factor);
+  const TEC = !measurements.SPEED_OF_ACTION ? 0 : Math.round(measurements.SPEED_OF_ACTION.score * Excercises.SPEED_OF_ACTION.factor);
+  const DRI = !measurements.DRIBBLE ? 0 : Math.round(measurements.DRIBBLE.score * Excercises.DRIBBLE.factor);
+  const PAS = !measurements.AIM ? 0 : Math.round(measurements.AIM.score * Excercises.AIM.factor);
+  const PHY = !measurements.STAMINA ? 0 : Math.round(measurements.STAMINA.score * Excercises.STAMINA.factor);
+  const SHO = !measurements.SHOT_STRENGTH ? 0 : Math.round(measurements.SHOT_STRENGTH.score * Excercises.SHOT_STRENGTH.factor);
 
   const divideBy = (PAC === 0 ? 0 : 1) +
-      (DEF === 0 ? 0 : 1) +
+      (TEC === 0 ? 0 : 1) +
       (DRI === 0 ? 0 : 1) +
       (PAS === 0 ? 0 : 1) +
       (PHY === 0 ? 0 : 1) +
       (SHO === 0 ? 0 : 1);
 
-  const TOTAL = Math.round((PAC + DEF + DRI + PAS + PHY + SHO) / divideBy);
+  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / divideBy);
 
   return {
     PAC,
-    DEF,
+    TEC,
     DRI,
     PAS,
     PHY,

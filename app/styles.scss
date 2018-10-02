@@ -12,7 +12,7 @@
 Page {
   /* font-family: "Source Sans Pro", SourceSansPro-Regular, system, sans-serif; */
   font-family: "Core Sans D 35 Regular", CoreSansD35Regular, system, sans-serif;
-  background-color: #998225;
+  //background-color: #998225;
   margin: 0;
   padding: 0;
   color: #332d15;
@@ -20,4 +20,9 @@ Page {
 
 .bold {
   font-family: "Core Sans D 55 Bold", CoreSansD55Bold, system, sans-serif;
+}
+
+.listview-separator {
+  border-bottom-width: 1px;
+  border-bottom-color: #ddd;
 }

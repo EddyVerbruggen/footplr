@@ -12,7 +12,7 @@
     <TabView androidTabsPosition="bottom"
              android:tabBackgroundColor="#d6f0eb"
              android:tabTextColor="#999999"
-             selectedTabTextColor="#332D15"
+             selectedTabTextColor="#7EBC89"
              iosIconRenderingMode="automatic"
              :selectedIndex="tabIndex"
              @selectedIndexChanged="onSelectedIndexChanged"
@@ -86,10 +86,11 @@
 
 <style scoped>
   .grass-background {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-image: ~/assets/images/grass.jpg;
+    background-color: #FAEDCA;
+    /*background-repeat: no-repeat;*/
+    /*background-position: center;*/
+    /*background-size: cover;*/
+    /*background-image: ~/assets/images/grass.jpg;*/
   }
 
   TabView {
@@ -97,7 +98,7 @@
   }
 
   ActionBar {
-    background-color: #e8d170;
+    background-color: #E8D170;
   }
 
   ActionBar .title {
