@@ -2,7 +2,7 @@
   <GridLayout rows="auto, auto, *" colums="*" verticalAlignment="top" height="100%">
     <GridLayout row="1" columns="2*, 3*, *, 2*" class="scoreTable">
       <Label col="0" text="Datum" class="m-l-10 p-y-10 p-x-5 bold"/>
-      <Label col="1" :text="exercise + ' ▽'" class="p-y-10 p-x-5 bold" @tap="filterExercise"/>
+      <Label col="1" :text="exerciseTranslated + ' ▽'" class="p-y-10 p-x-5 bold" @tap="filterExercise"/>
       <Label col="2" text="Score" class=" p-y-10 p-x-5 bold" horizontalAlignment="right"/>
       <Label col="3" text="Officieel" class="m-r-10 p-y-10 p-x-5 bold" horizontalAlignment="right"/>
     </GridLayout>
@@ -27,16 +27,18 @@
   import {action} from "tns-core-modules/ui/dialogs";
 
   const measurements = [];
+  const ALL_EXERCISES = "Alle oefeningen";
 
   export default {
     created() {
       console.log("MeasurementsList created");
-      this.fetchMeasurements();
+      authService.anyPageCallback = () => this.fetchMeasurements(this.exercise);
     },
 
     data() {
       return {
-        exercise: "Alle oefeningen",
+        exercise: ALL_EXERCISES,
+        exerciseTranslated: ALL_EXERCISES,
         player: undefined,
         selectedListOrGraphIndex: 1,
         measurements
@@ -44,13 +46,14 @@
     },
 
     methods: {
-      fetchMeasurements(filterExercise = undefined) {
+      fetchMeasurements() {
         const result = [];
-        let query = authService.userRef.collection("measurements")
+        let query = authService.userRef
+            .collection("measurements")
             .orderBy("date", "desc");
 
-        if (filterExercise) {
-          query = query.where("exercise", "==", filterExercise);
+        if (this.exercise !== ALL_EXERCISES) {
+          query = query.where("exercise", "==", this.exercise);
         }
 
         query
@@ -71,16 +74,17 @@
             .catch(err => console.log(err));
       },
       filterExercise() {
-        const translatedOptions = ["Alle oefeningen"].concat(Object.keys(ExerciseType).map(k => translateExerciseType(k)));
+        const translatedOptions = [ALL_EXERCISES].concat(Object.keys(ExerciseType).map(k => translateExerciseType(k)));
         action({
           title: "Kies een oefening..",
           actions: translatedOptions
         }).then(picked => {
-          if (picked && picked !== this.exercise) {
-            this.exercise = picked;
-            const options = ["Alle oefeningen"].concat(Object.keys(ExerciseType));
+          if (picked && picked !== this.exerciseTranslated) {
+            const options = [ALL_EXERCISES].concat(Object.keys(ExerciseType));
             const optionPicked = options[translatedOptions.indexOf(picked)];
-            this.fetchMeasurements(optionPicked === "Alle oefeningen" ? undefined : optionPicked)
+            this.exercise = optionPicked;
+            this.exerciseTranslated = picked;
+            this.fetchMeasurements(optionPicked === ALL_EXERCISES ? undefined : optionPicked)
           }
         });
       }

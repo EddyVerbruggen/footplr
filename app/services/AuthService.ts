@@ -8,20 +8,20 @@ export default class AuthService extends BackendService {
 
   public userWrapper: {user: User} = { user: undefined };
 
+  // poor man's observable.. on any page you're currently at, you can register this callback
+  // note that this has not been tested with more than one page, so an Array may be required, etc
+  public anyPageCallback: Function = null;
+
   private userRef: firestore.DocumentReference;
   private userLoginUnsubscribe;
 
-  isLoggedIn() {
-    console.log(">>> isLoggedIn");
-    if (!!getString(this.userKey)) {
-      // TODO move this out of this function
-      console.log(">>> this.userWrapper");
-      this.userWrapper.user = this.user;
-      this.listenToUserUpdates(this.user.id);
-      return true;
-    } else {
-      return false;
-    }
+  isLoggedIn(): boolean {
+    return !!getString(this.userKey);
+  }
+
+  watchUser(): void {
+    this.userWrapper.user = this.user;
+    this.listenToUserUpdates(this.user.id);
   }
 
   async register(user) {
@@ -61,6 +61,10 @@ export default class AuthService extends BackendService {
     this.userLoginUnsubscribe = this.userRef.onSnapshot(doc => {
       if (doc.exists) {
         this.syncUserData(doc);
+
+        if (this.anyPageCallback) {
+          this.anyPageCallback();
+        }
       } else {
         console.log("No such document!");
       }
@@ -84,11 +88,6 @@ export default class AuthService extends BackendService {
     user.picture = userData.picture;
     user.position = userData.position;
     user.scores = userData.scores;
-    // const lastScores: firestore.DocumentReference = userData.lastscores;
-    // if (lastScores) {
-    //   user.player.lastscoresData = (await lastScores.get()).data();
-    //   userData.lastscoresData = user.player.lastscoresData;
-    // }
     this.userWrapper.user = <User>userData;
     this.user = user;
     return null;

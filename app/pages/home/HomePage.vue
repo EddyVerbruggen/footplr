@@ -54,7 +54,7 @@
     data() {
       return {
         tab1Msg: "Hello World 😬",
-        tabIndex: 1, // setting this initially makes dev a little easier
+        tabIndex: 0, // setting this initially makes dev a little easier
         tabView: undefined // set below
       };
     },
