@@ -1,10 +1,12 @@
 <template>
   <Page class="grass-background">
-    <ActionBar title="" flat="false">
-      <GridLayout columns="*, 6, *" width="100%" horizontalAlignment="center" style="padding-right: 54">
-        <Img col="0" src="~/assets/images/botafogo.png" width="24" height="24" horizontalAlignment="right" style="opacity: 0.9"/>
-        <Label col="2" text="footplr" class="title bold" horizontalAlignment="left"/>
-      </GridLayout>
+    <ActionBar title="" flat="true">
+      <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
+
+      <!--<GridLayout columns="*, 6, *" width="100%" backgroundColor="red" horizontalAlignment="center">-->
+        <Img col="0" src="~/assets/images/fpr-logo-128.png" width="26" height="26" style="padding: 4; margin-bottom: 8" horizontalAlignment="right"/>
+        <!--<Label col="2" text=" fpr" class="title bold" horizontalAlignment="left"/>-->
+      <!--</GridLayout>-->
 
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 0"/>
     </ActionBar>
@@ -12,21 +14,22 @@
     <TabView androidTabsPosition="bottom"
              android:tabBackgroundColor="#d6f0eb"
              android:tabTextColor="#999999"
-             selectedTabTextColor="#7EBC89"
+             selectedTabTextColor="#2EC4B6"
              iosIconRenderingMode="automatic"
              :selectedIndex="tabIndex"
+             backgroundColor="#FDFFFC"
              @selectedIndexChanged="onSelectedIndexChanged"
              @loaded="onTabViewLoaded">
 
-      <TabViewItem textTransform="none" title="scorekaart" iconSource="res://truck2">
+      <TabViewItem textTransform="none" iconSource="res://scorekaart">
         <ScoreCard ref="scoreCard" :visible="tabIndex === 1"></ScoreCard>
       </TabViewItem>
 
-      <TabViewItem textTransform="none" title="metingen" iconSource="res://truck3">
+      <TabViewItem textTransform="none" iconSource="res://graph">
         <Measurements ref="measurements" :visible="tabIndex === 2"></Measurements>
       </TabViewItem>
 
-      <TabViewItem textTransform="none" title="invoer" iconSource="res://truck1">
+      <TabViewItem textTransform="none" iconSource="res://stopwatch">
         <GridLayout rows="*" colums="*" @loaded="onTab3Loaded" verticalAlignment="center">
           <StackLayout>
             <Label class="message" :text="tab1Msg"/>
@@ -54,7 +57,7 @@
     data() {
       return {
         tab1Msg: "Hello World 😬",
-        tabIndex: 0, // setting this initially makes dev a little easier
+        tabIndex: 1, // setting this initially makes dev a little easier
         tabView: undefined // set below
       };
     },
@@ -86,7 +89,7 @@
 
 <style scoped>
   .grass-background {
-    background-color: #FAEDCA;
+    /*background-color: #FAEDCA;*/
     /*background-repeat: no-repeat;*/
     /*background-position: center;*/
     /*background-size: cover;*/
@@ -98,7 +101,8 @@
   }
 
   ActionBar {
-    background-color: #E8D170;
+    background-color: #0b8c93;
+    color: #FDFFFC;
   }
 
   ActionBar .title {
@@ -109,6 +113,6 @@
     vertical-align: center;
     text-align: center;
     font-size: 20;
-    color: #333333;
+    color: #011627;
   }
 </style>

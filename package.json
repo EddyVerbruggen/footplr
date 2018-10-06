@@ -15,7 +15,9 @@
   },
   "scripts": {
     "ios": "tns run ios --bundle",
-    "android": "tns run android --bundle"
+    "ios.emulator": "tns run ios --bundle --emulator",
+    "android": "tns run android --bundle",
+    "android.release": "tns build android --bundle --release --other-keystore-params.."
   },
   "dependencies": {
     "nativescript-iqkeyboardmanager": "~1.3.0",

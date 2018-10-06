@@ -1,13 +1,14 @@
 <template>
-  <GridLayout rows="auto, auto, *" colums="*" verticalAlignment="top" height="100%">
-    <GridLayout row="1" columns="2*, 3*, *, 2*" class="scoreTable">
+  <GridLayout rows="auto, *" verticalAlignment="top" height="100%">
+
+    <GridLayout row="0" columns="2*, 3*, *, 2*" class="scoreTable" style="background-color: #CBE3F0">
       <Label col="0" text="Datum" class="m-l-10 p-y-10 p-x-5 bold"/>
       <Label col="1" :text="exerciseTranslated + ' ▽'" class="p-y-10 p-x-5 bold" @tap="filterExercise"/>
       <Label col="2" text="Score" class=" p-y-10 p-x-5 bold" horizontalAlignment="right"/>
       <Label col="3" text="Officieel" class="m-r-10 p-y-10 p-x-5 bold" horizontalAlignment="right"/>
     </GridLayout>
 
-    <ListView row="2" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="scoreTable">
+    <ListView row="1" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="scoreTable">
       <v-template>
         <GridLayout columns="2*, 3*, *, 2*" class="listview-separator">
           <Label col="0" :text="item.date" class="m-l-10 p-y-10 p-x-5"/>

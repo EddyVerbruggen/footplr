@@ -1,3 +1,5 @@
+<!-- for a nice onboarding, we could use https://github.com/triniwiz/nativescript-pager/blob/master/demo-vue/src/main.js -->
+
 <template>
 <Page ref="page" :class="pageClasses" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
   <GridLayout class='login'>

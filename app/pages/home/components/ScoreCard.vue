@@ -3,7 +3,7 @@
     <GridLayout colums="*" rows="*" @loaded="onScoreTabLoaded">
       <Image src="~/assets/images/rating.png" height="74%"/>
       <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
-      <Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>
+      <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
       <GridLayout rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
         <StackLayout colSpan="2" verticalAlignment="center">
           <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"/>

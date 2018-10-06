@@ -73,7 +73,6 @@ export default class AuthService extends BackendService {
   }
 
   private async syncUserData(doc: firestore.DocumentSnapshot): Promise<void> {
-    console.log("User document data:", JSON.stringify(doc.data()));
     const userData = <User>doc.data();
     const user = this.user;
     user.admin = userData.admin;

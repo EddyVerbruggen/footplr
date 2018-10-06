@@ -55,7 +55,8 @@ export type ScoreType = "SPEED" /* km/h */ | "POINTS" | "DISTANCE" | "COUNT" | "
 export class Exercise {
   constructor(public categories: Array<Category>,
               public scoretype: ScoreType,
-              public factor: number) {
+              public factor: number,
+              public advanced: boolean = false) {
     // TODO consider adding lowbound and highbound (as seen in the table in the doc), and use it for entry validation
   }
 }
@@ -71,10 +72,10 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   SPEED_OF_ACTION: new Exercise(["PAC", "PAS", "TEC"], "POINTS", 0.33),
   HEARTRATE: new Exercise(["PHY", "PAC"], "COUNT", 0.33),
   HEADER_HEIGHT: new Exercise(["PHY"], "HEIGHT", 0.33),
-  AIM: new Exercise(["TEC", "SHO", "PAS"], "POINTS", 0.33),
+  AIM: new Exercise(["TEC", "SHO", "PAS"], "POINTS", 0.33, true),
   PASSING_MOVEMENTS: new Exercise(["TEC"], "COUNT", 0.33),
   PUSH_UPS: new Exercise(["PHY"], "COUNT", 0.33),
-  SHOT_STRENGTH: new Exercise(["SHO"], "SPEED", 0.33),
+  SHOT_STRENGTH: new Exercise(["SHO"], "SPEED", 0.33, true),
   SIT_UPS: new Exercise(["PHY"], "COUNT", 0.33),
   SPRINT: new Exercise(["PAC", "PHY"], "TIME", 0.33),
   JUMP_HEIGHT: new Exercise(["PHY"], "HEIGHT", 0.33),

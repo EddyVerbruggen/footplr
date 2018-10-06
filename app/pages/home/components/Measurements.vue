@@ -1,73 +1,45 @@
 <template>
-  <StackLayout style="background-color: #fff" class="p-b-10">
+  <StackLayout x-class="p-b-10">
 
-    <SegmentedBar row="0" class="m-y-15" width="60%" height="28" color="#7EBC89" borderWidth="1" borderRadius="4" borderColor="#7EBC89" backgroundColor="#fff" selectedBackgroundColor="#7EBC89" v-model="selectedListOrGraphIndex">
-      <SegmentedBarItem title="Lijst"/>
+    <SegmentedBar row="0" class="m-y-15" width="60%" height="28" color="#2EC4B6" borderWidth="1" borderRadius="4" borderColor="#2EC4B6" backgroundColor="#fdfffc" selectedBackgroundColor="#2EC4B6" v-model="selectedListOrGraphIndex">
+      <SegmentedBarItem title="Overzicht"/>
       <SegmentedBarItem title="Grafiek"/>
+      <SegmentedBarItem title="Stream"/>
     </SegmentedBar>
 
-    <!-- list -->
-    <MeasurementsList ref="measurementsList" :visible="selectedListOrGraphIndex === 0" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'"></MeasurementsList>
-
-    <!-- graph, TODO extract -->
-    <GridLayout rows="auto, *" colums="*" verticalAlignment="top" height="100%" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'">
-      <Label row="0" text="filter by exercises / timespan here.."></Label>
-      <WebView row="1" :src="webViewSRC"></WebView>
-    </GridLayout>
+    <MeasurementsOverview ref="measurementsOverview" :visible="selectedListOrGraphIndex === 0" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'"></MeasurementsOverview>
+    <MeasurementsGraph ref="measurementsGraph" :visible="selectedListOrGraphIndex === 1" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'"></MeasurementsGraph>
+    <MeasurementsList ref="measurementsList" :visible="selectedListOrGraphIndex === 2" :visibility="selectedListOrGraphIndex === 2 ? 'visible' : 'collapse'"></MeasurementsList>
 
   </StackLayout>
 </template>
 
 <script>
   import MeasurementsList from "./MeasurementsList.vue"
+  import MeasurementsGraph from "./MeasurementsGraph.vue"
+  import MeasurementsOverview from "./MeasurementsOverview.vue"
   import {formatDate} from "~/utils/date-util";
   import {action} from "tns-core-modules/ui/dialogs";
 
-  let amountPerHourFull = new Map();
-  let amountPerHourFull2 = new Map();
-  for (let i = 10; i <= 20; i++) {
-    amountPerHourFull.set(i + ":00", 5 + i);
-    amountPerHourFull2.set(i + ":00", 3 + i);
-  }
-
-  const series = [];
-
-  series.push({
-    type: "line",
-    color: "purple",
-    lineWidth: 3,
-    name: "Dribbelen",
-    data: Array.from(amountPerHourFull.values())
-  });
-
-  series.push({
-    type: "line",
-    color: "blue",
-    lineWidth: 3,
-    name: "Hooghouden",
-    data: Array.from(amountPerHourFull2.values())
-  });
-
-  const data = {
-    webViewHeight: 400,
-    xAxisCategories: Array.from(amountPerHourFull.keys()),
-    series
-  };
-
-  // console.log(`~/pages/home/components/graph.html?${JSON.stringify(data)}`);
   export default {
     components: {
       MeasurementsList,
+      MeasurementsGraph,
+      MeasurementsOverview
     },
 
     created() {
       console.log("Measurements created");
       this.fetchMeasurements();
+
+      this.$on('child-coucou', function (child) {
+        // Make something there with child reference
+        console.log(">>> koekoek!");
+      });
     },
 
     data() {
       return {
-        webViewSRC: `~/assets/graph.html?${JSON.stringify(data)}`,
         exercise: "Alle oefeningen",
         player: undefined,
         selectedListOrGraphIndex: 0,
