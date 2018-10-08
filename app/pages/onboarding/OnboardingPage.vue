@@ -1,0 +1,127 @@
+<template>
+  <Page>
+    <!--<ActionBar title="Master" />-->
+    <GridLayout rows="*, auto, auto" columns="*, *" width="75%">
+
+      <Pager row="0" colSpan="2" for="item in items" v-model="pagerIndex" class="p-20" verticalAlignment="bottom">
+        <v-template>
+          <GridLayout class="pager-item" rows="auto, *" columns="*" verticalAlignment="bottom">
+            <Image row="0" :src="item.image"></Image>
+            <Label row="1" class="pager-text m-t-20" :text="item.text" textWrap="true"></Label>
+          </GridLayout>
+        </v-template>
+      </Pager>
+
+      <StackLayout row="1" colSpan="2" orientation="horizontal" class="m-b-30" horizontalAlignment="center">
+        <Label class="pager-indicator" v-bind:class="{ 'pager-indicator-active' : index === pagerIndex }" v-for="(item, index) in items"></Label>
+      </StackLayout>
+
+      <Button row="2" col="0" text="OVERSLAAN" class="btn-outline" @tap="$navigateTo(loginPage)" />
+      <Button row="2" col="1" text="VOLGENDE" class="btn-solid" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
+
+    </GridLayout>
+  </Page>
+</template>
+
+<script>
+  import routes from "~/router";
+  import LoginPage from "../login/LoginPage.vue"
+  import Vue from "nativescript-vue"
+  import Pager from "nativescript-pager/vue"
+
+  Vue.use(Pager);
+
+  export default {
+    components: {
+    },
+    created() {
+      console.log("Oboarding created");
+    },
+    data() {
+      return {
+        loginPage: LoginPage,
+        pagerIndex: 0,
+        items:[
+          {
+            image: "~//assets/images/fpr-logo-full.png",
+            text: "Ontwikkel je eigen voetbal kwaliteiten en word een echte profvoetballer"
+          },
+          {
+            image: "~//assets/images/fpr-logo-full.png",
+            text: "Flubberdeflop en dibberdedab, samen staan we slapperdeflap!"
+          },
+          {
+            image: "~//assets/images/fpr-logo-full.png",
+            text: "Bas is gek, Tim is gek, Eddy is helemaal niet gek. Mark dan weer wel."
+          }
+        ]
+      };
+    },
+    methods: {
+      onSelectedIndexChanged(event) {
+        this.tabIndex = event.newIndex;
+      },
+      onTabViewLoaded(event) {
+        const tabView = event.object;
+        this.tabView = tabView;
+        console.log("onTabViewLoaded " + tabView);
+      },
+      onTab3Loaded() {
+        console.log("Loaded tab 1");
+      },
+      goToTab(tabNr) {
+        this.tabView.selectedIndex = tabNr;
+      },
+      onTapShare() {
+        console.log("TODO: share.. but we're logging out for now.");
+        this.$authService.logout().then(() => {
+          console.log(">>>> logged out ;)");
+          this.$navigateTo(routes.login, {clearHistory: true});
+        });
+      }
+    }
+  };
+</script>
+
+<style scoped>
+  Label.pager-text {
+    vertical-align: center;
+    text-align: center;
+    font-size: 15;
+    color: #011627;
+    line-height: 9;
+  }
+
+  Label.pager-indicator {
+    background-color: #f3c0bf;
+    border-color: #f3c0bf;
+    border-radius: 3;
+    border-width: 1;
+    width: 6;
+    height: 6;
+    margin: 20 5;
+  }
+
+  Label.pager-indicator.pager-indicator-active {
+    background-color: #e7605a;
+    border-color: #e7605a;
+  }
+
+  Button {
+    font-size: 11;
+    margin: 24 8;
+    padding: 12 ;
+    border-radius: 3;
+  }
+
+  Button.btn-solid {
+    background-color: #63d4a5;
+    color: #fff;
+  }
+
+  Button.btn-outline {
+    border-width: 2;
+    border-color: #63d4a5;
+    color: #63d4a5;
+  }
+</style>

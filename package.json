@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "nativescript-iqkeyboardmanager": "~1.3.0",
+    "nativescript-pager": "~8.0.2",
     "nativescript-plugin-firebase": "~7.1.1",
     "nativescript-shimmer": "~2.0.0",
     "nativescript-theme-core": "~1.0.4",

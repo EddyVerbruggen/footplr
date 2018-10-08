@@ -30,5 +30,6 @@ if (loggedIn) {
 }
 
 new v({
-  render: h => h("frame", [h(loggedIn ? routes.home : routes.login)])
+  // TODO also check 'registered' state
+  render: h => h("frame", [h(loggedIn ? routes.home : routes.onboarding)])
 }).$start();
