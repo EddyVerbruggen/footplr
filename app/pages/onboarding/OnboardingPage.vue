@@ -1,11 +1,11 @@
 <template>
   <Page>
     <!--<ActionBar title="Master" />-->
-    <GridLayout rows="*, auto, auto" columns="*, *" width="75%">
+    <GridLayout rows="*, auto, auto" columns="*, *">
 
       <Pager row="0" colSpan="2" for="item in items" v-model="pagerIndex" class="p-20" verticalAlignment="bottom">
         <v-template>
-          <GridLayout class="pager-item" rows="auto, *" columns="*" verticalAlignment="bottom">
+          <GridLayout class="pager-item" rows="auto, *" columns="*" width="75%" verticalAlignment="bottom">
             <Image row="0" :src="item.image"></Image>
             <Label row="1" class="pager-text m-t-20" :text="item.text" textWrap="true"></Label>
           </GridLayout>
@@ -16,8 +16,8 @@
         <Label class="pager-indicator" v-bind:class="{ 'pager-indicator-active' : index === pagerIndex }" v-for="(item, index) in items"></Label>
       </StackLayout>
 
-      <Button row="2" col="0" text="OVERSLAAN" class="btn-outline" @tap="$navigateTo(loginPage)" />
-      <Button row="2" col="1" text="VOLGENDE" class="btn-solid" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
+      <Button row="2" col="0" text="OVERSLAAN" class="btn-skip" @tap="$navigateTo(loginPage)" />
+      <Button row="2" col="1" text="VOLGENDE" class="btn-next" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
 
     </GridLayout>
   </Page>
@@ -109,19 +109,20 @@
 
   Button {
     font-size: 11;
-    margin: 24 8;
     padding: 12 ;
     border-radius: 3;
   }
 
-  Button.btn-solid {
-    background-color: #63d4a5;
-    color: #fff;
-  }
-
-  Button.btn-outline {
+  Button.btn-skip {
     border-width: 2;
     border-color: #63d4a5;
     color: #63d4a5;
+    margin: 24 8 24 16;
+  }
+
+  Button.btn-next {
+    background-color: #63d4a5;
+    color: #fff;
+    margin: 24 16 24 8;
   }
 </style>
