@@ -14,6 +14,7 @@
     }
   },
   "scripts": {
+    "tsc": "tsc --skipLibCheck --watch",
     "ios": "tns run ios --bundle",
     "ios.emulator": "tns run ios --bundle --emulator",
     "android": "tns run android --bundle",
