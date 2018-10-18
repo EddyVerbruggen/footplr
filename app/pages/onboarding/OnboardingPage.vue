@@ -35,7 +35,7 @@
     components: {
     },
     created() {
-      console.log("Oboarding created");
+      console.log("Onboarding created");
     },
     data() {
       return {
