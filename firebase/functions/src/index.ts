@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as firebase from "firebase-admin";
 import { Measurement } from "./shared/measurement";
 import { SharedUser } from "./shared/shared-user";
-import { Excercises, ExerciseType } from "./shared/exercises";
+import { Exercise, Excercises, ExerciseType } from "./shared/exercises";
 import Scores from "./shared/scores";
 
 // perhaps it's more efficient to store measurements in the root.. that's probably easier to watch for Firebase: measurements/{measurementId}
@@ -62,12 +62,42 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
 
 // TODO the actual calculation ;)
 function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Scores {
-  const PAC = !measurements.STAMINA ? 0 : Math.round(measurements.STAMINA.score * Excercises.STAMINA.factor);
-  const TEC = !measurements.SPEED_OF_ACTION ? 0 : Math.round(measurements.SPEED_OF_ACTION.score * Excercises.SPEED_OF_ACTION.factor);
-  const DRI = !measurements.DRIBBLE ? 0 : Math.round(measurements.DRIBBLE.score * Excercises.DRIBBLE.factor);
-  const PAS = !measurements.AIM ? 0 : Math.round(measurements.AIM.score * Excercises.AIM.factor);
-  const PHY = !measurements.STAMINA ? 0 : Math.round(measurements.STAMINA.score * Excercises.STAMINA.factor);
-  const SHO = !measurements.SHOT_STRENGTH ? 0 : Math.round(measurements.SHOT_STRENGTH.score * Excercises.SHOT_STRENGTH.factor);
+  const PAC =
+    Math.round((calculateScore(measurements.STAMINA, Excercises.STAMINA) +
+      calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE) +
+      calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
+      calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
+      calculateScore(measurements.SPRINT, Excercises.SPRINT) +
+      calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
+      calculateScore(measurements.AGILITY, Excercises.AGILITY)) / 7);
+
+  const TEC =
+    Math.round((calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
+    calculateScore(measurements.PASSING_MOVEMENTS, Excercises.PASSING_MOVEMENTS) +
+    calculateScore(measurements.AIM, Excercises.AIM) +
+    calculateScore(measurements.CONTROL_LOW_BALL, Excercises.CONTROL_LOW_BALL) +
+    calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL)) / 5);
+
+  const DRI = Math.round(calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
+
+  const PAS =
+    Math.round((calculateScore(measurements.AGILITY, Excercises.AGILITY) +
+      calculateScore(measurements.AIM, Excercises.AIM) +
+      calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) / 3);
+
+  const PHY =
+    Math.round((calculateScore(measurements.STAMINA, Excercises.STAMINA) +
+      calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
+      calculateScore(measurements.SPRINT, Excercises.SPRINT) +
+      calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
+      calculateScore(measurements.HEADER_HEIGHT, Excercises.HEADER_HEIGHT) +
+      calculateScore(measurements.JUMP_HEIGHT, Excercises.JUMP_HEIGHT) +
+      calculateScore(measurements.SIT_UPS, Excercises.SIT_UPS) +
+      calculateScore(measurements.PUSH_UPS, Excercises.PUSH_UPS)) / 8);
+
+  const SHO =
+    Math.round((calculateScore(measurements.SHOT_STRENGTH, Excercises.SHOT_STRENGTH) +
+      calculateScore(measurements.AIM, Excercises.AIM)) / 2);
 
   const divideBy = (PAC === 0 ? 0 : 1) +
       (TEC === 0 ? 0 : 1) +
@@ -78,6 +108,8 @@ function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Sc
 
   const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / divideBy);
 
+  console.log("PAC: " + PAC + ", TEC: " + TEC + ", DRI: " + DRI + ", PAS: " + PAS + ", PHY: " + PHY + ", SHO: " + SHO);
+
   return {
     PAC,
     TEC,
@@ -87,4 +119,17 @@ function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Sc
     SHO,
     TOTAL
   }
+}
+
+function calculateScore(measurement : Measurement, exercise : Exercise) : number {
+  console.log("calculateScore ( " + measurement + ", exercise: " + exercise + ")");
+  if (!measurement) {
+    return 0;
+  }
+  if (exercise.scoreCalculationType === "OTHER") {
+    return measurement.score;
+  } else if (exercise.scoreCalculationType === "HIGHBOUND") {
+    return 100 * (measurement.score / exercise.highbound);
+  }
+  return 0;
 }
