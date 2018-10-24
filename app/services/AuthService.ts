@@ -44,7 +44,6 @@ export default class AuthService extends BackendService {
       }
     });
 
-
     const userDoc = await firebase.firestore.getDocument("users", firebaseUser.uid);
 
     const user = <User>userDoc.data();

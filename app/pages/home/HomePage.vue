@@ -2,16 +2,7 @@
   <Page class="grass-background">
     <ActionBar title="" flat="true">
       <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
-
-      <!--<GridLayout columns="*, 6, *" width="100%" backgroundColor="red" horizontalAlignment="center">-->
-        <Img col="0" src="~/assets/images/fpr-logo-128.png" width="26" height="26" style="padding: 4; margin-bottom: 8" horizontalAlignment="right"/>
-        <!--<Label col="2" text=" fpr" class="title bold" horizontalAlignment="left"/>-->
-      <!--</GridLayout>-->
-
-      <!--<StackLayout orientation="horizontal">-->
-        <!--<Label text="officieel" style="font-size: 12" class="m-r-4"></Label>-->
-        <!--<Switch height="20" width="30" style="font-size: 8"></Switch>-->
-      <!--</StackLayout>-->
+      <Img col="0" :src="logoSrc" width="26" height="26" style="padding: 4; margin-bottom: 8" horizontalAlignment="right" @tap="onTapToggleOfficial"/>
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 0"/>
     </ActionBar>
 
@@ -62,7 +53,9 @@
       return {
         tab1Msg: "Hello World 😬",
         tabIndex: 1, // setting this initially makes dev a little easier
-        tabView: undefined // set below
+        tabView: undefined, // set below
+        isOfficial: true,
+        logoSrc: "~/assets/images/fpr-logo-128.png"
       };
     },
     methods: {
@@ -86,6 +79,10 @@
           console.log(">>>> logged out ;)");
           this.$navigateTo(routes.login, {clearHistory: true});
         });
+      },
+      onTapToggleOfficial() {
+        this.isOfficial = !this.isOfficial;
+        this.logoSrc = this.isOfficial ? "~/assets/images/fpr-logo-128.png" : "~/assets/images/fpr-logo-128-gray.png";
       }
     }
   };
