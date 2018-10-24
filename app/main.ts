@@ -20,6 +20,7 @@ v.prototype.$authService = authService;
 firebase.init()
   .then(instance => {
     console.log("firebase.init done");
+
     /*
     firebase.registerForPushNotifications(
         {

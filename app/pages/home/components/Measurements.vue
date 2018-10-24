@@ -37,16 +37,14 @@
       return {
         exercise: "Alle oefeningen",
         player: undefined,
-        selectedListOrGraphIndex: 1,
-        getAuthService: this.$authService,
-        getAuthService2: () => this.$authService
+        selectedListOrGraphIndex: 0
       }
     },
 
     methods: {
       fetchMeasurements(filterExercise = undefined) {
         const result = [];
-        let query = this.getAuthService2().userRef.collection("measurements")
+        let query = this.$authService.userRef.collection("measurements")
             .orderBy("date", "desc");
 
         if (filterExercise) {

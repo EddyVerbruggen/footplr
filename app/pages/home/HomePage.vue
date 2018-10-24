@@ -68,7 +68,7 @@
         console.log("onTabViewLoaded " + tabView);
       },
       onTab3Loaded() {
-        console.log("Loaded tab 1");
+        console.log("Loaded tab 3");
       },
       goToTab(tabNr) {
         this.tabView.selectedIndex = tabNr;

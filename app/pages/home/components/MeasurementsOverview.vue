@@ -3,12 +3,22 @@
 
     <!-- TODO for trainer/admin <Label row="0" text="Voor trainers: filter op speler"/>-->
 
-    <ListView row="0" for="(item, index) in measurements" separatorColor="transparent" class="scoreTable">
+    <GridLayout row="0" columns="*, 3*, 2*, 2*" class="scoreTable" style="background-color: #CBE3F0">
+      <Label col="0" text="Score" class="m-l-10 p-y-10 bold"/>
+      <Label col="1" text="Oefening" class="p-y-10 p-x-5 bold" @tap="filterExercise"/>
+      <Label col="2" text="Datum" class=" p-y-10 p-x-5 bold"/>
+    </GridLayout>
+
+    <ListView row="1" for="(item, index) in measurements" separatorColor="transparent" class="scoreTable">
       <v-template>
-        <GridLayout columns="46, 2*, 2*">
-          <Label col="0" :text="item.score" class="m-l-10 m-y-4 p-y-5 p-x-5 c-bg-orange c-white" horizontalAlignment="center"/>
+        <GridLayout columns="*, 3*, 2*, 2*" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
+          <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score" horizontalAlignment="center"/>
           <Label col="1" :text="item.exercise" class="p-y-10 p-x-5"/>
-          <Button col="2" text="grafiek" class="p-y-10 p-x-5 m-r-10" horizontalAlignment="right" @tap="goToGraph(item.exercise)"/>
+          <Label col="2" :text="item.latestMeasurementDate" class="p-y-10 p-x-5"/>
+          <StackLayout col="3" class="p-x-5 m-r-10" orientation="horizontal" horizontalAlignment="right">
+            <Button text="G" @tap="goToGraph(item.exercise)" :v-if="item.latestMeasurementDate"/>
+            <Button text="+" @tap="addMeasurement(item.exercise)"/>
+          </StackLayout>
         </GridLayout>
       </v-template>
     </ListView>
@@ -18,7 +28,7 @@
 <script>
   import {authService} from "~/main";
   import {formatDate} from "~/utils/date-util";
-  import {ExerciseType, translateExerciseType} from "~/shared/exercises";
+  import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
 
   // const measurements = [];
 
@@ -38,57 +48,48 @@
 
     methods: {
       goToGraph(exercise) {
-        console.log("exercise: " + exercise);
+        console.log("goToGraph for exercise: " + exercise);
         this.$parent.exercise = exercise;
         this.$parent.selectedListOrGraphIndex = 1;
         // this.$navigateTo(routes.login, {clearHistory: true});
       },
 
+      addMeasurement(exercise) {
+        console.log("addMeasurement for exercise: " + exercise);
+        // this.$parent.exercise = exercise;
+        // this.$parent.selectedListOrGraphIndex = 1;
+        // this.$navigateTo(routes.login, {clearHistory: true});
+      },
+
       fetchMeasurements() {
-        console.log(">>> authService.userWrapper.user.latestmeasurements: " + JSON.stringify(authService.userWrapper.user.latestmeasurements));
-
         const latestMeasurements = authService.userWrapper.user.latestmeasurements;
+        const official = true;
 
-        /*
-          {
-            "unofficial": {
-              "CONTROL_HIGH_BALL": {
-                "official": false,
-                "score": 53,
-                "exercise": "CONTROL_HIGH_BALL",
-                "date": "2018-10-02T09:01:00.000Z"
-              }
-            },
-            "official": {
-              "AIM": {
-                "official": true,
-                "score": 10,
-                "exercise": "AIM",
-                "date": "2018-10-02T07:09:09.000Z"
-              },
-              "DRIBBLE": {
-                "official": true,
-                "score": 90,
-                "exercise": "DRIBBLE",
-                "date": "2018-10-02T09:05:00.000Z"
+        for (let excercisesKey in Excercises) {
+          let latestMeasurement;
+          if (latestMeasurements[official ? "official" : "unofficial"]) {
+            latestMeasurement = latestMeasurements[official ? "official" : "unofficial"][excercisesKey];
+          }
+
+          this.measurements.push({
+            latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "-",
+            exercise: translateExerciseType(excercisesKey),
+            score: latestMeasurement ? latestMeasurement.score : undefined,
+            getScoreClass: () => {
+              if (!latestMeasurement) {
+                return ''
+              } else if (latestMeasurement.score > 80) {
+                return 'c-bg-purple';
+              } else if (latestMeasurement.score > 60) {
+                return 'c-bg-blue';
+              } else if (latestMeasurement.score > 40) {
+                return 'c-bg-orange';
+              } else {
+                return 'c-bg-ruby';
               }
             }
-          }
-         */
-
-        this.measurements.push({
-          date: formatDate(new Date()),
-          exercise: translateExerciseType(ExerciseType.DRIBBLE),
-          score: 10,
-          official: true
-        });
-
-        this.measurements.push({
-          date: formatDate(new Date()),
-          exercise: translateExerciseType(ExerciseType.AIM),
-          score: 15,
-          official: true
-        });
+          });
+        }
       },
     }
   };
@@ -97,5 +98,24 @@
 <style scoped>
   .scoreTable Label {
     font-size: 12;
+  }
+
+  .scoreTable .score {
+    color: #fff;
+    width: 26;
+    text-align: center;
+    border-radius: 3;
+  }
+
+  .scoreTable .row {
+    padding: 5 0;
+  }
+
+  .scoreTable .row-odd {
+    background-color: #f7f7f7;
+  }
+
+  .scoreTable .row-even {
+    background-color: #fafafa;
   }
 </style>
