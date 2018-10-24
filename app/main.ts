@@ -18,7 +18,20 @@ v.registerElement("Shimmer", () => require("nativescript-shimmer").Shimmer);
 v.prototype.$authService = authService;
 
 firebase.init()
-  .then(instance => console.log("firebase.init done"))
+  .then(instance => {
+    console.log("firebase.init done");
+    /*
+    firebase.registerForPushNotifications(
+        {
+          showNotifications: true,
+          showNotificationsWhenInForeground: true,
+          onPushTokenReceivedCallback: token => console.log(`------------------- token received: ${token}`),
+          onMessageReceivedCallback: message => console.log(`------------------- message received`)
+        })
+        .then(instance => console.log("registerForPushNotifications done"))
+        .catch(error => console.log(`-------------- registerForPushNotifications error: ${error}`));
+    */
+  })
   .catch(error => console.log(`firebase.init error: ${error}`));
 
 // Prints Vue logs when --env.production is *NOT* set while building
