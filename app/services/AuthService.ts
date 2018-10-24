@@ -29,7 +29,10 @@ export default class AuthService extends BackendService {
       email: user.email,
       password: user.password
     });
-    return await firebase.firestore.set("users", createdUser.uid, {});
+
+    return await firebase.firestore.set("users", createdUser.uid, {
+      admin: false
+    });
   }
 
   async login(fUser) {
