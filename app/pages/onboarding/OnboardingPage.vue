@@ -17,7 +17,7 @@
       </StackLayout>
 
       <Button row="2" col="0" text="OVERSLAAN" class="btn-skip" @tap="$navigateTo(loginPage)" />
-      <Button row="2" col="1" text="VOLGENDE" class="btn-next" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
+      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn-next" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
 
     </GridLayout>
   </Page>

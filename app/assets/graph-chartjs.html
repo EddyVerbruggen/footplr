@@ -22,71 +22,36 @@
 <canvas id="myChart" width="100%" height="100%"></canvas>
 <script>
   // settings are passed through the url
-  // var loc = document.location.href;
-  // var settings = JSON.parse(decodeURI(loc.substring(loc.indexOf("?") + 1)));
-  // var series = settings.series;
-  // console.log(">>> settings.webViewHeight: " + settings.webViewHeight);
-  // document.getElementById("myChart").style.height = settings.webViewHeight + 'px';
+  var loc = document.location.href;
+  var settings = JSON.parse(decodeURI(loc.substring(loc.indexOf("?") + 1)));
+  var datasets = settings.datasets;
+  var labels = settings.labels;
 
   var ctx = document.getElementById("myChart").getContext('2d');
-  var timeFormat = 'MM/DD/YYYY HH:mm';
+  var timeFormat = 'DD/MM/YYYY HH:mm';
 
   var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: [
-        new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 30)),
-        new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 10)),
-        new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 5))
-      ],
-      datasets: [
-          {
-            label: 'Bas',
-            data: [10, 15, 20],
-            fill: false,
-            backgroundColor: [
-              'rgba(75, 192, 192, 0.2)'
-            ],
-            borderColor: [
-              'rgba(75, 192, 192, 1)'
-            ],
-            borderWidth: 2
-          },
-          {
-            label: 'Mark',
-            data: [12, 17, 14],
-            fill: false,
-            backgroundColor: [
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 2
-          }
-      ]
+      labels,
+      datasets
     },
     options: {
-      title: {
-        text: 'Time Scale'
-      },
       scales: {
         xAxes: [{
           type: 'time',
           time: {
             format: timeFormat,
-            // round: 'day'
-            // tooltipFormat: 'll HH:mm'
+            // round: 'day',
+            tooltipFormat: 'll HH:mm'
           },
           scaleLabel: {
-            display: false,
-            labelString: 'Date'
+            display: false
           }
         }],
         yAxes: [{
           scaleLabel: {
-            display: false,
-            labelString: 'value'
+            display: false
           }
         }]
       }

@@ -6,36 +6,42 @@
 </template>
 
 <script>
-  let amountPerHourFull = new Map();
-  let amountPerHourFull2 = new Map();
+  const datasets = [
+    {
+      label: 'Bas',
+      data: [10, 15, 20],
+      fill: false,
+      backgroundColor: [
+        'rgba(75, 192, 192, 0.2)'
+      ],
+      borderColor: [
+        'rgba(75, 192, 192, 1)'
+      ],
+      borderWidth: 2
+    },
+    {
+      label: 'Mark',
+      data: [12, 17, 14],
+      fill: false,
+      backgroundColor: [
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 2
+    }
+  ];
 
-  for (let i = 10; i <= 20; i++) {
-    amountPerHourFull.set(i + ":00", 5 + i);
-    amountPerHourFull2.set(i + ":00", 3 + i);
-  }
-
-  const series = [];
-
-  series.push({
-    type: "line",
-    color: "purple",
-    lineWidth: 3,
-    name: "Dribbelen",
-    data: Array.from(amountPerHourFull.values())
-  });
-
-  series.push({
-    type: "line",
-    color: "blue",
-    lineWidth: 3,
-    name: "Hooghouden",
-    data: Array.from(amountPerHourFull2.values())
-  });
+  const labels = [
+    new Date().getTime() - (1000 * 60 * 60 * 24 * 30),
+    new Date().getTime() - (1000 * 60 * 60 * 24 * 10),
+    new Date().getTime() - (1000 * 60 * 60 * 24 * 5)
+  ];
 
   const data = {
-    webViewHeight: 200,
-    xAxisCategories: Array.from(amountPerHourFull.keys()),
-    series
+    datasets,
+    labels
   };
 
   export default {

@@ -1,5 +1,5 @@
 <template>
-    <StackLayout ref="mainContainer" class="main-container" :visibility="visible?'visible':'collapse'">
+    <StackLayout ref="mainContainer" class="main-container" :visibility="visible ? 'visible' : 'collapse'">
         <Label class="main-label" text="footplr" :color="isLoggingIn? 'black' : 'white'"></Label>
 
         <GridLayout ref="formControls" class="form-controls" rows="auto, auto" translateY="50">
@@ -28,14 +28,14 @@
         </GridLayout>
 
         <Button
-                :text="isLoggingIn ? 'Login' : 'Sign up'"
+                :text="isLoggingIn ? 'Login' : 'Registreer'"
                 :isEnabled="!isAuthenticating"
                 class="submit-button"
                 @tap="submit()"></Button>
 
         <Label
                 class="forgot-password-label"
-                text="Forgot password?"
+                text="Wachtwoord vergeten?"
                 @tap="forgotPassword()"
                 :opacity="isLoggingIn ? 1 : 0"></Label>
 
@@ -71,6 +71,7 @@
     watch: {
       visible: function (val) {
         // when element turns visible, start animations
+        console.log(">> val: " + val);
         if (val) {
           const animations = [];
 
@@ -123,7 +124,7 @@
       },
       login() {
         if (getConnectionType() === connectionType.none) {
-          alert("Elocute requires an internet connection to log in.")
+          alert("Om in te kunnen loggen is een internetverbinding vereist")
           return;
         }
         return this.$authService
@@ -140,13 +141,13 @@
       },
       signUp() {
         if (getConnectionType() === connectionType.none) {
-          alert("Elocute requires an internet connection to register.")
+          alert("Om te kunnen registreren is een internetverbinding vereist")
           return;
         }
         this.$authService
           .register(this.user)
           .then(() => {
-            alert("Your account was successfully created.")
+            alert("Je account is succesvol aangemaakt")
             this.isAuthenticating = false;
             this.toggleDisplay();
           })
@@ -158,11 +159,11 @@
       },
       forgotPassword() {
         prompt({
-          title: "Forgot Password",
-          message: "Enter the email address you used to register for Elocute to reset your password.",
+          title: "Wachtwoord vergeten",
+          message: "Voer je registratie e-mail in, zodat we je wachtwoord kunnen resetten",
           defaultText: "",
-          okButtonText: "Ok",
-          cancelButtonText: "Cancel"
+          okButtonText: "Reset!",
+          cancelButtonText: "Annuleren"
         }).then((data) => {
           if (data.result) {
             this.isAuthenticating = true
@@ -170,12 +171,12 @@
               .resetPassword(data.text.trim())
               .then(() => {
                 this.isAuthenticating = false
-                alert("Your password was successfully reset. Please check your email for instructions on choosing a new password.")
+                alert("Je wachtwoord is succesvol gereset. We hebben je een e-mail gestuurd met verdere instructies.")
               })
-              .catch((error) => {
+              .catch(error => {
                 this.isAuthenticating = false
                 console.log('Error resetting password: ' + error)
-                alert("Unfortunately, an error occurred resetting your password.");
+                alert("Helaas is er een fout opgetreden tijdens het resetten van je wachtwoord: " + error);
               })
           }
         });

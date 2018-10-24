@@ -24,7 +24,8 @@ firebase login # pick info@combidesk.com in the OAuth flow
 
 ```bash
 cd functions
-npm run 
+npm i
+npm run build 
 ```
 
 ### Deploy Functions

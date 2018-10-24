@@ -8,6 +8,10 @@
         <!--<Label col="2" text=" fpr" class="title bold" horizontalAlignment="left"/>-->
       <!--</GridLayout>-->
 
+      <!--<StackLayout orientation="horizontal">-->
+        <!--<Label text="officieel" style="font-size: 12" class="m-r-4"></Label>-->
+        <!--<Switch height="20" width="30" style="font-size: 8"></Switch>-->
+      <!--</StackLayout>-->
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 0"/>
     </ActionBar>
 
@@ -101,8 +105,8 @@
   }
 
   ActionBar {
-    background-color: #0b8c93;
-    color: #FDFFFC;
+    /*background-color: #0b8c93;*/
+    color: #20284d;
   }
 
   ActionBar .title {
@@ -113,6 +117,6 @@
     vertical-align: center;
     text-align: center;
     font-size: 20;
-    color: #011627;
+    color: #20284d;
   }
 </style>

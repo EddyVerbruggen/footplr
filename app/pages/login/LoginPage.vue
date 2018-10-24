@@ -1,10 +1,7 @@
-<!-- for a nice onboarding, we could use https://github.com/triniwiz/nativescript-pager/blob/master/demo-vue/src/main.js -->
-
 <template>
 <Page ref="page" :class="pageClasses" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
   <GridLayout class='login'>
 
-    <LoginInitial ref="loginInitial" @login="showMainContent()" :visible="state === 'initial'"></LoginInitial>
     <LoginMain ref="loginMain" :visible="state === 'main'"></LoginMain>
 
     <AbsoluteLayout marginTop="-340" ref="logoContainer" class="logo-container">
@@ -16,13 +13,11 @@
 </template>
 <script>
 import * as platformModule from "tns-core-modules/platform"
-import LoginInitial from "./components/LoginInitial.vue"
 import LoginMain from "./components/LoginMain.vue"
-import * as enums from "tns-core-modules/ui/enums";
+// import * as enums from "tns-core-modules/ui/enums";
 
 export default {
   components: {
-    LoginInitial,
     LoginMain
   },
   data() {
@@ -40,6 +35,7 @@ export default {
     }
   },
   methods: {
+    /*
     showMainContent: function() {
       this.$refs.logoContainer.nativeView
         .animate({
@@ -50,8 +46,11 @@ export default {
           this.state = 'main'
         })
     }
+    */
   },
-  mounted() {}
+  mounted() {
+    this.state = 'main'
+  }
 }
 </script>
 

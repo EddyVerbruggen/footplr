@@ -42,8 +42,6 @@
         this.$parent.exercise = exercise;
         this.$parent.selectedListOrGraphIndex = 1;
         // this.$navigateTo(routes.login, {clearHistory: true});
-
-        this.$dispatch('child-coucou', this);
       },
 
       fetchMeasurements() {

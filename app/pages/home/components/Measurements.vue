@@ -31,18 +31,13 @@
     created() {
       console.log("Measurements created");
       this.fetchMeasurements();
-
-      this.$on('child-coucou', function (child) {
-        // Make something there with child reference
-        console.log(">>> koekoek!");
-      });
     },
 
     data() {
       return {
         exercise: "Alle oefeningen",
         player: undefined,
-        selectedListOrGraphIndex: 0,
+        selectedListOrGraphIndex: 1,
         getAuthService: this.$authService,
         getAuthService2: () => this.$authService
       }
