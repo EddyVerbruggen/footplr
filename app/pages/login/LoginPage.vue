@@ -20,6 +20,9 @@ export default {
   components: {
     LoginMain
   },
+  created() {
+    console.log(">> login component created");
+  },
   data() {
     return {
       state: 'initial'

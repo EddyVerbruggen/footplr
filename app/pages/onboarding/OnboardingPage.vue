@@ -16,8 +16,8 @@
         <Label class="pager-indicator" v-bind:class="{ 'pager-indicator-active' : index === pagerIndex }" v-for="(item, index) in items"></Label>
       </StackLayout>
 
-      <Button row="2" col="0" text="OVERSLAAN" class="btn-skip" @tap="$navigateTo(loginPage)" />
-      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn-next" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
+      <Button row="2" col="0" text="OVERSLAAN" class="btn btn-secondary" @tap="$navigateTo(loginPage)" />
+      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn btn-primary" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
 
     </GridLayout>
   </Page>
@@ -105,24 +105,5 @@
   Label.pager-indicator.pager-indicator-active {
     background-color: #e7605a;
     border-color: #e7605a;
-  }
-
-  Button {
-    font-size: 11;
-    padding: 12 ;
-    border-radius: 3;
-  }
-
-  Button.btn-skip {
-    border-width: 2;
-    border-color: #63d4a5;
-    color: #63d4a5;
-    margin: 24 8 24 16;
-  }
-
-  Button.btn-next {
-    background-color: #63d4a5;
-    color: #fff;
-    margin: 24 16 24 8;
   }
 </style>

@@ -26,3 +26,45 @@ Page {
   border-bottom-width: 1px;
   border-bottom-color: #CBE3F0;
 }
+
+.table .row {
+  padding: 5 0;
+}
+
+.table .row-odd {
+  background-color: #f7f7f7;
+}
+
+.table .row-even {
+  background-color: #fafafa;
+}
+
+.table Button {
+  width: 28;
+  height: 28;
+  border-radius: 50%;
+}
+
+Button.btn {
+  font-size: 11;
+  padding: 12 ;
+  border-radius: 3;
+}
+
+Button.btn-secondary {
+  border-width: 2;
+  border-color: #63d4a5;
+  color: #63d4a5;
+  margin: 24 8 24 16;
+}
+
+Button.btn-primary {
+  font-family: "Core Sans D 55 Bold", CoreSansD55Bold, system, sans-serif;
+  background-color: #63d4a5;
+  color: #fff;
+  margin: 24 16 24 8;
+}
+
+.c-bg-grey-lighter {
+  background-color: #e3e3e3;
+}

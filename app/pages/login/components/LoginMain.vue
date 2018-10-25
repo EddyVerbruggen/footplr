@@ -9,7 +9,7 @@
                     returnKeyType="next"
                     @returnPress="focusPassword()"
                     v-model="user.email"
-                    :iEnabled="!isAuthenticating"
+                    :isEnabled="!isAuthenticating"
                     autocorrect="false"
                     autocapitalizationType="none"
                     :class="{ light: !isLoggingIn}"
@@ -56,7 +56,7 @@
   export default {
     name: 'login-main',
     props: {
-      visible: Boolean
+      visible: false
     },
     data() {
       return {
@@ -132,6 +132,7 @@
           .then(() => {
             this.isAuthenticating = false;
             this.$navigateTo(routes.home, {clearHistory: true});
+            this.visible = false;
           })
           .catch((error) => {
             console.error(error)

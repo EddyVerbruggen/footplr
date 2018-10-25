@@ -7,12 +7,12 @@ import Scores from "./shared/scores";
 
 // perhaps it's more efficient to store measurements in the root.. that's probably easier to watch for Firebase: measurements/{measurementId}
 exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measurements/{measurementId}").onWrite(async (snap, context) => {
-
   let measurement: firebase.firestore.DocumentSnapshot;
+  let isDeleted = false;
+  let allDeleted = false;
 
-  // we're ignoring the 'delete' case for now (to support it: find the latest measurement of this exercise (if there is one)
-  // TODO implement, as we now support it in the app
   if (!snap.after.exists) {
+    isDeleted = true;
     const removedMeasurement: firebase.firestore.DocumentSnapshot = snap.before;
     const exercise = (<Measurement>removedMeasurement.data()).exercise;
     const allMeasurementsRef: firebase.firestore.Query = snap.before.ref.parent;
@@ -25,9 +25,10 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
     });
 
     if (!measurement) {
+      console.log(">> all deleted");
+      allDeleted = true;
+      measurement = removedMeasurement;
       // there was no older measurement, so all measurements of this exercise have been deleted
-      // TODO update the latest and scores
-      return;
     }
 
   } else {
@@ -35,6 +36,7 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   }
 
   const measurementData = <Measurement>measurement.data();
+  console.log({measurementData});
 
   // find our user
   const userRef: firebase.firestore.DocumentReference = snap.after.ref.parent.parent;
@@ -59,8 +61,12 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   const latestMeasurements = measurementData.official ? user.latestmeasurements.official : user.latestmeasurements.unofficial;
 
   // only update if this one is newer than what we have (hardening against edits/migration)
-  if (!latestMeasurements[measurementData.exercise] || (<any>latestMeasurements[measurementData.exercise].date).toDate().getTime() <= (<any>measurementData.date).toDate().getTime()) {
-    latestMeasurements[measurementData.exercise] = measurementData;
+  if (isDeleted || !latestMeasurements[measurementData.exercise] || (<any>latestMeasurements[measurementData.exercise].date).toDate().getTime() <= (<any>measurementData.date).toDate().getTime()) {
+    if (allDeleted) {
+      delete latestMeasurements[measurementData.exercise];
+    } else {
+      latestMeasurements[measurementData.exercise] = measurementData;
+    }
 
     // now update the scores, based on latestMeasurements
     if (measurementData.official) {
@@ -126,7 +132,7 @@ function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Sc
       (PHY === 0 ? 0 : 1) +
       (SHO === 0 ? 0 : 1);
 
-  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / divideBy);
+  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / Math.max(divideBy, 1));
 
   console.log("PAC: " + PAC + ", TEC: " + TEC + ", DRI: " + DRI + ", PAS: " + PAS + ", PHY: " + PHY + ", SHO: " + SHO);
 

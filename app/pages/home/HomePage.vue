@@ -20,6 +20,7 @@
         <ScoreCard ref="scoreCard" :visible="tabIndex === 1"></ScoreCard>
       </TabViewItem>
 
+      <!-- would be cool to add a 'shield' indicating how many exercises are not yet measured / 'expired' -->
       <TabViewItem textTransform="none" iconSource="res://graph">
         <Measurements ref="measurements" :visible="tabIndex === 2"></Measurements>
       </TabViewItem>
@@ -76,8 +77,12 @@
       onTapShare() {
         console.log("TODO: share.. but we're logging out for now.");
         this.$authService.logout().then(() => {
-          console.log(">>>> logged out ;)");
-          this.$navigateTo(routes.login, {clearHistory: true});
+          this.$navigateTo(routes.login, {
+            clearHistory: true,
+            transition: {
+              name: "fade"
+            }
+          });
         });
       },
       onTapToggleOfficial() {

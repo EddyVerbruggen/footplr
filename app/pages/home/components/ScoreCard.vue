@@ -30,8 +30,8 @@
 
           <Label row="2" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"/>
           <Label row="2" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"/>
-          <Label row="2" col="2" :text="score('DEF')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="2" col="3" text="DEF" class="card-item-name" horizontalAlignment="left"/>
+          <Label row="2" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"/>
+          <Label row="2" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"/>
 
           <Label row="3" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"/>
           <Label row="3" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"/>
@@ -58,8 +58,7 @@
         shimmerEnabled: false,
         score: type => {
           if (authService.userWrapper.user.scores) {
-            const currentScore = authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
-            return currentScore ? currentScore : "--";
+            return authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
           }
         },
         playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
