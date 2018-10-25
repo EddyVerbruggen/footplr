@@ -2,19 +2,38 @@ import * as functions from "firebase-functions";
 import * as firebase from "firebase-admin";
 import { Measurement } from "./shared/measurement";
 import { SharedUser } from "./shared/shared-user";
-import { Exercise, Excercises, ExerciseType } from "./shared/exercises";
+import { Excercises, Exercise, ExerciseType } from "./shared/exercises";
 import Scores from "./shared/scores";
 
 // perhaps it's more efficient to store measurements in the root.. that's probably easier to watch for Firebase: measurements/{measurementId}
 exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measurements/{measurementId}").onWrite(async (snap, context) => {
 
-  // we're ignoring the 'delete' case for now (to support it: find the latest measurement of this exercise
+  let measurement: firebase.firestore.DocumentSnapshot;
+
+  // we're ignoring the 'delete' case for now (to support it: find the latest measurement of this exercise (if there is one)
+  // TODO implement, as we now support it in the app
   if (!snap.after.exists) {
-    return;
+    const removedMeasurement: firebase.firestore.DocumentSnapshot = snap.before;
+    const exercise = (<Measurement>removedMeasurement.data()).exercise;
+    const allMeasurementsRef: firebase.firestore.Query = snap.before.ref.parent;
+    const querySnapshot = await allMeasurementsRef.where("exercise", "==", exercise).get();
+    querySnapshot.forEach(doc => {
+      const olderMeasurement = <Measurement>doc.data();
+      if (!measurement || (<any>measurement.data().date).toDate().getTime() < (<any>olderMeasurement.date).toDate().getTime()) {
+        measurement = doc;
+      }
+    });
+
+    if (!measurement) {
+      // there was no older measurement, so all measurements of this exercise have been deleted
+      // TODO update the latest and scores
+      return;
+    }
+
+  } else {
+    measurement = snap.after;
   }
 
-  // get the measurement document
-  const measurement: firebase.firestore.DocumentSnapshot = snap.after;
   const measurementData = <Measurement>measurement.data();
 
   // find our user
@@ -60,46 +79,47 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   return null;
 });
 
-// TODO the actual calculation ;)
 function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Scores {
-  const PAC =
-    Math.round((calculateScore(measurements.STAMINA, Excercises.STAMINA) +
-      calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE) +
-      calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
-      calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
-      calculateScore(measurements.SPRINT, Excercises.SPRINT) +
-      calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
-      calculateScore(measurements.AGILITY, Excercises.AGILITY)) / 7);
+  const PAC = Math.round(
+      (calculateScore(measurements.STAMINA, Excercises.STAMINA) +
+          calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE) +
+          calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
+          calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
+          calculateScore(measurements.SPRINT, Excercises.SPRINT) +
+          calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
+          calculateScore(measurements.AGILITY, Excercises.AGILITY)) / 7);
 
-  const TEC =
-    Math.round((calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
-    calculateScore(measurements.PASSING_MOVEMENTS, Excercises.PASSING_MOVEMENTS) +
-    calculateScore(measurements.AIM, Excercises.AIM) +
-    calculateScore(measurements.CONTROL_LOW_BALL, Excercises.CONTROL_LOW_BALL) +
-    calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL)) / 5);
+  const TEC = Math.round(
+      (calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
+          calculateScore(measurements.PASSING_MOVEMENTS, Excercises.PASSING_MOVEMENTS) +
+          calculateScore(measurements.AIM, Excercises.AIM) +
+          calculateScore(measurements.CONTROL_LOW_BALL, Excercises.CONTROL_LOW_BALL) +
+          calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL)) / 5);
 
-  const DRI = Math.round(calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
+  const DRI = Math.round(
+      calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
 
-  const PAS =
-    Math.round((calculateScore(measurements.AGILITY, Excercises.AGILITY) +
-      calculateScore(measurements.AIM, Excercises.AIM) +
-      calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) / 3);
+  const PAS = Math.round(
+      (calculateScore(measurements.AGILITY, Excercises.AGILITY) +
+          calculateScore(measurements.AIM, Excercises.AIM) +
+          calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) / 3);
 
-  const PHY =
-    Math.round((calculateScore(measurements.STAMINA, Excercises.STAMINA) +
-      calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
-      calculateScore(measurements.SPRINT, Excercises.SPRINT) +
-      calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
-      calculateScore(measurements.HEADER_HEIGHT, Excercises.HEADER_HEIGHT) +
-      calculateScore(measurements.JUMP_HEIGHT, Excercises.JUMP_HEIGHT) +
-      calculateScore(measurements.SIT_UPS, Excercises.SIT_UPS) +
-      calculateScore(measurements.PUSH_UPS, Excercises.PUSH_UPS)) / 8);
+  const PHY = Math.round(
+      (calculateScore(measurements.STAMINA, Excercises.STAMINA) +
+          calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
+          calculateScore(measurements.SPRINT, Excercises.SPRINT) +
+          calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
+          calculateScore(measurements.HEADER_HEIGHT, Excercises.HEADER_HEIGHT) +
+          calculateScore(measurements.JUMP_HEIGHT, Excercises.JUMP_HEIGHT) +
+          calculateScore(measurements.SIT_UPS, Excercises.SIT_UPS) +
+          calculateScore(measurements.PUSH_UPS, Excercises.PUSH_UPS)) / 8);
 
-  const SHO =
-    Math.round((calculateScore(measurements.SHOT_STRENGTH, Excercises.SHOT_STRENGTH) +
-      calculateScore(measurements.AIM, Excercises.AIM)) / 2);
+  const SHO = Math.round(
+      (calculateScore(measurements.SHOT_STRENGTH, Excercises.SHOT_STRENGTH) +
+          calculateScore(measurements.AIM, Excercises.AIM)) / 2);
 
-  const divideBy = (PAC === 0 ? 0 : 1) +
+  const divideBy =
+      (PAC === 0 ? 0 : 1) +
       (TEC === 0 ? 0 : 1) +
       (DRI === 0 ? 0 : 1) +
       (PAS === 0 ? 0 : 1) +
@@ -121,8 +141,7 @@ function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Sc
   }
 }
 
-function calculateScore(measurement : Measurement, exercise : Exercise) : number {
-  console.log("calculateScore ( " + measurement + ", exercise: " + exercise + ")");
+function calculateScore(measurement: Measurement, exercise: Exercise): number {
   if (!measurement) {
     return 0;
   }
