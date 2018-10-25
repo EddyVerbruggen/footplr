@@ -1,17 +1,17 @@
 <template>
-  <StackLayout x-class="p-b-10">
+  <!--<StackLayout>-->
 
-    <SegmentedBar row="0" class="m-y-15" width="60%" height="28" color="#2EC4B6" borderWidth="1" borderRadius="4" borderColor="#2EC4B6" backgroundColor="#fdfffc" selectedBackgroundColor="#2EC4B6" v-model="selectedListOrGraphIndex">
-      <SegmentedBarItem title="Overzicht"/>
-      <SegmentedBarItem title="Grafiek"/>
-      <SegmentedBarItem title="Stream"/>
-    </SegmentedBar>
+    <!--<SegmentedBar row="0" class="m-y-15" width="60%" height="28" color="#2EC4B6" borderWidth="1" borderRadius="4" borderColor="#2EC4B6" backgroundColor="#fdfffc" selectedBackgroundColor="#2EC4B6" v-model="selectedListOrGraphIndex">-->
+      <!--<SegmentedBarItem title="Overzicht"/>-->
+      <!--<SegmentedBarItem title="Grafiek"/>-->
+      <!--<SegmentedBarItem title="Stream"/>-->
+    <!--</SegmentedBar>-->
 
     <MeasurementsOverview ref="measurementsOverview" :visible="selectedListOrGraphIndex === 0" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'"></MeasurementsOverview>
-    <MeasurementsGraph ref="measurementsGraph" :visible="selectedListOrGraphIndex === 1" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'"></MeasurementsGraph>
-    <MeasurementsList ref="measurementsList" :visible="selectedListOrGraphIndex === 2" :visibility="selectedListOrGraphIndex === 2 ? 'visible' : 'collapse'"></MeasurementsList>
+    <!--<MeasurementsGraph ref="measurementsGraph" :visible="selectedListOrGraphIndex === 1" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'"></MeasurementsGraph>-->
+    <!--<MeasurementsList ref="measurementsList" :visible="selectedListOrGraphIndex === 2" :visibility="selectedListOrGraphIndex === 2 ? 'visible' : 'collapse'"></MeasurementsList>-->
 
-  </StackLayout>
+  <!--</StackLayout>-->
 </template>
 
 <script>

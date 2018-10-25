@@ -2,7 +2,7 @@
   <Page class="grass-background">
     <ActionBar title="" flat="true">
       <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
-      <Img col="0" :src="logoSrc" width="26" height="26" style="padding: 4; margin-bottom: 8" horizontalAlignment="right" @tap="onTapToggleOfficial"/>
+      <Img col="0" :src="logoSrc" width="26" height="26" style="padding: 4; margin-bottom: 8" horizontalAlignment="center" @tap="onTapToggleOfficial"/>
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 0"/>
     </ActionBar>
 
@@ -51,7 +51,7 @@
     },
     data() {
       return {
-        tab1Msg: "Hello World 😬",
+        tab1Msg: "Team pagina hier? 🎳",
         tabIndex: 1, // setting this initially makes dev a little easier
         tabView: undefined, // set below
         isOfficial: true,
