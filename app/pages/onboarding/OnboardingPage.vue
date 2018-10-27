@@ -1,6 +1,5 @@
 <template>
   <Page>
-    <!--<ActionBar title="Master" />-->
     <GridLayout rows="*, auto, auto" columns="*, *">
 
       <Pager row="0" colSpan="2" for="item in items" v-model="pagerIndex" class="p-20" verticalAlignment="bottom">
@@ -43,15 +42,15 @@
         pagerIndex: 0,
         items:[
           {
-            image: "~//assets/images/fpr-logo-full.png",
+            image: "~/assets/images/fpr-logo-full.png",
             text: "Ontwikkel je eigen voetbal kwaliteiten en word een echte profvoetballer"
           },
           {
-            image: "~//assets/images/fpr-logo-full.png",
+            image: "~/assets/images/fpr-logo-full.png",
             text: "Flubberdeflop en dibberdedab, samen staan we slapperdeflap!"
           },
           {
-            image: "~//assets/images/fpr-logo-full.png",
+            image: "~/assets/images/fpr-logo-full.png",
             text: "Bas is gek, Tim is gek, Eddy is helemaal niet gek. Mark dan weer wel."
           }
         ]

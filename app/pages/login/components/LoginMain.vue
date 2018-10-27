@@ -1,43 +1,40 @@
 <template>
     <StackLayout ref="mainContainer" class="main-container">
-        <Label class="main-label" text="footplr" :color="isLoggingIn? 'black' : 'white'"></Label>
+        <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center"/>
+        <!--<Label class="main-label" text="footplr" :color="isLoggingIn? 'black' : 'white'"></Label>-->
 
-        <GridLayout ref="formControls" class="form-controls" rows="auto, auto" translateY="50">
+        <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
             <TextField
-                    hint="Email Address"
+                    hint="E-mail adres"
                     keyboardType="email"
                     returnKeyType="next"
                     @returnPress="focusPassword()"
                     v-model="user.email"
-                    :isEnabled="!isAuthenticating"
                     autocorrect="false"
                     autocapitalizationType="none"
-                    :class="{ light: !isLoggingIn}"
                     row="0"></TextField>
             <TextField ref="password"
-                       hint="Password"
+                       hint="Wachtwoord"
                        secure="true"
                        returnKeyType="done"
                        @returnPress="submit()"
                        v-model="user.password"
-                       :isEnabled="!isAuthenticating"
-                       :class="{ light: !isLoggingIn }"
                        row="1"></TextField>
 
             <ActivityIndicator :busy="isAuthenticating" rowSpan="2"></ActivityIndicator>
         </GridLayout>
 
         <Button
-                :text="isLoggingIn ? 'Login' : 'Registreer'"
+                text="AANMELDEN"
                 :isEnabled="!isAuthenticating"
-                class="submit-button"
+                class="btn btn-secondary"
                 @tap="submit()"></Button>
 
         <Label
-                class="forgot-password-label"
+                class="forgot-password"
                 text="Wachtwoord vergeten?"
-                @tap="forgotPassword()"
-                :opacity="isLoggingIn ? 1 : 0"></Label>
+                horizontalalignment="center"
+                @tap="forgotPassword()"></Label>
 
         <StackLayout ref="signUpStack" class="sign-up-stack" @tap="toggleDisplay()" translateY="50">
             <Label :text="isLoggingIn ? 'Sign up here' : 'Back to login'"></Label>
@@ -46,9 +43,7 @@
 </template>
 
 <script>
-  import {Animation} from "tns-core-modules/ui/animation"
   import {prompt} from "tns-core-modules/ui/dialogs"
-  import {Color} from "tns-core-modules/color"
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
   import alert from "~/utils/alert"
   import routes from "~/router";
@@ -68,45 +63,9 @@
         }
       }
     },
-    watch: {
-      visible: function (val) {
-        // when element turns visible, start animations
-        console.log(">> val: " + val);
-        if (val) {
-          const animations = [];
-
-          animations.push({target: this.$refs.mainContainer.nativeView, opacity: 1, duration: 500});
-
-          // Slide up the form controls and sign up container.
-          animations.push({
-            target: this.$refs.signUpStack.nativeView,
-            translate: {x: 0, y: 0},
-            opacity: 1,
-            delay: 500,
-            duration: 150
-          });
-
-          animations.push({
-            target: this.$refs.formControls.nativeView,
-            translate: {x: 0, y: 0},
-            opacity: 1,
-            delay: 650,
-            duration: 150
-          });
-
-          // Kick off the animation queue
-          new Animation(animations, false).play();
-        }
-      }
-    },
     methods: {
       toggleDisplay() {
         this.isLoggingIn = !this.isLoggingIn;
-        let mainContainer = this.$refs.mainContainer.nativeView
-        mainContainer.animate({
-          backgroundColor: this.isLoggingIn ? new Color("#F3F3F3") : new Color("#131426"),
-          duration: 200
-        });
       },
       focusPassword() {
         this.$refs.password.nativeView.focus();
@@ -196,7 +155,7 @@
             margin-left: 30;
             margin-right: 30;
             border-radius: 10;
-            background-color: #F3F3F3;
+            /*background-color: #F3F3F3;*/
         }
         .main-label {
             horizontal-align: center;
@@ -204,7 +163,7 @@
         }
         .form-controls,
         .sign-up-stack {
-            opacity: 0;
+            /*opacity: 0;*/
         }
         Image {
             margin-top: 5;
@@ -232,11 +191,13 @@
             margin-top: 15;
             border-radius: 10;
         }
-        .forgot-password-label {
+        .forgot-password {
             font-size: 13;
-            margin-left: 20;
-            margin-bottom: 45;
-            color: #131426;
+            /*margin-left: 20;*/
+            /*margin-bottom: 45;*/
+            color: #888888;
+            text-align: center;
+            margin-top: 6;
         }
         .sign-up-stack {
             background-color: #66A59A;
@@ -263,11 +224,11 @@
             letter-spacing: 0.2;
         }
         TextField {
-            border-width: 1;
-            border-color: #131426;
+            /*border-width: 1;*/
+            /*border-color: #131426;*/
             margin-bottom: 20;
             &.light {
-                border-color: #C4AFB4;
+                /*border-color: #C4AFB4;*/
             }
         }
         .submit-button {
@@ -290,7 +251,7 @@
             margin-top: 15;
             text-transform: uppercase;
         }
-        .forgot-password-label {
+        .forgot-password {
             font-size: 13;
             text-transform: uppercase;
         }

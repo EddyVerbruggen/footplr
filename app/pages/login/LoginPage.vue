@@ -1,13 +1,7 @@
 <template>
 <Page ref="page" :class="pageClasses" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
   <GridLayout class='login'>
-
-    <LoginMain ref="loginMain" :visible="state === 'main'"></LoginMain>
-
-    <AbsoluteLayout marginTop="-340" ref="logoContainer" class="logo-container">
-      <Image translateY="0" src="res://seal" stretch="none"/>
-    </AbsoluteLayout>
-
+    <LoginMain ref="loginMain"></LoginMain>
   </GridLayout>
 </Page>
 </template>
@@ -52,7 +46,7 @@ export default {
     */
   },
   mounted() {
-    this.state = 'main'
+    // this.state = 'main'
   }
 }
 </script>
