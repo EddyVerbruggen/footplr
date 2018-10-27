@@ -65,6 +65,22 @@ Button.btn-primary {
   margin: 24 16 24 8;
 }
 
+Button.button-close {
+  border-width: 1;
+  border-color: #63d4a5;
+  color: #63d4a5;
+  height: 50;
+  width: 50;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: center;
+}
+
 .c-bg-grey-lighter {
   background-color: #e3e3e3;
+}
+
+Slider {
+  color: #63d4a5;
+  background-color: #63d4a5;
 }

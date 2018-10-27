@@ -1,5 +1,5 @@
 <template>
-    <StackLayout ref="mainContainer" class="main-container" :visibility="visible ? 'visible' : 'collapse'">
+    <StackLayout ref="mainContainer" class="main-container">
         <Label class="main-label" text="footplr" :color="isLoggingIn? 'black' : 'white'"></Label>
 
         <GridLayout ref="formControls" class="form-controls" rows="auto, auto" translateY="50">
@@ -56,7 +56,7 @@
   export default {
     name: 'login-main',
     props: {
-      visible: false
+      visible: true
     },
     data() {
       return {

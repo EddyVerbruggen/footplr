@@ -2,8 +2,9 @@
   <Page>
     <GridLayout rows="auto, 190, auto, *, auto" colums="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
-      <Label row="0" :text="exerciseTranslated"></Label>
-      <WebView row="1" height="100%" :src="webViewSRC"></WebView>
+      <Label row="0" class="bold m-20" :text="exerciseTranslated"></Label>
+
+      <WebView row="1" class="m-20" height="100%" :src="webViewSRC"></WebView>
 
       <GridLayout row="2" columns="50, *, 100" class="table m-t-20" style="background-color: #CBE3F0">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -23,7 +24,7 @@
         </v-template>
       </ListView>
 
-      <Button row="4" @tap="$modal.close('Bla')" text="Sluiten"/>
+      <Button row="4" @tap="$modal.close()" class="button-close" text="╳"/>
     </GridLayout>
   </Page>
 </template>
@@ -57,10 +58,24 @@
       },
 
       deleteMeasurement(measurement) {
-        measurements.splice(measurement.index, 1);
         measurement.ref /* DocumentReference */
             .delete()
-            .then(() => console.log("deleted")); // not calling fetchMeasurements for efficiency
+            .then(() => console.log("deleted"));
+
+        // not calling fetchMeasurements (in the promise) for efficiency
+        measurements.forEach((m, i) => {
+          if (m.id === measurement.id) {
+            measurements.splice(i, 1);
+          }
+        });
+
+        // close the modal in case it was the last one
+        if (measurements.length === 0) {
+          setTimeout(() => this.$modal.close(), 200);
+        } else {
+          // we still need to update the webview, so to make it easy we simply fetch the measurements
+          this.fetchMeasurements(measurements);
+        }
       },
 
       fetchMeasurements(measurementList) {
@@ -76,13 +91,12 @@
             .orderBy("date", "desc")
             .limit(200) // we need to limit it somewhere, right?
             .get()
-
             .then(m => {
               let index = 0;
               m.forEach(s => {
                 const measurementData = s.data();
                 measurementList.push({
-                  index: index++,
+                  id: index++,
                   ref: s.ref,
                   date: formatDate(measurementData.date),
                   score: measurementData.score,
