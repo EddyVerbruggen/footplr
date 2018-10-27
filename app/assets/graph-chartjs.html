@@ -28,8 +28,6 @@
   var labels = settings.labels;
 
   var ctx = document.getElementById("myChart").getContext('2d');
-  // var timeFormat = 'DD/MM/YYYY HH:mm';
-  var timeFormat = 'HH:mm';
 
   var myChart = new Chart(ctx, {
     type: 'line',
@@ -38,21 +36,45 @@
       datasets
     },
     options: {
+      legend: {
+        position: 'bottom',
+        display: datasets.length > 1
+      },
+      tooltips: {
+        enabled: false
+      },
       scales: {
         xAxes: [{
           type: 'time',
+          // http://www.chartjs.org/docs/latest/axes/cartesian/time.html#configuration-options
           time: {
-            format: timeFormat,
-            // round: 'day',
-            tooltipFormat: 'll HH:mm'
+            unit: 'day'
           },
-          scaleLabel: {
+          // bounds: 'ticks',
+          ticks: {
+            autoSkip: false,
+            maxRotation: 0
+          },
+          gridLines: {
             display: false
           }
         }],
         yAxes: [{
-          scaleLabel: {
-            display: false
+          type: 'linear',
+          ticks: {
+            min: 0,
+            max: 100,
+            stepSize: 20,
+            callback: function(value, index, values) {
+              // let's not render the '0' tick
+              return value === 0 ? '' : value;
+            }
+          },
+          gridLines: {
+            display: true,
+            lineWidth: 0.5,
+            drawBorder: false,
+            zeroLineWidth: 0
           }
         }]
       }

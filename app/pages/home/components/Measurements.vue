@@ -7,7 +7,7 @@
       <!--<SegmentedBarItem title="Stream"/>-->
     <!--</SegmentedBar>-->
 
-    <MeasurementsOverview ref="measurementsOverview" :visible="selectedListOrGraphIndex === 0" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'"></MeasurementsOverview>
+    <MeasurementsOverviewAsList ref="measurementsOverview" :visible="selectedListOrGraphIndex === 0" :visibility="selectedListOrGraphIndex === 0 ? 'visible' : 'collapse'"></MeasurementsOverviewAsList>
     <!--<MeasurementsGraph ref="measurementsGraph" :visible="selectedListOrGraphIndex === 1" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'"></MeasurementsGraph>-->
     <!--<MeasurementsList ref="measurementsList" :visible="selectedListOrGraphIndex === 2" :visibility="selectedListOrGraphIndex === 2 ? 'visible' : 'collapse'"></MeasurementsList>-->
 
@@ -17,7 +17,7 @@
 <script>
   import MeasurementsList from "./MeasurementsList.vue"
   import MeasurementsGraph from "./MeasurementsGraph.vue"
-  import MeasurementsOverview from "./MeasurementsOverview.vue"
+  import MeasurementsOverviewAsList from "./MeasurementsOverviewAsList.vue"
   import {formatDate} from "~/utils/date-util";
   import {action} from "tns-core-modules/ui/dialogs";
 
@@ -25,7 +25,7 @@
     components: {
       MeasurementsList,
       MeasurementsGraph,
-      MeasurementsOverview
+      MeasurementsOverviewAsList
     },
 
     created() {

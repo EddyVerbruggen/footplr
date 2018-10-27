@@ -1,15 +1,28 @@
 <template>
-  <ScrollView>
-    <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*, *" class="m-x-8">
+  <GridLayout rows="auto, *" verticalAlignment="top" height="100%">
 
-      <GridLayout :row="Math.floor(index / 2)" :col="index % 2" rows="*, auto" class="tile" @tap="showDetails(item.exercise, item.exerciseTranslated)" v-for="(item, index) in exercises">
-        <Image rowSpan="2" src="~/assets/images/tile.jpg" width="100%" opacity="0.7" borderRadius="8"/>
-        <Label row="0" :text="item.score" class="score bold" v-bind:class="item.getScoreClass()" horizontalAlignment="right"/>
-        <Label row="1" class="tile-exercise bold" :text="item.exerciseTranslated" horizontalAlignment="center" verticalAlignment="bottom"/>
-      </GridLayout>
+    <!-- TODO for trainer/admin <Label row="0" text="Voor trainers: filter op speler"/>-->
 
+    <GridLayout row="0" columns="50, 4*, 2*, 100" class="table" style="background-color: #011627; color: #fff">
+      <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
+      <Label col="1" text="Oefening" class="p-y-10 p-x-5 bold" @tap="filterExercise"/>
+      <Label col="2" text="Datum" class=" p-y-10 p-x-5 bold"/>
     </GridLayout>
-  </ScrollView>
+
+    <ListView row="1" for="(item, index) in exercises" separatorColor="transparent" class="table">
+      <v-template>
+        <GridLayout columns="50, 4*, 2*, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
+          <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"/>
+          <Label col="1" :text="item.exerciseTranslated" class="p-y-10 p-x-5" v-bind:opacity="item.hasMeasurement ? 1 : 0.5" />
+          <Label col="2" :text="item.latestMeasurementDate" class="p-y-10 p-x-5"/>
+          <StackLayout col="3" class="p-x-5 m-r-10" orientation="horizontal" horizontalAlignment="right">
+            <Button text="🔍" class="show-details" @tap="showDetails(item.exercise, item.exerciseTranslated)" v-if="item.hasMeasurement"/>
+            <Button text="+" class="add-measurement" @tap="addMeasurement(item.exercise, item.exerciseTranslated)"/>
+          </StackLayout>
+        </GridLayout>
+      </v-template>
+    </ListView>
+  </GridLayout>
 </template>
 
 <script>
@@ -40,7 +53,7 @@
     data() {
       return {
         player: undefined,
-        exercises: [[]]
+        exercises: []
       }
     },
 
@@ -96,11 +109,11 @@
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
             exercise: excercisesKey,
             exerciseTranslated: translateExerciseType(excercisesKey),
-            score: latestMeasurement ? latestMeasurement.score : 0,
+            score: latestMeasurement ? latestMeasurement.score : undefined,
             getScoreClass: () => {
               // TODO this is duplicated in the detail screen. Also: some exercises are 'lower is better'
-              if (!latestMeasurement || latestMeasurement.score === 0) {
-                return 'c-bg-black';
+              if (!latestMeasurement) {
+                return 'c-bg-grey-lighter'
               } else if (latestMeasurement.score > 80) {
                 return 'c-bg-purple';
               } else if (latestMeasurement.score > 60) {
@@ -119,27 +132,26 @@
 </script>
 
 <style scoped>
-  Label {
-    color: #fff;
-  }
-
-  .score {
+  .table Label {
     font-size: 12;
+  }
+
+  .table .score {
+    color: #fff;
     width: 26;
-    height: 26;
     text-align: center;
-    border-radius: 50%;
-    margin-right: 8;
+    border-radius: 3;
   }
 
-  .tile {
-    padding: 8;
-    /*border-width: 1px;*/
-    /*border-color: #eee;*/
+  .table .show-details {
+    font-size: 12;
+    background-color: #e6e6e6;
   }
 
-  .tile-exercise {
-    font-size: 15;
-    margin-bottom: 6;
+  .table .add-measurement {
+    background-color: #b6b6b6;
+    color: #fff;
+    margin-left: 8;
+    font-size: 22;
   }
 </style>

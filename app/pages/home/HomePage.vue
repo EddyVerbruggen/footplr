@@ -1,6 +1,6 @@
 <template>
   <Page class="grass-background">
-    <ActionBar title="" flat="true">
+    <ActionBar title="" flat="true" DISABLED-backgroundColor="#011627">
       <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
       <Img col="0" :src="logoSrc" width="26" height="26" style="padding: 4; margin-bottom: 8" horizontalAlignment="center" @tap="onTapToggleOfficial"/>
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 0"/>

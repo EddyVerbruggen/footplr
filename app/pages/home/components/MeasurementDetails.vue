@@ -2,11 +2,11 @@
   <Page>
     <GridLayout rows="auto, 190, auto, *, auto" colums="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
-      <Label row="0" class="bold m-20" :text="exerciseTranslated"></Label>
+      <Label row="0" color="#011627" class="bold m-20" :text="exerciseTranslated"></Label>
 
-      <WebView row="1" class="m-20" height="100%" :src="webViewSRC"></WebView>
+      <WebView row="1" class="m-t-20 m-x-20" height="100%" :src="webViewSRC"></WebView>
 
-      <GridLayout row="2" columns="50, *, 100" class="table m-t-20" style="background-color: #CBE3F0">
+      <GridLayout row="2" columns="50, *, 100" class="table m-t-20" style="background-color: #011627; color: #fff">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
         <Label col="1" text="Datum" class="p-y-10 p-x-5 bold"/>
       </GridLayout>
@@ -15,8 +15,9 @@
         <v-template>
           <GridLayout columns="50, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
             <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"/>
-            <Label col="1" :text="item.date" class="p-y-10 p-x-5"/>
+            <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"/>
             <StackLayout col="2" class="p-x-5 m-r-10" orientation="horizontal" horizontalAlignment="right">
+              <!-- TODO might as well remove the edit feature as delete-add isn't that bad an alternative -->
               <Button text="✏️" class="edit-measurement" @tap="editMeasurement(item)"/>
               <Button text="🗑" class="delete-measurement" @tap="deleteMeasurement(item)"/>
             </StackLayout>
@@ -117,11 +118,11 @@
                 labels.push(measurementData.date.getTime())
               });
 
-              // now render the graph
+              // now render the graph, see http://www.chartjs.org/docs/latest/charts/line.html
               const datasets = [{
                   label: authService.userWrapper.user.firstname,
                   data: data,
-                  fill: false,
+                  fill: true,
                   backgroundColor: [
                     'rgba(75, 192, 192, 0.2)'
                   ],
