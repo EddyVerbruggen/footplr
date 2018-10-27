@@ -1,7 +1,6 @@
 <template>
     <StackLayout ref="mainContainer" class="main-container">
         <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center"/>
-        <!--<Label class="main-label" text="footplr" :color="isLoggingIn? 'black' : 'white'"></Label>-->
 
         <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
             <TextField
@@ -72,11 +71,7 @@
       },
       submit() {
         this.isAuthenticating = true;
-        if (this.isLoggingIn) {
-          this.login();
-        } else {
-          this.signUp();
-        }
+        this.login();
       },
       navigate() {
         this.$changeRoute('home', {clearHistory: true})
@@ -93,30 +88,54 @@
             this.$navigateTo(routes.home, {clearHistory: true});
             this.visible = false;
           })
-          .catch((error) => {
-            console.error(error)
-            alert("Unfortunately we could not find your account.")
+          .catch(error => {
             this.isAuthenticating = false;
+            console.error(error);
+            if (error.indexOf("The password is invalid") > -1) {
+              // user found
+              alert("Dat wachtwoord lijkt niet te kloppen.\nProbeer het nog eens.");
+            } else {
+              // no user found
+              prompt({
+                title: "Bevestig je e-mail adres",
+                defaultText: this.user.email,
+                okButtonText: "Verder >",
+                cancelButtonText: "Annuleren"
+              }).then(data => {
+                if (data.result && data.text && data.text.trim().length > 4) {
+                  this.user.email = data.text.trim();
+                  prompt({
+                    title: `Bevestig je wachtwoord`,
+                    message: `Voor je nieuwe account\n${this.user.email}`,
+                    defaultText: this.user.password,
+                    okButtonText: "Registreren",
+                    cancelButtonText: "Annuleren"
+                  }).then(data => {
+                    if (data.result && data.text && data.text.trim().length > 0) {
+                      console.log("data.result: " + JSON.stringify(data));
+                      this.user.password = data.text.trim();
+                      this.signUp();
+                    }
+                  });
+                }
+              });
+            }
           });
       },
       signUp() {
         if (getConnectionType() === connectionType.none) {
-          alert("Om te kunnen registreren is een internetverbinding vereist")
+          alert("Om te kunnen registreren is een Internetverbinding vereist")
           return;
         }
         this.$authService
           .register(this.user)
           .then(() => {
-            alert("Je account is succesvol aangemaakt")
-            this.isAuthenticating = false;
-            this.toggleDisplay();
+            alert("Je account is succesvol aangemaakt. Welkom!");
+            this.login();
           })
-          .catch(error => {
-            // TODO: Verify if this works
-            alert(error)
-            this.isAuthenticating = false;
-          });
+          .catch(error => alert(error));
       },
+
       forgotPassword() {
         prompt({
           title: "Wachtwoord vergeten",
@@ -124,26 +143,20 @@
           defaultText: "",
           okButtonText: "Reset!",
           cancelButtonText: "Annuleren"
-        }).then((data) => {
+        }).then(data => {
           if (data.result) {
-            this.isAuthenticating = true
             this.$authService
               .resetPassword(data.text.trim())
               .then(() => {
-                this.isAuthenticating = false
-                alert("Je wachtwoord is succesvol gereset. We hebben je een e-mail gestuurd met verdere instructies.")
+                alert("Je wachtwoord is succesvol gereset. We hebben je een e-mail gestuurd met verdere instructies.");
               })
               .catch(error => {
-                this.isAuthenticating = false
-                console.log('Error resetting password: ' + error)
+                console.log('Error resetting password: ' + error);
                 alert("Helaas is er een fout opgetreden tijdens het resetten van je wachtwoord: " + error);
               })
           }
         });
       }
-    },
-    mounted() {
-      console.log('LoginOrSignup mounted')
     }
   }
 </script>
@@ -155,7 +168,6 @@
             margin-left: 30;
             margin-right: 30;
             border-radius: 10;
-            /*background-color: #F3F3F3;*/
         }
         .main-label {
             horizontal-align: center;
