@@ -1,6 +1,6 @@
 <template>
     <StackLayout ref="mainContainer" class="main-container">
-        <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center"/>
+        <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center" @tap="loginAsTrainer"/>
 
         <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
             <TextField
@@ -63,6 +63,11 @@
       }
     },
     methods: {
+      loginAsTrainer() {
+        this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
+        this.user.password = "xs4all";
+        this.login();
+      },
       toggleDisplay() {
         this.isLoggingIn = !this.isLoggingIn;
       },
