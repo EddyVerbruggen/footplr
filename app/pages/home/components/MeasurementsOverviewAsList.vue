@@ -1,15 +1,15 @@
 <template>
-  <GridLayout rows="auto, *" verticalAlignment="top" height="100%">
+  <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <!-- TODO for trainer/admin <Label row="0" text="Voor trainers: filter op speler"/>-->
+    <Label row="0" text="Teamgemiddelde" class="p-b-12" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"/>
 
-    <GridLayout row="0" columns="50, 4*, 2*, 100" class="table" style="background-color: #011627; color: #fff">
+    <GridLayout row="1" columns="50, 4*, 2*, 100" class="table" style="background-color: #011627; color: #fff">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
-      <Label col="1" text="Oefening" class="p-y-10 p-x-5 bold" @tap="filterExercise"/>
+      <Label col="1" text="Oefening" class="p-y-10 p-x-5 bold"/>
       <Label col="2" text="Datum" class=" p-y-10 p-x-5 bold"/>
     </GridLayout>
 
-    <ListView row="1" for="(item, index) in exercises" separatorColor="transparent" class="table">
+    <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table">
       <v-template>
         <GridLayout columns="50, 4*, 2*, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
           <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"/>
@@ -28,6 +28,7 @@
 <script>
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
+  import {getPlayersInTeam} from "../../../services/TeamService"
   import {authService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
@@ -40,11 +41,15 @@
 
     created() {
       console.log("MeasurementsOverview created");
-      authService.anyPageCallback = () => {
-        console.log(">>> anyPageCallback called in overview");
-        this.fetchMeasurements();
-      };
-      this.fetchMeasurements();
+      // authService.anyPageCallback = () => {
+      //   console.log(">>> anyPageCallback called in overview");
+      //   this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
+      // };
+      if (authService.userWrapper.user.trains !== undefined) {
+        this.fetchTeamMeasurements();
+      } else {
+        this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
+      }
 
       // for quick dev of the 'add' page
       // setTimeout(() => this.addMeasurement(ExerciseType.DRIBBLE, "Dribbelen"), 500);
@@ -53,11 +58,19 @@
     data() {
       return {
         player: undefined,
-        exercises: []
+        exercises: [],
+        // TODO perhaps this component will be trainer-only, in which case we can remove this property
+        isTrainer: authService.userWrapper.user.trains !== undefined
       }
     },
 
     methods: {
+      selectPlayer() {
+        // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
+
+
+      },
+
       showDetails(exercise, exerciseTranslated) {
         this.$showModal(MeasurementDetails, {
           fullscreen: true,
@@ -67,8 +80,9 @@
           }
         }).then(data => {
           console.log(`Returned from showDetails: ${data}`);
+          // TODO get rid of this
           setTimeout(() => {
-            this.fetchMeasurements();
+            this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
           }, 5000);
         });
       },
@@ -84,15 +98,24 @@
           console.log(`Returned from modal, added? ${added}`);
           if (added) {
             setTimeout(() => {
-              this.fetchMeasurements();
+              this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
             }, 5000);
           }
         });
       },
 
-      fetchMeasurements() {
+      fetchTeamMeasurements() {
+        // TODO may train multiple teams
+        getPlayersInTeam(authService.userWrapper.user.trains[0])
+            .then(users => {
+              // TODO get average value
+              console.log(">> getPlayersInTeam, users " + JSON.stringify(users));
+              this.fetchMeasurements(users[0].latestmeasurements);
+            });
+      },
+
+      fetchMeasurements(latestMeasurements) {
         this.exercises.splice(0);
-        const latestMeasurements = authService.userWrapper.user.latestmeasurements;
         if (latestMeasurements) {
           console.log("latestMeasurements: " + JSON.stringify(latestMeasurements.official));
         }

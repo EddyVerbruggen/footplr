@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page actionBarHidden="true" backgroundSpanUnderStatusBar="false">
     <GridLayout rows="*, auto, auto" columns="*, *">
 
       <Pager row="0" colSpan="2" for="item in items" v-model="pagerIndex" class="p-20" verticalAlignment="bottom">
@@ -15,8 +15,8 @@
         <Label class="pager-indicator" v-bind:class="{ 'pager-indicator-active' : index === pagerIndex }" v-for="(item, index) in items"></Label>
       </StackLayout>
 
-      <Button row="2" col="0" text="OVERSLAAN" class="btn btn-secondary" @tap="$navigateTo(loginPage)" />
-      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn btn-primary" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1" />
+      <Button row="2" col="0" text="OVERSLAAN" class="btn btn-secondary" @tap="$navigateTo(loginPage)"/>
+      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn btn-primary" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1"/>
 
     </GridLayout>
   </Page>
@@ -31,8 +31,7 @@
   Vue.use(Pager);
 
   export default {
-    components: {
-    },
+    components: {},
     created() {
       console.log("Onboarding created");
     },
@@ -40,7 +39,7 @@
       return {
         loginPage: LoginPage,
         pagerIndex: 0,
-        items:[
+        items: [
           {
             image: "~/assets/images/fpr-logo-full.png",
             text: "Ontwikkel je eigen voetbal kwaliteiten en word een echte profvoetballer"
