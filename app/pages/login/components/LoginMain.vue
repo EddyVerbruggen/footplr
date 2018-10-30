@@ -67,17 +67,17 @@
 
     methods: {
       quickLogin() {
-        const options = ["Trainer vvHoogland JO9-7", "Speler vv Hoogland JO9-7"];
+        const options = ["Trainer Hoogland JO9-7", "Speler Hoogland JO9-7"];
         action({
           title: "Kies een login..",
           actions: options,
           cancelable: true
         }).then(picked => {
           if (picked) {
-            if (picked === "Trainer vvHoogland JO9-7") {
+            if (picked === "Trainer Hoogland JO9-7") {
               this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
               this.user.password = "xs4all";
-            } else if (picked === "Speler vv Hoogland JO9-7") {
+            } else if (picked === "Speler Hoogland JO9-7") {
               this.user.email = "hoogland.JO9-7.player1@fpr.com";
               this.user.password = "xs4all";
             }

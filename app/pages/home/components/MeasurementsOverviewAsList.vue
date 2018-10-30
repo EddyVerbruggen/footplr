@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <Label row="0" :text="selectedPlayer" class="p-b-12 c-bg-lime" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"/>
+    <Label row="0" :text="selectedPlayer" class="m-b-10 p-8 c-bg-lime c-white" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"/>
 
     <GridLayout row="1" columns="50, 4*, 2*, 100" class="table" style="background-color: #011627; color: #fff">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>

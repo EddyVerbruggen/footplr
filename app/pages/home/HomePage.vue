@@ -4,7 +4,7 @@
       <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
       <!--<Img col="0" :src="logoSrc" width="26" height="26" xstyle="padding: 4; margin-bottom: 8" @tap="onTapToggleOfficial"/>-->
       <Label style="font-size: 14" text="vv Hoogland JO9-7" horizontalAlignment="center"/>
-      <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 0"/>
+      <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 1"/>
     </ActionBar>
 
     <TabView androidTabsPosition="bottom"
