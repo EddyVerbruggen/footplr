@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import {action} from "tns-core-modules/ui/dialogs";
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
   import {getPlayersInTeam} from "../../../services/TeamService"

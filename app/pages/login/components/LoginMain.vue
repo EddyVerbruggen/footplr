@@ -1,6 +1,6 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-    <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center" @tap="loginAsTrainer" @swipe="loginAsHooglandJO97Player1"/>
+    <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center" @tap="quickLogin"/>
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
       <TextField
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import {prompt} from "tns-core-modules/ui/dialogs"
+  import {action, prompt} from "tns-core-modules/ui/dialogs"
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
   import alert from "~/utils/alert"
   import routes from "~/router";
@@ -66,16 +66,24 @@
     },
 
     methods: {
-      loginAsTrainer() {
-        this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
-        this.user.password = "xs4all";
-        this.login();
-      },
-
-      loginAsHooglandJO97Player1() {
-        this.user.email = "hoogland.JO9-7.player1@fpr.com";
-        this.user.password = "xs4all";
-        this.login();
+      quickLogin() {
+        const options = ["Trainer vvHoogland JO9-7", "Speler vv Hoogland JO9-7"];
+        action({
+          title: "Kies een login..",
+          actions: options,
+          cancelable: true
+        }).then(picked => {
+          if (picked) {
+            if (picked === "Trainer vvHoogland JO9-7") {
+              this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
+              this.user.password = "xs4all";
+            } else if (picked === "Speler vv Hoogland JO9-7") {
+              this.user.email = "hoogland.JO9-7.player1@fpr.com";
+              this.user.password = "xs4all";
+            }
+            this.login();
+          }
+        });
       },
 
       toggleDisplay() {
