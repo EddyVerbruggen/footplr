@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <Label row="0" text="Teamgemiddelde" class="p-b-12" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"/>
+    <Label row="0" :text="selectedPlayer" class="p-b-12 c-bg-lime" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"/>
 
     <GridLayout row="1" columns="50, 4*, 2*, 100" class="table" style="background-color: #011627; color: #fff">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -16,8 +16,8 @@
           <Label col="1" :text="item.exerciseTranslated" class="p-y-10 p-x-5" v-bind:opacity="item.hasMeasurement ? 1 : 0.5" />
           <Label col="2" :text="item.latestMeasurementDate" class="p-y-10 p-x-5"/>
           <StackLayout col="3" class="p-x-5 m-r-10" orientation="horizontal" horizontalAlignment="right">
-            <Button text="🔍" class="show-details" @tap="showDetails(item.exercise, item.exerciseTranslated)" v-if="item.hasMeasurement"/>
-            <Button text="+" class="add-measurement" @tap="addMeasurement(item.exercise, item.exerciseTranslated)"/>
+            <Button text="🔍" class="show-details" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"/>
+            <Button text="+" class="add-measurement" @tap="addMeasurement(item)"/>
           </StackLayout>
         </GridLayout>
       </v-template>
@@ -43,12 +43,12 @@
       console.log("MeasurementsOverview created");
       // authService.anyPageCallback = () => {
       //   console.log(">>> anyPageCallback called in overview");
-      //   this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
+      //   this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
       // };
       if (authService.userWrapper.user.trains !== undefined) {
         this.fetchTeamMeasurements();
       } else {
-        this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
+        this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
       }
 
       // for quick dev of the 'add' page
@@ -57,7 +57,10 @@
 
     data() {
       return {
-        player: undefined,
+        official: true, // TODO somewhere more generic
+        selectedPlayer: "Team gemiddelde",
+        player: authService.userWrapper.user,
+        players: [],
         exercises: [],
         // TODO perhaps this component will be trainer-only, in which case we can remove this property
         isTrainer: authService.userWrapper.user.trains !== undefined
@@ -68,37 +71,58 @@
       selectPlayer() {
         // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
 
+        const options = this.players.map(player => player.firstname + " " + player.lastname); // ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
+        action({
+          title: "Kies een speler..",
+          actions: ["Team gemiddelde", ...options],
+          cancelable: true
+        }).then(picked => {
+          if (picked) {
+            this.player = undefined;
+            this.selectedPlayer = picked;
+            if (picked === "Team gemiddelde") {
+              this.fetchTeamMeasurements();
+            } else {
+              this.player = this.players[options.indexOf(picked)];
+              this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
+            }
+          }
+        });
 
       },
 
-      showDetails(exercise, exerciseTranslated) {
+      showDetails(item) {
+        if (!item.hasMeasurement) {
+          return;
+        }
         this.$showModal(MeasurementDetails, {
           fullscreen: true,
           props: {
-            exercise,
-            exerciseTranslated
+            exercise: item.exercise,
+            exerciseTranslated: item.exerciseTranslated
           }
         }).then(data => {
           console.log(`Returned from showDetails: ${data}`);
-          // TODO get rid of this
+          // TODO get rid of this (needs to be event-driven)
           setTimeout(() => {
-            this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
+            this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
           }, 5000);
         });
       },
 
-      addMeasurement(exercise, exerciseTranslated) {
+      addMeasurement(item) {
         this.$showModal(AddMeasurement, {
           fullscreen: true,
           props: {
-            exercise,
-            exerciseTranslated
+            exercise: item.exercise,
+            exerciseTranslated: item.exerciseTranslated
           }
         }).then(added => {
           console.log(`Returned from modal, added? ${added}`);
           if (added) {
+            // TODO get rid of this (needs to be event-driven)
             setTimeout(() => {
-              this.fetchMeasurements(authService.userWrapper.user.latestmeasurements);
+              this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
             }, 5000);
           }
         });
@@ -108,26 +132,57 @@
         // TODO may train multiple teams
         getPlayersInTeam(authService.userWrapper.user.trains[0])
             .then(users => {
-              // TODO get average value
-              console.log(">> getPlayersInTeam, users " + JSON.stringify(users));
-              this.fetchMeasurements(users[0].latestmeasurements);
+              this.players = users;
+
+              // TODO official/unofficial
+              const sumMeasurements = {}; // Array<{ [t in ExerciseType]: Measurement }>
+              const meas = {};
+              sumMeasurements[this.official ? "official" : "unofficial"] = meas;
+
+              for (let excercisesKey in Excercises) {
+                let totalScore = 0;
+                let totalUsersWithScore = 0;
+                let date = undefined;
+                users.forEach(user => {
+                  const latestMeass = user.latestmeasurements[this.official ? "official" : "unofficial"]
+                  const latestMeas = latestMeass && latestMeass[excercisesKey] ? latestMeass[excercisesKey] : undefined;
+                  if (latestMeas) {
+                    if (!date || latestMeas.date.getTime() > date.getTime()) {
+                      console.log("latestMeas.date: " + latestMeas.date.getTime());
+                      date = latestMeas.date;
+                    }
+                    totalUsersWithScore++;
+                    totalScore += latestMeas.score;
+                    console.log("totalScore now: " + totalScore);
+                  }
+                });
+
+                if (totalUsersWithScore > 0) {
+                  meas[excercisesKey] = {
+                    date: date,
+                    score: Math.round(totalScore / totalUsersWithScore)
+                  }
+                }
+              }
+
+              console.log("sumMeasurements: " + JSON.stringify(sumMeasurements));
+
+              // this.fillExerciseScoresWithMeasurements(users[0].latestmeasurements);
+              this.fillExerciseScoresWithMeasurements(sumMeasurements);
             });
       },
 
-      fetchMeasurements(latestMeasurements) {
-        this.exercises.splice(0);
-        if (latestMeasurements) {
-          console.log("latestMeasurements: " + JSON.stringify(latestMeasurements.official));
-        }
-        const official = true;
+      fillExerciseScoresWithMeasurements(latestMeasurements) {
+        // this.exercises.splice(0);
+        const ex = [];
 
         for (let excercisesKey in Excercises) {
           let latestMeasurement;
-          if (latestMeasurements && latestMeasurements[official ? "official" : "unofficial"]) {
-            latestMeasurement = latestMeasurements[official ? "official" : "unofficial"][excercisesKey];
+          if (latestMeasurements && latestMeasurements[this.official ? "official" : "unofficial"]) {
+            latestMeasurement = latestMeasurements[this.official ? "official" : "unofficial"][excercisesKey];
           }
 
-          this.exercises.push({
+          ex.push({
             hasMeasurement: latestMeasurement !== undefined,
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
             exercise: excercisesKey,
@@ -149,6 +204,7 @@
             }
           });
         }
+        this.exercises = ex;
       },
     }
   };
