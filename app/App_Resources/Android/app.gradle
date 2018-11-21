@@ -1,11 +1,17 @@
 // Add your native dependencies here:
 
 android {
-  defaultConfig {  
+  defaultConfig {
     generatedDensities = []
+    multiDexEnabled true
     applicationId = "com.footballplayerratings.app"
   }
-  aaptOptions {  
-    additionalParameters "--no-version-vectors"  
-  }  
-} 
+
+  dexOptions {
+    javaMaxHeapSize "4g"
+  }
+
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
+}

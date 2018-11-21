@@ -4,11 +4,19 @@
 
 ## Usage
 
-Note that this project works best with NativeScript 5.x which is not released yet, so: `npm i -g nativescript@next`.
+Note that this project works best with NativeScript 5+, so: `npm i -g nativescript@latest`.
 
 ``` bash
 # Install dependencies
 npm install
+
+# Watch for TS changes
+npm run tsc
+
+# Then in another window
+npm run ios
+
+#### Other commands
 
 # Build for production
 tns build <platform> --bundle
