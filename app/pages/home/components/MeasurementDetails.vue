@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 190, auto, *, auto" colums="*" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 190, auto, *, auto" columns="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
       <Label row="0" color="#011627" class="bold m-20" :text="exerciseTranslated"></Label>
 

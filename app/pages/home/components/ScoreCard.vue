@@ -1,6 +1,6 @@
 <template>
   <Shimmer :enabled="shimmerEnabled">
-    <GridLayout colums="*" rows="*" @loaded="onScoreTabLoaded">
+    <GridLayout columns="*" rows="*" @loaded="onScoreTabLoaded">
       <Image src="~/assets/images/rating.png" height="74%"/>
       <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
       <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->

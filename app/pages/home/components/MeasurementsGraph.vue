@@ -1,5 +1,5 @@
 <template>
-  <GridLayout rows="auto, *" colums="*" verticalAlignment="top" height="100%" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'">
+  <GridLayout rows="auto, *" columns="*" verticalAlignment="top" height="100%" :visibility="selectedListOrGraphIndex === 1 ? 'visible' : 'collapse'">
     <!--<Label row="0" text="filter by exercises / timespan here.."></Label>-->
     <WebView row="1" :src="webViewSRC"></WebView>
   </GridLayout>

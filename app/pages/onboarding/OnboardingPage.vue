@@ -2,11 +2,11 @@
   <Page actionBarHidden="true" backgroundSpanUnderStatusBar="false">
     <GridLayout rows="*, auto, auto" columns="*, *">
 
-      <Pager row="0" colSpan="2" for="item in items" v-model="pagerIndex" class="p-20" verticalAlignment="bottom">
+      <Pager row="0" colSpan="2" height="100%" for="item in items" v-model="pagerIndex">
         <v-template>
           <GridLayout class="pager-item" rows="auto, *" columns="*" width="75%" verticalAlignment="bottom">
             <Image row="0" :src="item.image"></Image>
-            <Label row="1" class="pager-text m-t-20" :text="item.text" textWrap="true"></Label>
+            <Label row="1" class="pager-text m-t-20 m-b-24" :text="item.text" textWrap="true"></Label>
           </GridLayout>
         </v-template>
       </Pager>
@@ -15,8 +15,8 @@
         <Label class="pager-indicator" v-bind:class="{ 'pager-indicator-active' : index === pagerIndex }" v-for="(item, index) in items"></Label>
       </StackLayout>
 
-      <Button row="2" col="0" text="OVERSLAAN" class="btn btn-secondary" @tap="$navigateTo(loginPage)"/>
-      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn btn-primary" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1"/>
+      <Button row="2" col="0" text="OVERSLAAN" class="btn btn-secondary" @tap="$navigateTo(loginPage)"></Button>
+      <Button row="2" col="1" :text="pagerIndex === items.length - 1 ? 'REGISTREREN': 'VOLGENDE'" class="btn btn-primary" @tap="pagerIndex === items.length - 1 ? $navigateTo(loginPage) : pagerIndex = pagerIndex + 1"></Button>
 
     </GridLayout>
   </Page>

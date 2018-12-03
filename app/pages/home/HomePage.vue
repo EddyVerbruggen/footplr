@@ -27,7 +27,7 @@
       </TabViewItem>
 
       <TabViewItem textTransform="none" iconSource="res://stopwatch">
-        <GridLayout rows="*" colums="*" @loaded="onTab3Loaded" verticalAlignment="center">
+        <GridLayout rows="*" columns="*" @loaded="onTab3Loaded" verticalAlignment="center">
           <StackLayout>
             <Label class="message" :text="tab1Msg"/>
             <Button @tap="goToTab(0)" text="Ga naar de scorekaart"/>
