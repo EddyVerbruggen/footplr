@@ -47,7 +47,7 @@
     methods: {
       showDetails(exercise, exerciseTranslated) {
         this.$showModal(MeasurementDetails, {
-          fullscreen: true,
+          fullscreen: false,
           props: {
             exercise,
             exerciseTranslated
