@@ -1,19 +1,20 @@
 <template>
-  <Page class="grass-background">
-    <ActionBar title="" flat="true" DISABLED-backgroundColor="#011627">
+  <Page class="grass-background" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
+    <!--ActionBar title="" flat="true" DISABLED-backgroundColor="#011627">
       <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
-      <!--<Img col="0" :src="logoSrc" width="26" height="26" xstyle="padding: 4; margin-bottom: 8" @tap="onTapToggleOfficial"/>-->
       <Label style="font-size: 14" text="vv Hoogland JO9-7" horizontalAlignment="center"/>
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 1"/>
-    </ActionBar>
+    </ActionBar-->
 
     <TabView androidTabsPosition="bottom"
-             android:tabBackgroundColor="#d6f0eb"
-             android:tabTextColor="#999999"
-             selectedTabTextColor="#2EC4B6"
+             android:tabTextColor="#9093a6"
+             androidSwipeEnabled="true"
+             androidSelectedTabHighlightColor="white"
+             tabTextColor="red"
+             selectedTabTextColor="white"
              iosIconRenderingMode="automatic"
              :selectedIndex="tabIndex"
-             backgroundColor="#FDFFFC"
+             tabBackgroundColor="#20284d"
              @selectedIndexChanged="onSelectedIndexChanged"
              @loaded="onTabViewLoaded">
 
