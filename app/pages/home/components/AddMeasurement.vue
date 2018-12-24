@@ -15,7 +15,7 @@
 
       <!--<TextField row="2" colSpan="2" width="50" height="50" keyboardType="number" v-model="score" hint="Score" horizontalAlignment="center"/>-->
       <Label row="2" colSpan="2" :text="score" class="bold" style="margin-bottom: 60; color: #63d4a5" horizontalAlignment="center" v-if="!showExplanation"></Label>
-      <Slider row="2" colSpan="2" class="m-20" minValue="0" maxValue="100" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>
+      <Slider row="2" colSpan="2" class="m-20" minValue="0" maxValue="100" width="100%" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>
 
       <DatePicker row="3" colSpan="2" v-model="date" :maxDate="maxDate" v-if="!showExplanation"></DatePicker>
 
