@@ -122,7 +122,8 @@
           fullscreen: true,
           props: {
             exercise: item.exercise,
-            exerciseTranslated: item.exerciseTranslated
+            exerciseTranslated: item.exerciseTranslated,
+            previousScore: item.score
           }
         }).then(added => {
           console.log(`Returned from modal, added? ${added}`);

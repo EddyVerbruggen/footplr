@@ -37,7 +37,7 @@
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
-    props: ['exercise', 'exerciseTranslated'],
+    props: ['exercise', 'exerciseTranslated', 'previousScore'],
 
     mounted() {
       this.scoreClass = (Math.ceil(this.score / 10)) * 10;
@@ -47,8 +47,8 @@
       return {
         date: new Date(),
         maxDate: new Date(),
-        score: 50,
-        scoreClass: 50, // this is updated in mounted()
+        score: this.previousScore || 50,
+        scoreClass: this.scoreClass, // this is updated in mounted()
         showExplanation: false,
       }
     },
