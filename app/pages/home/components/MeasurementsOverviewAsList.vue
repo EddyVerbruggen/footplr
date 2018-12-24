@@ -41,11 +41,10 @@
     },
 
     created() {
-      console.log("MeasurementsOverview created");
-      // authService.anyPageCallback = () => {
-      //   console.log(">>> anyPageCallback called in overview");
-      //   this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
-      // };
+      authService.anyPageCallback = () => {
+        this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
+      };
+
       if (authService.userWrapper.user.trains !== undefined) {
         this.fetchTeamMeasurements();
       } else {
@@ -53,7 +52,10 @@
       }
 
       // for quick dev of the 'add' page
-      // setTimeout(() => this.addMeasurement(ExerciseType.DRIBBLE, "Dribbelen"), 500);
+      // setTimeout(() => this.addMeasurement({
+      //   exercise: ExerciseType.DRIBBLE,
+      //   exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
+      // }), 500);
     },
 
     data() {
@@ -89,7 +91,6 @@
             }
           }
         });
-
       },
 
       showDetails(item) {
@@ -104,10 +105,6 @@
           }
         }).then(data => {
           console.log(`Returned from showDetails: ${data}`);
-          // TODO get rid of this (needs to be event-driven)
-          setTimeout(() => {
-            this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
-          }, 5000);
         });
       },
 
@@ -120,12 +117,7 @@
           }
         }).then(added => {
           console.log(`Returned from modal, added? ${added}`);
-          if (added) {
-            // TODO get rid of this (needs to be event-driven)
-            setTimeout(() => {
-              this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
-            }, 5000);
-          }
+          // refresh will happen via our 'anyPageCallback'
         });
       },
 

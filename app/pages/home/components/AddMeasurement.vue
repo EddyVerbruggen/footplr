@@ -64,7 +64,6 @@
         // })
       },
       sliderChanged(event) {
-        // console.log(">> event.value: " + parseInt(event.value));
         this.score = parseInt(event.value);
         this.scoreClass = (Math.ceil(this.score / 10)) * 10;
       },
