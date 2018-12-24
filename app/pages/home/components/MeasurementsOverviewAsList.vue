@@ -14,7 +14,7 @@
         <GridLayout rows="auto, auto">
           <GridLayout columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-score-' + item.scoreClass">
             <Label col="0" :text="item.score" class="score bold" horizontalAlignment="center"></Label>
-            <Img col="1" src="~/assets/images/exercises/aanname-hoge-bal.png"></Img>
+            <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"></Label>
             <Button col="3" text="📊" class="show-details" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Button>
             <Button col="4" text="+" class="add-measurement" horizontalAlignment="center" @tap="addMeasurement(item)"></Button>
