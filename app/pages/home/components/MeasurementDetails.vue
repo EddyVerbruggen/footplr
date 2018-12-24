@@ -1,12 +1,14 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 190, auto, *, auto" columns="*" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 210, *, auto" :class="'background-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
-      <Label row="0" color="#011627" class="bold m-20" :text="exerciseTranslated"></Label>
+      <Label row="0" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
 
-      <WebView row="1" class="m-t-20 m-x-20" height="100%" :src="webViewSRC"></WebView>
+      <WebView row="1" height="100%" :src="webViewSRC"></WebView>
 
-      <GridLayout row="2" columns="50, *, 100" class="table m-t-20" style="background-color: #011627; color: #fff">
+      <StackLayout row="2" class="c-bg-white"></StackLayout>
+
+      <!--GridLayout row="2" columns="50, *, 100" class="table m-t-20" style="background-color: #011627; color: #fff">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
         <Label col="1" text="Datum" class="p-y-10 p-x-5 bold"/>
       </GridLayout>
@@ -16,16 +18,15 @@
           <GridLayout columns="50, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
             <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"/>
             <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"/>
-            <StackLayout col="2" class="p-x-5 m-r-10" orientation="horizontal" horizontalAlignment="right">
-              <!-- TODO might as well remove the edit feature as delete-add isn't that bad an alternative -->
-              <Button text="✏️" class="edit-measurement" @tap="editMeasurement(item)"/>
-              <Button text="🗑" class="delete-measurement" @tap="deleteMeasurement(item)"/>
-            </StackLayout>
+            <Button col="2" text="🗑" class="p-x-5 m-r-10 delete-measurement" horizontalAlignment="right" @tap="deleteMeasurement(item)"/>
           </GridLayout>
         </v-template>
-      </ListView>
+      </ListView-->
 
-      <Button row="4" @tap="$modal.close()" class="button-close" text="╳"/>
+      <!--<Button row="3" @tap="$modal.close()" class="button-close c-bg-white" text="╳"></Button>-->
+      <StackLayout row="3" class="c-bg-white">
+        <Button text="TERUG" class="btn btn-primary" width="120" horizontalAlignment="right" @tap="$modal.close()"></Button>
+      </StackLayout>
     </GridLayout>
   </Page>
 </template>
@@ -45,7 +46,7 @@
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
-    props: ['exercise', 'exerciseTranslated'],
+    props: ['exercise', 'exerciseTranslated', 'scoreClass'],
 
     data() {
       return {
@@ -54,10 +55,6 @@
       }
     },
     methods: {
-      editMeasurement(measurement) {
-        // TODO send to prefilled AddMeasurement screen?
-      },
-
       deleteMeasurement(measurement) {
         measurement.ref /* DocumentReference */
             .delete()

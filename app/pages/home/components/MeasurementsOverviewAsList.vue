@@ -1,24 +1,25 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <Label row="0" :text="selectedPlayer" class="m-b-10 p-8 c-bg-lime c-white" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"/>
+    <Label row="0" :text="selectedPlayer" class="m-b-10 p-8 c-bg-lime c-white" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
 
-    <GridLayout row="1" columns="50, 4*, 2*, 100" class="table" style="background-color: #011627; color: #fff">
+    <!--GridLayout row="1" columns="50, 4*, 2*, 100" class="table">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
       <Label col="1" text="Oefening" class="p-y-10 p-x-5 bold"/>
-      <Label col="2" text="Datum" class=" p-y-10 p-x-5 bold"/>
-    </GridLayout>
+      <Label col="2" text="Overzicht" class=" p-y-10 p-x-5 bold"/>
+    </GridLayout-->
 
-    <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table">
+    <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table" @itemLoading="onListViewLoading">
       <v-template>
-        <GridLayout columns="50, 4*, 2*, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
-          <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"/>
-          <Label col="1" :text="item.exerciseTranslated" class="p-y-10 p-x-5" v-bind:opacity="item.hasMeasurement ? 1 : 0.5" />
-          <Label col="2" :text="item.latestMeasurementDate" class="p-y-10 p-x-5"/>
-          <StackLayout col="3" class="p-x-5 m-r-10" orientation="horizontal" horizontalAlignment="right">
-            <Button text="🔍" class="show-details" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"/>
-            <Button text="+" class="add-measurement" @tap="addMeasurement(item)"/>
-          </StackLayout>
+        <GridLayout rows="auto, auto">
+          <GridLayout columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-score-' + item.scoreClass">
+            <Label col="0" :text="item.score" class="score bold" horizontalAlignment="center"></Label>
+            <Img col="1" src="~/assets/images/exercises/aanname-hoge-bal.png"></Img>
+            <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"></Label>
+            <Button col="3" text="📊" class="show-details" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Button>
+            <Button col="4" text="+" class="add-measurement" horizontalAlignment="center" @tap="addMeasurement(item)"></Button>
+          </GridLayout>
+          <Label row="1" :text="'Laatste test ' + item.latestMeasurementDate" class="latest-measurement-date" horizontalAlignment="right" :opacity="item.hasMeasurement ? 1 : 0"></Label>
         </GridLayout>
       </v-template>
     </ListView>
@@ -52,10 +53,12 @@
       }
 
       // for quick dev of the 'add' page
-      // setTimeout(() => this.addMeasurement({
-      //   exercise: ExerciseType.DRIBBLE,
-      //   exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
-      // }), 500);
+      setTimeout(() => this.showDetails({
+        exercise: ExerciseType.DRIBBLE,
+        hasMeasurement: true,
+        scoreClass: 60,
+        exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
+      }), 500);
     },
 
     data() {
@@ -71,6 +74,11 @@
     },
 
     methods: {
+      onListViewLoading(args) {
+        if (args.ios) {
+          args.ios.selectionStyle = UITableViewCellSelectionStyle.None;
+        }
+      },
       selectPlayer() {
         // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
 
@@ -101,7 +109,8 @@
           fullscreen: true,
           props: {
             exercise: item.exercise,
-            exerciseTranslated: item.exerciseTranslated
+            exerciseTranslated: item.exerciseTranslated,
+            scoreClass: item.scoreClass
           }
         }).then(data => {
           console.log(`Returned from showDetails: ${data}`);
@@ -181,20 +190,7 @@
             exercise: excercisesKey,
             exerciseTranslated: translateExerciseType(excercisesKey),
             score: latestMeasurement ? latestMeasurement.score : undefined,
-            getScoreClass: () => {
-              // TODO this is duplicated in the detail screen. Also: some exercises are 'lower is better'
-              if (!latestMeasurement) {
-                return 'c-bg-grey-lighter'
-              } else if (latestMeasurement.score > 80) {
-                return 'c-bg-purple';
-              } else if (latestMeasurement.score > 60) {
-                return 'c-bg-blue';
-              } else if (latestMeasurement.score > 40) {
-                return 'c-bg-orange';
-              } else {
-                return 'c-bg-ruby';
-              }
-            }
+            scoreClass: latestMeasurement ? (Math.ceil(latestMeasurement.score / 10)) * 10 : 50
           });
         }
         this.exercises = ex;
@@ -204,26 +200,41 @@
 </script>
 
 <style scoped>
+  .table .row {
+    padding: 12 0;
+    margin: 12 0 2 0;
+  }
+
   .table Label {
     font-size: 12;
   }
 
   .table .score {
-    color: #fff;
-    width: 26;
+    font-size: 22;
+    color: #f9d78f;
     text-align: center;
-    border-radius: 3;
+  }
+
+  .table .exercise {
+    font-size: 14;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0 10;
   }
 
   .table .show-details {
-    font-size: 12;
-    background-color: #e6e6e6;
+    color: #fff;
+    font-size: 16;
   }
 
   .table .add-measurement {
-    background-color: #b6b6b6;
+    background-color: #20284d;
     color: #fff;
-    margin-left: 8;
     font-size: 22;
+  }
+
+  .table .latest-measurement-date {
+    font-size: 9;
+    margin-right: 10;
   }
 </style>
