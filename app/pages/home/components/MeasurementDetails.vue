@@ -23,7 +23,6 @@
         </v-template>
       </ListView-->
 
-      <!--<Button row="3" @tap="$modal.close()" class="button-close c-bg-white" text="╳"></Button>-->
       <StackLayout row="3" class="c-bg-white">
         <Button text="TERUG" class="btn btn-primary" width="120" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
