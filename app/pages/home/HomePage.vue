@@ -6,19 +6,18 @@
       <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 1"/>
     </ActionBar-->
 
+    <!-- note that 'androidSelectedTabHighlightColor' is the line below the selected tab -->
     <TabView androidTabsPosition="bottom"
-             android:tabTextColor="#9093a6"
-             androidSwipeEnabled="true"
-             androidSelectedTabHighlightColor="white"
-             tabTextColor="red"
+             androidSelectedTabHighlightColor="#ffffff"
+             tabTextColor="white"
              selectedTabTextColor="white"
-             iosIconRenderingMode="automatic"
-             :selectedIndex="tabIndex"
+             iosIconRenderingMode="alwaysTemplate"
              tabBackgroundColor="#20284d"
+             :selectedIndex="tabIndex"
              @selectedIndexChanged="onSelectedIndexChanged"
              @loaded="onTabViewLoaded">
 
-      <TabViewItem textTransform="none" iconSource="res://scorekaart">
+      <TabViewItem textTransform="none" iconSource="res://badge">
         <ScoreCard ref="scoreCard" :visible="tabIndex === 1"></ScoreCard>
       </TabViewItem>
 
@@ -27,7 +26,7 @@
         <Measurements ref="measurements" :visible="tabIndex === 2"></Measurements>
       </TabViewItem>
 
-      <TabViewItem textTransform="none" iconSource="res://stopwatch">
+      <TabViewItem textTransform="none" iconSource="res://profile">
         <GridLayout rows="*" columns="*" @loaded="onTab3Loaded" verticalAlignment="center">
           <StackLayout>
             <Label class="message" :text="tab1Msg"/>
@@ -68,7 +67,6 @@
       onTabViewLoaded(event) {
         const tabView = event.object;
         this.tabView = tabView;
-        console.log("onTabViewLoaded " + tabView);
       },
       onTab3Loaded() {
         console.log("Loaded tab 3");

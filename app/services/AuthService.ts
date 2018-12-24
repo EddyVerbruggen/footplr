@@ -62,7 +62,6 @@ export default class AuthService extends BackendService {
 
     this.userLoginUnsubscribe = this.userRef.onSnapshot(doc => {
       if (doc.exists) {
-        console.log(">>> new snapshot");
         this.syncUserData(doc);
 
         if (this.anyPageCallback) {

@@ -14,9 +14,13 @@ v.registerElement("Shimmer", () => require("nativescript-shimmer").Shimmer);
 
 v.prototype.$authService = authService;
 
+const loggedIn = authService.isLoggedIn();
+
 firebase.init()
   .then(instance => {
-    console.log("firebase.init done");
+    if (loggedIn) {
+      authService.watchUser();
+    }
 
     /*
     firebase.registerForPushNotifications(
@@ -34,11 +38,6 @@ firebase.init()
 
 // Prints Vue logs when --env.production is *NOT* set while building
 // v.config.silent = (TNS_ENV === 'production');
-
-const loggedIn = authService.isLoggedIn();
-if (loggedIn) {
-  authService.watchUser();
-}
 
 new v({
   // TODO also check 'registered' state

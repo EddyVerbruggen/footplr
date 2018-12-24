@@ -29,7 +29,6 @@
     },
 
     created() {
-      console.log("Measurements created");
       this.fetchMeasurements();
     },
 
