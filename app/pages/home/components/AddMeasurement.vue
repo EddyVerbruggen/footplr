@@ -8,7 +8,7 @@
         <Label row="2" text="Uitleg" color="#fff" horizontalAlignment="right" height="70" @tap="doShowExplanation()" v-if="!showExplanation"></Label>
       </GridLayout>
 
-      <Image rowSpan="4" src="~/assets/images/botafogo.png" height="150" horizontalAlignment="left" verticalAlignment="top"></Image>
+      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="150" horizontalAlignment="left" verticalAlignment="top"></Image>
 
       <!-- note that this page can be used to 'edit' a measurement as well -->
       <Label row="1" colSpan="2" class="m-x-20" text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet." textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
