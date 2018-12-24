@@ -12,7 +12,7 @@
     <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table" @itemLoading="onListViewLoading">
       <v-template>
         <GridLayout rows="auto, auto">
-          <GridLayout columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-score-' + item.scoreClass">
+          <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-score-' + item.scoreClass">
             <Label col="0" :text="item.score" class="score bold" horizontalAlignment="center"></Label>
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"></Label>
@@ -52,13 +52,13 @@
         this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
       }
 
-      // for quick dev of the 'add' page
-      setTimeout(() => this.showDetails({
-        exercise: ExerciseType.DRIBBLE,
-        hasMeasurement: true,
-        scoreClass: 60,
-        exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
-      }), 500);
+      // for quick dev of the 'add' or 'details' page
+      // setTimeout(() => this.showDetails({
+      //   exercise: ExerciseType.DRIBBLE,
+      //   hasMeasurement: true,
+      //   scoreClass: 60,
+      //   exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
+      // }), 500);
     },
 
     data() {
@@ -201,7 +201,6 @@
 
 <style scoped>
   .table .row {
-    padding: 12 0;
     margin: 12 0 2 0;
   }
 
