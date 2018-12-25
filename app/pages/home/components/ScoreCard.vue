@@ -1,10 +1,12 @@
 <template>
-  <Shimmer :enabled="shimmerEnabled">
-    <GridLayout columns="*" rows="*" @loaded="onScoreTabLoaded">
-      <Image src="~/assets/images/rating.png" height="74%"/>
+    <GridLayout rows="auto, *" columns="*" @loaded="onScoreTabLoaded">
+
+      <Label row="0" :text="selectedPlayer" class="p-10 m-t-4 bold" style="text-transform: uppercase" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
+
+      <Image row="1" src="~/assets/images/rating.png" height="74%"/>
       <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
       <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
-      <GridLayout rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
+      <GridLayout row="1" rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
         <StackLayout colSpan="2" verticalAlignment="center">
           <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"/>
           <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"/>
@@ -40,7 +42,6 @@
         </GridLayout>
       </GridLayout>
     </GridLayout>
-  </Shimmer>
 </template>
 
 <script>
@@ -54,8 +55,9 @@
     },
     data() {
       return {
+        selectedPlayer: "Team gemiddelde",
+        isTrainer: authService.userWrapper.user.trains !== undefined,
         userWrapper: authService.userWrapper,
-        shimmerEnabled: false,
         score: type => {
           if (authService.userWrapper.user.scores) {
             return authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
@@ -72,11 +74,6 @@
     methods: {
       onScoreTabLoaded() {
         console.log("Score tab loaded @ " + new Date().getTime());
-        setTimeout(this.shimmer, 300);
-      },
-      shimmer() {
-        this.shimmerEnabled = true;
-        setTimeout(() => (this.shimmerEnabled = false), 300);
       },
       selectImage() {
         console.log("TODO: pick image and store in Firebase");

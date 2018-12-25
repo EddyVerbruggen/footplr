@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <Label row="0" :text="selectedPlayer" class="m-b-10 p-8 c-bg-lime c-white" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
+    <Label row="0" :text="selectedPlayer" class="p-10 m-t-4 bold" style="text-transform: uppercase" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
 
     <!--GridLayout row="1" columns="50, 4*, 2*, 100" class="table">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -17,7 +17,7 @@
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true" verticalAlignment="center"></Label>
             <Label col="3" class="round" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Label>
-            <Img col="3" color="white" width="17" height="17" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Img>
+            <Img col="3" color="white" width="14" height="14" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Img>
             <Button col="4" text="+" class="add-measurement" horizontalAlignment="center" @tap="addMeasurement(item)"></Button>
           </GridLayout>
           <Label row="1" :text="'Laatste test ' + item.latestMeasurementDate" class="latest-measurement-date" horizontalAlignment="right" :opacity="item.hasMeasurement ? 1 : 0"></Label>
@@ -85,14 +85,14 @@
 
         const options = this.players.map(player => player.firstname + " " + player.lastname); // ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
         action({
-          title: "Kies een speler..",
-          actions: ["Team gemiddelde", ...options],
+          title: "KIES EEN TEAM OF SPELER",
+          actions: ["vv Hoogland J09-7", ...options],
           cancelable: true
         }).then(picked => {
           if (picked) {
             this.player = undefined;
             this.selectedPlayer = picked;
-            if (picked === "Team gemiddelde") {
+            if (picked === "Team gemiddelde") { // TODO the actual team
               this.fetchTeamMeasurements();
             } else {
               this.player = this.players[options.indexOf(picked)];
@@ -218,7 +218,6 @@
 
   .table .score {
     font-size: 18;
-    /*color: #f9d78f;*/
     text-align: center;
   }
 
@@ -229,15 +228,10 @@
     margin: 0 10;
   }
 
-  .table .show-details {
-    color: #fff;
-    font-size: 16;
-  }
-
   .table .add-measurement {
     background-color: #20284d;
     color: #ffffff;
-    font-size: 24;
+    font-size: 25;
     font-weight: bold;
     padding: 2;
     margin: 0

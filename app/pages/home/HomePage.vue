@@ -65,8 +65,7 @@
         this.tabIndex = event.newIndex;
       },
       onTabViewLoaded(event) {
-        const tabView = event.object;
-        this.tabView = tabView;
+        this.tabView = event.object;
       },
       onTab3Loaded() {
         console.log("Loaded tab 3");
