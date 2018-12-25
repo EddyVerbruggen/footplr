@@ -4,23 +4,19 @@ import AuthService from "./services/AuthService"
 import BackendService from './services/BackendService';
 import * as firebase from "nativescript-plugin-firebase"
 
+// To include the stylesheets, use this:
+import "./styles.scss";
+
 export const backendService = new BackendService();
 export const authService = new AuthService();
 
 const v = <any>Vue;
 declare const TNS_ENV: any;
 
-v.registerElement("Shimmer", () => require("nativescript-shimmer").Shimmer);
-
 v.prototype.$authService = authService;
-
-const loggedIn = authService.isLoggedIn();
 
 firebase.init()
   .then(instance => {
-    if (loggedIn) {
-      authService.watchUser();
-    }
 
     /*
     firebase.registerForPushNotifications(
@@ -38,6 +34,12 @@ firebase.init()
 
 // Prints Vue logs when --env.production is *NOT* set while building
 // v.config.silent = (TNS_ENV === 'production');
+
+const loggedIn = authService.isLoggedIn();
+
+if (loggedIn) {
+  authService.watchUser();
+}
 
 new v({
   // TODO also check 'registered' state
