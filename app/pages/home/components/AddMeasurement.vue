@@ -2,7 +2,7 @@
   <Page>
     <GridLayout rows="auto, *, auto, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top" height="100%">
 
-      <GridLayout id="header" colSpan="2" rows="2*, *, *, auto" columns="*" xclass="p-y-15 background-score-70" :class="'background-score-' + scoreClass" @loaded="headerLoaded">
+      <GridLayout id="header" colSpan="2" rows="2*, *, *, auto" columns="*" :class="'color-score-' + scoreClass" @loaded="headerLoaded">
         <Label row="1" :text="exerciseTranslated" color="#fff" horizontalAlignment="right" height="100"></Label>
         <!--<Label row="2" text="Uitleg" color="#fff" horizontalAlignment="right" height="70" @tap="showExplanation = true" v-if="!showExplanation"></Label>-->
         <Label row="2" text="Uitleg" color="#fff" horizontalAlignment="right" height="70" @tap="doShowExplanation()" v-if="!showExplanation"></Label>
