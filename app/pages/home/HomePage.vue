@@ -40,7 +40,7 @@
 
 <script>
   import routes from "~/router";
-  import Measurements from "./components/Measurements.vue"
+  import Measurements from "./components/measurements/Measurements.vue"
   import ScoreCard from "./components/ScoreCard.vue"
 
   export default {

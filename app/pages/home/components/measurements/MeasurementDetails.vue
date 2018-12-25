@@ -1,14 +1,14 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 210, *, auto" :class="'color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 210, auto, *, auto" :class="'color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
       <Label row="0" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
 
       <WebView row="1" height="100%" :src="webViewSRC"></WebView>
 
-      <StackLayout row="2" class="c-bg-white"></StackLayout>
+      <!--<StackLayout row="2" class="c-bg-white"></StackLayout>-->
 
-      <!--GridLayout row="2" columns="50, *, 100" class="table m-t-20" style="background-color: #011627; color: #fff">
+      <GridLayout row="2" columns="50, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
         <Label col="1" text="Datum" class="p-y-10 p-x-5 bold"/>
       </GridLayout>
@@ -21,9 +21,9 @@
             <Button col="2" text="🗑" class="p-x-5 m-r-10 delete-measurement" horizontalAlignment="right" @tap="deleteMeasurement(item)"/>
           </GridLayout>
         </v-template>
-      </ListView-->
+      </ListView>
 
-      <StackLayout row="3" class="c-bg-white">
+      <StackLayout row="4" class="c-bg-white">
         <Button text="TERUG" class="btn btn-primary" width="120" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
     </GridLayout>

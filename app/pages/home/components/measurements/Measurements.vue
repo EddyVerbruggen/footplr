@@ -31,7 +31,7 @@
   import {action} from "tns-core-modules/ui/dialogs";
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
-  import {getPlayersInTeam} from "../../../services/TeamService"
+  import {getPlayersInTeam} from "~/services/TeamService"
   import {authService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
@@ -65,7 +65,7 @@
     data() {
       return {
         official: true, // TODO somewhere more generic
-        selectedPlayer: "Team gemiddelde",
+        selectedPlayer: "vv Hoogland J09-7",
         player: authService.userWrapper.user,
         players: [],
         exercises: [],
@@ -92,7 +92,7 @@
           if (picked) {
             this.player = undefined;
             this.selectedPlayer = picked;
-            if (picked === "Team gemiddelde") { // TODO the actual team
+            if (picked === "vv Hoogland J09-7") { // TODO the actual team
               this.fetchTeamMeasurements();
             } else {
               this.player = this.players[options.indexOf(picked)];
