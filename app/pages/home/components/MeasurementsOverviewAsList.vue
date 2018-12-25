@@ -13,10 +13,10 @@
       <v-template>
         <GridLayout rows="auto, auto">
           <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-score-' + item.scoreClass">
-            <Label col="0" :text="item.score" class="score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
+            <Label col="0" :text="item.score" class="score round bold" horizontalAlignment="center" verticalAlignment="center" :opacity="item.hasMeasurement ? 1 : 0"></Label>
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true" verticalAlignment="center"></Label>
-            <Label col="3" style="border-radius: 50%; background-color: #20284d" width="34" height="34" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Label>
+            <Label col="3" class="round" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Label>
             <Img col="3" color="white" width="17" height="17" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Img>
             <Button col="4" text="+" class="add-measurement" horizontalAlignment="center" @tap="addMeasurement(item)"></Button>
           </GridLayout>
@@ -210,8 +210,15 @@
     font-size: 12;
   }
 
+  .table .round {
+    width: 34;
+    height: 34;
+    border-radius: 50%;
+    background-color: #20284d;
+  }
+
   .table .score {
-    font-size: 22;
+    font-size: 18;
     color: #f9d78f;
     text-align: center;
   }
