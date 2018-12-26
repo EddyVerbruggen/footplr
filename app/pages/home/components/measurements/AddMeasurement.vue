@@ -2,26 +2,25 @@
   <Page>
     <GridLayout rows="auto, *, auto, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top" height="100%">
 
-      <GridLayout id="header" colSpan="2" rows="2*, *, *, auto" columns="*" :class="'color-score-' + scoreClass" @loaded="headerLoaded">
-        <Label row="1" :text="exerciseTranslated" color="#fff" horizontalAlignment="right" height="100"></Label>
-        <!--<Label row="2" text="Uitleg" color="#fff" horizontalAlignment="right" height="70" @tap="showExplanation = true" v-if="!showExplanation"></Label>-->
-        <Label row="2" text="Uitleg" color="#fff" horizontalAlignment="right" height="70" @tap="doShowExplanation()" v-if="!showExplanation"></Label>
+      <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70" :class="'background-color-score-' + scoreClass" @loaded="headerLoaded">
+        <Label row="0" :text="exerciseTranslated" color="#fff" class="bold exercise" horizontalAlignment="right" verticalAlignment="bottom"></Label>
+        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()" horizontalAlignment="right" v-if="!showExplanation"></Button>
+        <Label row="1" color="#fff" class="c-white m-30 p-t-70" text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet." textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
       </GridLayout>
 
-      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="150" horizontalAlignment="left" verticalAlignment="top"></Image>
+      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="170" horizontalAlignment="left" verticalAlignment="top"></Image>
 
-      <!-- note that this page can be used to 'edit' a measurement as well -->
-      <Label row="1" colSpan="2" class="m-x-20" text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet." textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
+      <!--<Label row="1" colSpan="2" class="m-x-20 c-white" text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet." textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>-->
 
       <!--<TextField row="2" colSpan="2" width="50" height="50" keyboardType="number" v-model="score" hint="Score" horizontalAlignment="center"/>-->
       <Label row="2" colSpan="2" :text="score" class="bold" style="margin-bottom: 60; color: #63d4a5" horizontalAlignment="center" v-if="!showExplanation"></Label>
-      <Slider row="2" colSpan="2" class="m-20" minValue="0" maxValue="100" width="100%" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>
+      <Slider row="2" colSpan="2" class="m-20" minValue="0" maxValue="100" width="90%" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>
 
       <DatePicker row="3" colSpan="2" v-model="date" :maxDate="maxDate" v-if="!showExplanation"></DatePicker>
 
       <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close(false)" v-if="!showExplanation"></Button>
       <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()" v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="TERUG" class="btn btn-primary" @tap="showExplanation = false" v-if="showExplanation"></Button>
+      <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass" @tap="showExplanation = false" v-if="showExplanation"></Button>
     </GridLayout>
   </Page>
 </template>
@@ -58,6 +57,7 @@
       },
       doShowExplanation() {
         console.log("show expl..");
+        this.showExplanation = true;
         // this.header.animate({
         //   translate: { x: 300, y: 200},
         //   duration: 3000
@@ -94,6 +94,17 @@
 
 <style scoped>
   Page {
-    margin: 30 0 0 0;
+    /*margin: 30 0 0 0;*/
+  }
+
+  .exercise {
+    font-size: 22;
+  }
+
+  Button.btn-explanation {
+    border-width: 2;
+    border-color: #fff;
+    color: #fff;
+    margin: 24 0 24 16;
   }
 </style>

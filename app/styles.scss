@@ -51,18 +51,26 @@ Button.btn {
   border-radius: 3;
 }
 
-Button.btn-secondary {
-  border-width: 2;
-  border-color: #63d4a5;
-  color: #63d4a5;
-  margin: 24 8 24 16;
-}
-
 Button.btn-primary {
   font-family: "Core Sans D 55 Bold", CoreSansD55Bold, system, sans-serif;
   background-color: #63d4a5;
   color: #fff;
   margin: 24 16 24 8;
+  height: 44;
+}
+
+Button.btn-secondary {
+  border-width: 2;
+  border-color: #63d4a5;
+  color: #63d4a5;
+  margin: 24 8 24 16;
+  height: 44;
+}
+
+Button.btn-secondary-colorless {
+  border-width: 2;
+  margin: 24 8 24 16;
+  height: 44;
 }
 
 Button.button-close {
@@ -87,56 +95,105 @@ Slider {
 
 .color-score-100 {
   color: #199e76;
+  border-color: #199e76;
+}
+
+.background-color-score-100 {
   background-color: #199e76;
 }
 
 .color-score-90 {
   color: #22d8a2;
+  border-color: #22d8a2;
+}
+
+.background-color-score-90 {
   background-color: #22d8a2;
 }
 
 .color-score-80 {
   color: #3649a9;
+  border-color: #3649a9;
+}
+
+.background-color-score-80 {
   background-color: #3649a9;
 }
 
 .color-score-70 {
   color: #4a63e7;
+  border-color: #4a63e7;
+}
+
+.background-color-score-70 {
   background-color: #4a63e7;
 }
 
 .color-score-60 {
   color: #1c70b7;
+  border-color: #1c70b7;
+}
+
+.background-color-score-60 {
   background-color: #1c70b7;
 }
 
 .color-score-50 {
   color: #2699fb;
+  border-color: #2699fb;
+}
+
+.background-color-score-50 {
   background-color: #2699fb;
 }
 
 .color-score-40 {
   color: #ffd684;
+  border-color: #ffd684;
+}
+
+.background-color-score-40 {
   background-color: #ffd684;
 }
 
 .color-score-30 {
   color: #ba9c61;
+  border-color: #ba9c61;
+}
+
+.background-color-score-30 {
   background-color: #ba9c61;
 }
 
 .color-score-20 {
   color: #f75454;
+  border-color: #f75454;
+}
+
+.background-color-score-20 {
   background-color: #f75454;
 }
 
 .color-score-10,
 .color-score-0 {
   color: #b43e3e;
+  border-color: #b43e3e;
+}
+
+.background-color-score-10,
+.background-color-score-0 {
   background-color: #b43e3e;
 }
 
 .color-score-undefined {
   color: #c9c9c9;
+  border-color: #c9c9c9;
+}
+
+.background-color-score-undefined {
   background-color: #c9c9c9;
+}
+
+.p-t-70 {
+  padding-top: 70;
 }

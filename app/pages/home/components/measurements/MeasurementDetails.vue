@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 210, auto, *, auto" :class="'color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 210, auto, *, auto" :class="'background-color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
       <Label row="0" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
 
@@ -9,22 +9,22 @@
       <!--<StackLayout row="2" class="c-bg-white"></StackLayout>-->
 
       <GridLayout row="2" columns="50, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
-        <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
-        <Label col="1" text="Datum" class="p-y-10 p-x-5 bold"/>
+        <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"></Label>
+        <Label col="1" text="Datum" class="p-y-10 p-x-5 bold"></Label>
       </GridLayout>
 
       <ListView row="3" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="table">
         <v-template>
           <GridLayout columns="50, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
-            <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"/>
-            <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"/>
-            <Button col="2" text="🗑" class="p-x-5 m-r-10 delete-measurement" horizontalAlignment="right" @tap="deleteMeasurement(item)"/>
+            <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
+            <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
+            <Button col="2" text="🗑" class="p-x-5 m-r-10 delete-measurement" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Button>
           </GridLayout>
         </v-template>
       </ListView>
 
       <StackLayout row="4" class="c-bg-white">
-        <Button text="TERUG" class="btn btn-primary" width="120" horizontalAlignment="right" @tap="$modal.close()"></Button>
+        <Button text="TERUG" class="btn btn-primary" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
     </GridLayout>
   </Page>

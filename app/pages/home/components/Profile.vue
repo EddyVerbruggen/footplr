@@ -1,60 +1,29 @@
 <template>
-    <StackLayout>
-      <Button @tap="onTapLogout" text="Uitloggen"></Button>
+  <StackLayout>
+    <Button @tap="onTapLogout" text="Uitloggen"></Button>
 
-      <GridLayout rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
-        <StackLayout colSpan="2" verticalAlignment="center">
-          <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"></Label>
-          <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"></Label>
-          <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"></Image>
-        </StackLayout>
-        <StackLayout col="0" colSpan="4" horizontalAlignment="center" class="card-photo" @tap="selectImage">
-          <Img :src="userWrapper.user.picture" stretch="aspectFill" v-if="!savingPicture"></Img>
-          <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
-        </StackLayout>
-
-        <!--StackLayout col="0" class="image-frame mdl-default-border m-t-20" [class.image-placeholder]="!image && !existingImageUrl" (tap)="takePicture()" horizontalAlignment="left" verticalAlignment="center">
-          <Image [src]="image" stretch="aspectFill" *ngIf="image"></Image>
-          <Image [src]="existingImageUrl" stretch="aspectFill" *ngIf="!image && existingImageUrl !== undefined"></Image>
-          <Label class="icomoon mdl-default" style="font-size: 40" horizontalAlignment="center" [text]="'icomoon-lnr-camera' | fonticon" *ngIf="!image && existingImageUrl === undefined"></Label>
-        </StackLayout-->
-
-        <GridLayout row="1" colSpan="4" rows="2*, 2*, 2*, 2*, 3*" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
-          <StackLayout row="0" colSpan="5" horizontalAlignment="center" orientation="horizontal">
-            <Label :text="playerName()" class="card-name bold"/>
-            <StackLayout style="margin-left: 14" verticalAlignment="center">
-              <Label :text="playerAgeYears()" class="card-age-years" horizontalAlignment="right"/>
-              <Label :text="playerAgeMonths()" class="card-age-months" horizontalAlignment="right"/>
-            </StackLayout>
-          </StackLayout>
-
-          <Label row="1" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="1" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"/>
-          <Label row="1" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="1" col="3" text="DRI" class="card-item-name" horizontalAlignment="left"/>
-
-          <Label row="2" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="2" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"/>
-          <Label row="2" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="2" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"/>
-
-          <Label row="3" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="3" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"/>
-          <Label row="3" col="2" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"/>
-          <Label row="3" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"/>
-        </GridLayout>
-      </GridLayout>
+    <StackLayout horizontalAlignment="center" class="card-photo" @tap="selectImage">
+      <Img :src="userWrapper.user.picture" stretch="aspectFill" v-if="!savingPicture"></Img>
+      <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
     </StackLayout>
+
+    <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"></Label>
+
+    <!--<Label :text="playerName()" class="card-name bold"></Label>-->
+
+    <DatePicker row="3" colSpan="2" v-model="userWrapper.user.birthdate"></DatePicker>
+
+  </StackLayout>
 </template>
 
 <script>
   import routes from "~/router";
   import {authService} from "~/main";
-  import {getYearsSince, getMonthsSince} from "~/utils/date-util";
   import {takeOrPickPhoto} from "~/utils/photo-util";
   import {ImageSource} from "tns-core-modules/image-source";
   import {action} from "tns-core-modules/ui/dialogs";
   import * as fs from "tns-core-modules/file-system";
+
   const firebaseWebApi = require("nativescript-plugin-firebase/app");
 
   export default {
@@ -64,20 +33,8 @@
     data() {
       return {
         savingPicture: false,
-        // image /* ImageAsset | ImageSource */: undefined,
-        // existingImageUrl /* string */: "~/assets/images/messi.jpg",
         userWrapper: authService.userWrapper,
-        score: type => {
-          if (authService.userWrapper.user.scores) {
-            return authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
-          }
-        },
         playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
-        playerAgeYears: () => getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar",
-        playerAgeMonths: () => {
-          const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
-          return `${months} ${months === 1 ? "maand" : "maanden"}`;
-        }
       };
     },
     methods: {
@@ -186,16 +143,6 @@
 
   .card-age-months {
     font-size: 10;
-    letter-spacing: -0.05;
-  }
-
-  .card-item-score {
-    font-size: 22;
-    padding-right: 6;
-  }
-
-  .card-item-name {
-    font-size: 22;
     letter-spacing: -0.05;
   }
 </style>

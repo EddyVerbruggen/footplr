@@ -12,7 +12,7 @@
     <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table" @itemLoading="onListViewLoading">
       <v-template>
         <GridLayout rows="auto, auto">
-          <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'color-score-' + item.scoreClass">
+          <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-color-score-' + item.scoreClass">
             <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass" class="score round bold" horizontalAlignment="center" verticalAlignment="center" :opacity="item.hasMeasurement ? 1 : 0"></Label>
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true" verticalAlignment="center"></Label>
@@ -54,12 +54,12 @@
       }
 
       // for quick dev of the 'add' or 'details' page
-      // setTimeout(() => this.showDetails({
-      //   exercise: ExerciseType.DRIBBLE,
-      //   hasMeasurement: true,
-      //   scoreClass: 60,
-      //   exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
-      // }), 500);
+      setTimeout(() => this.addMeasurement({
+        exercise: ExerciseType.DRIBBLE,
+        hasMeasurement: true,
+        scoreClass: 60,
+        exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
+      }), 500);
     },
 
     data() {
