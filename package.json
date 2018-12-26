@@ -21,6 +21,8 @@
     "android.release": "tns build android --bundle --release --other-keystore-params.."
   },
   "dependencies": {
+    "nativescript-camera": "~4.1.1",
+    "nativescript-imagepicker": "~6.0.5",
     "nativescript-iqkeyboardmanager": "~1.3.0",
     "nativescript-pager": "~9.3.12",
     "nativescript-plugin-firebase": "~7.6.0",

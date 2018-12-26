@@ -27,12 +27,7 @@
       </TabViewItem>
 
       <TabViewItem textTransform="none" iconSource="res://profile">
-        <GridLayout rows="*" columns="*" @loaded="onTab3Loaded" verticalAlignment="center">
-          <StackLayout>
-            <Label class="message" :text="tab1Msg"/>
-            <Button @tap="goToTab(0)" text="Ga naar de scorekaart"/>
-          </StackLayout>
-        </GridLayout>
+        <Profile ref="profile" :visible="tabIndex === 3"></Profile>
       </TabViewItem>
     </TabView>
   </Page>
@@ -41,11 +36,13 @@
 <script>
   import routes from "~/router";
   import Measurements from "./components/measurements/Measurements.vue"
+  import Profile from "./components/Profile.vue"
   import ScoreCard from "./components/ScoreCard.vue"
 
   export default {
     components: {
       Measurements,
+      Profile,
       ScoreCard
     },
     created() {
@@ -54,7 +51,7 @@
     data() {
       return {
         tab1Msg: "Team pagina hier? 🎳",
-        tabIndex: 1, // setting this initially makes dev a little easier
+        tabIndex: 2, // setting this initially makes dev a little easier
         tabView: undefined, // set below
         isOfficial: true,
         logoSrc: "~/assets/images/fpr-logo-128.png"
@@ -66,9 +63,6 @@
       },
       onTabViewLoaded(event) {
         this.tabView = event.object;
-      },
-      onTab3Loaded() {
-        console.log("Loaded tab 3");
       },
       goToTab(tabNr) {
         this.tabView.selectedIndex = tabNr;

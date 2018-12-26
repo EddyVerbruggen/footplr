@@ -1,20 +1,23 @@
 <template>
-    <GridLayout rows="auto, *" columns="*" @loaded="onScoreTabLoaded">
+    <StackLayout>
+      <Button @tap="onTapLogout" text="Uitloggen"></Button>
 
-      <Label row="0" :text="selectedPlayer" class="p-10 m-t-4 bold" style="text-transform: uppercase" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
-
-      <Image row="1" src="~/assets/images/rating.png" height="74%"/>
-      <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
-      <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
-      <GridLayout row="1" rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
+      <GridLayout rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
         <StackLayout colSpan="2" verticalAlignment="center">
-          <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"/>
-          <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"/>
-          <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"/>
+          <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"></Label>
+          <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"></Label>
+          <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"></Image>
         </StackLayout>
         <StackLayout col="0" colSpan="4" horizontalAlignment="center" class="card-photo" @tap="selectImage">
-          <Img :src="userWrapper.user.picture" stretch="aspectFill"/>
+          <Img :src="userWrapper.user.picture" stretch="aspectFill" v-if="!savingPicture"></Img>
+          <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
         </StackLayout>
+
+        <!--StackLayout col="0" class="image-frame mdl-default-border m-t-20" [class.image-placeholder]="!image && !existingImageUrl" (tap)="takePicture()" horizontalAlignment="left" verticalAlignment="center">
+          <Image [src]="image" stretch="aspectFill" *ngIf="image"></Image>
+          <Image [src]="existingImageUrl" stretch="aspectFill" *ngIf="!image && existingImageUrl !== undefined"></Image>
+          <Label class="icomoon mdl-default" style="font-size: 40" horizontalAlignment="center" [text]="'icomoon-lnr-camera' | fonticon" *ngIf="!image && existingImageUrl === undefined"></Label>
+        </StackLayout-->
 
         <GridLayout row="1" colSpan="4" rows="2*, 2*, 2*, 2*, 3*" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
           <StackLayout row="0" colSpan="5" horizontalAlignment="center" orientation="horizontal">
@@ -41,22 +44,28 @@
           <Label row="3" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"/>
         </GridLayout>
       </GridLayout>
-    </GridLayout>
+    </StackLayout>
 </template>
 
 <script>
+  import routes from "~/router";
   import {authService} from "~/main";
   import {getYearsSince, getMonthsSince} from "~/utils/date-util";
+  import {takeOrPickPhoto} from "~/utils/photo-util";
+  import {ImageSource} from "tns-core-modules/image-source";
   import {action} from "tns-core-modules/ui/dialogs";
+  import * as fs from "tns-core-modules/file-system";
+  const firebaseWebApi = require("nativescript-plugin-firebase/app");
 
   export default {
     created() {
-      console.log("ScoreCard created");
+      console.log("Profile component created");
     },
     data() {
       return {
-        selectedPlayer: "Team gemiddelde",
-        isTrainer: authService.userWrapper.user.trains !== undefined,
+        savingPicture: false,
+        // image /* ImageAsset | ImageSource */: undefined,
+        // existingImageUrl /* string */: "~/assets/images/messi.jpg",
         userWrapper: authService.userWrapper,
         score: type => {
           if (authService.userWrapper.user.scores) {
@@ -72,11 +81,51 @@
       };
     },
     methods: {
+      onTapLogout() {
+        authService.logout().then(() => {
+          this.$navigateTo(routes.login, {
+            clearHistory: true,
+            transition: {
+              name: "fade"
+            }
+          });
+        });
+      },
       onScoreTabLoaded() {
         console.log("Score tab loaded @ " + new Date().getTime());
       },
       selectImage() {
-        console.log("TODO: pick image and store in Firebase");
+        takeOrPickPhoto().then(img => {
+          this.savingPicture = true;
+
+          const storeImage = imageSource => {
+            let path = fs.path.join(fs.knownFolders.documents().path, "ProfilePicToUpload.jpeg");
+            if (imageSource.saveToFile(path, "jpeg", 75)) {
+
+              const childRef = firebaseWebApi.storage().ref().child(`profilepics/${authService.userWrapper.user.id}.jpg`);
+
+              childRef.put(fs.File.fromPath(path)).then(
+                  uploadedFile => {
+                    this.savingPicture = false;
+                    if (uploadedFile.downloadURL) {
+                      authService.updateUserDataInFirebase({
+                        picture: uploadedFile.downloadURL
+                      }).then(() => console.log("Updated user pic!"));
+                    }
+                  },
+                  error => {
+                    this.savingPicture = false;
+                    console.log("firebase profile pic upload error: " + error);
+                  });
+            }
+          };
+
+          if (img instanceof ImageSource) {
+            storeImage(img);
+          } else {
+            new ImageSource().fromAsset(img).then(imageSource => storeImage(imageSource));
+          }
+        });
       },
       selectRole() {
         const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
@@ -118,7 +167,8 @@
     margin-left: 19%;
     margin-top: 5%;
     border-width: 6;
-    border-color: #998225;
+    background-color: #2699fb;
+    border-color: #3649a9;
     width: 120;
     height: 120;
     border-radius: 60;
