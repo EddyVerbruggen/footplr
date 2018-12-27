@@ -1,6 +1,6 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-    <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center" @tap="quickLogin"/>
+    <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center" @tap="quickLogin"></Image>
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
       <TextField
@@ -27,7 +27,7 @@
         text="AANMELDEN"
         :isEnabled="!isAuthenticating"
         class="btn btn-secondary"
-        @tap="submit()"></Button>
+        @tap="login()"></Button>
 
     <Label
         class="forgot-password"
@@ -94,16 +94,12 @@
         this.$refs.password.nativeView.focus();
       },
 
-      submit() {
-        this.isAuthenticating = true;
-        this.login();
-      },
-
       login() {
         if (getConnectionType() === connectionType.none) {
           alert("Om in te kunnen loggen is een internetverbinding vereist")
           return;
         }
+        this.isAuthenticating = true;
         return this.$authService
             .login(this.user)
             .then(() => {
@@ -189,7 +185,7 @@
   .login {
     .main-container {
       width: 300;
-      height: 425;
+      height: 430;
       margin-left: 30;
       margin-right: 30;
       border-radius: 10;
