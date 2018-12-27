@@ -5,7 +5,7 @@
       <Pager row="0" colSpan="2" height="100%" for="item in items" v-model="pagerIndex">
         <v-template>
           <GridLayout class="pager-item" rows="auto, *" columns="*" width="75%" verticalAlignment="bottom">
-            <Image row="0" :src="item.image"></Image>
+            <Image row="0" :src="item.image" width="75%" class="m-t-30"></Image>
             <Label row="1" class="pager-text m-t-20 m-b-24" :text="item.text" textWrap="true"></Label>
           </GridLayout>
         </v-template>

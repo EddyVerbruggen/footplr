@@ -20,7 +20,7 @@
                  v-model="user.password"
                  row="1"></TextField>
 
-      <ActivityIndicator :busy="isAuthenticating" rowSpan="2"></ActivityIndicator>
+      <ActivityIndicator :busy="isAuthenticating" rowSpan="2" width="30" height="30"></ActivityIndicator>
     </GridLayout>
 
     <Button
@@ -188,6 +188,7 @@
 <style lang="scss" scoped>
   .login {
     .main-container {
+      width: 300;
       height: 425;
       margin-left: 30;
       margin-right: 30;
@@ -249,9 +250,6 @@
   }
 
   .platform-ios .login {
-    .main-container {
-      width: 300;
-    }
     .main-label {
       color: #131426;
       font-size: 32;
@@ -273,10 +271,6 @@
   }
 
   .platform-android .login {
-    .main-container {
-      width: 275;
-      height: 394;
-    }
     .main-label {
       font-size: 28;
       margin-top: 42;

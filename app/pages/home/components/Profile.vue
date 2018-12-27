@@ -3,7 +3,7 @@
     <Button @tap="onTapLogout" text="Uitloggen"></Button>
 
     <StackLayout horizontalAlignment="center" class="card-photo" @tap="selectImage">
-      <Img :src="userWrapper.user.picture" stretch="aspectFill" v-if="!savingPicture"></Img>
+      <Img :src="userWrapper.user.picture" style="border-radius: 10" stretch="aspectFill" v-if="!savingPicture"></Img>
       <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
     </StackLayout>
 

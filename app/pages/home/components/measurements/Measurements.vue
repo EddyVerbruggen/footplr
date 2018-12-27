@@ -54,12 +54,12 @@
       }
 
       // for quick dev of the 'add' or 'details' page
-      setTimeout(() => this.addMeasurement({
-        exercise: ExerciseType.DRIBBLE,
-        hasMeasurement: true,
-        scoreClass: 60,
-        exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
-      }), 500);
+      // setTimeout(() => this.addMeasurement({
+      //   exercise: ExerciseType.DRIBBLE,
+      //   hasMeasurement: true,
+      //   scoreClass: 60,
+      //   exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
+      // }), 500);
     },
 
     data() {
