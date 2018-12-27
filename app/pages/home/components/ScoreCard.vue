@@ -10,10 +10,9 @@
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
     <GridLayout row="1" rows="4*, 4*, *, *, 4*, 4*" columns="2*, 2*, *, 2*" width="90%"
-                xstyle="background-color: rgba(200, 200, 200, 0.3)"
                 horizontalAlignment="center" verticalAlignment="center">
 
-      <StackLayout xstyle="background-color: rgba(100, 100, 100, 0.5)" row="1" colSpan="2" verticalAlignment="center">
+      <StackLayout row="1" colSpan="2" verticalAlignment="center">
         <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center"
                verticalAlignment="center"></Label>
         <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"
@@ -26,7 +25,7 @@
 
       <Label :text="playerAge" class="card-age bold" row="3" colSpan="4" horizontalAlignment="center" verticalAlignment="top"></Label>
 
-      <GridLayout xstyle="background-color: rgba(50, 50, 50, 0.4)" row="4" colSpan="4" rows="*, *, *" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
+      <GridLayout row="4" colSpan="4" rows="*, *, *" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
         <Label row="0" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
         <Label row="0" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
         <Label row="0" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>

@@ -220,6 +220,10 @@
     text-align: center;
   }
 
+  .platform-android .table .score {
+    padding-top: 5;
+  }
+
   .table .exercise {
     font-size: 14;
     text-transform: uppercase;

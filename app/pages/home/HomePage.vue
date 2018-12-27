@@ -1,5 +1,5 @@
 <template>
-  <Page class="grass-background" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
+  <Page :class="pageClasses" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
     <!--ActionBar title="" flat="true" DISABLED-backgroundColor="#011627">
       <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
       <Label style="font-size: 14" text="vv Hoogland JO9-7" horizontalAlignment="center"/>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import * as platformModule from "tns-core-modules/platform"
   import routes from "~/router";
   import Measurements from "./components/measurements/Measurements.vue"
   import Profile from "./components/Profile.vue"
@@ -48,10 +49,19 @@
     created() {
       console.log("HomePage created");
     },
+    computed: {
+      pageClasses: function () {
+        return {
+          // add top class so we can apply styles to specific platforms
+          'platform-ios': platformModule.isIOS,
+          'platform-android': platformModule.isAndroid
+        }
+      }
+    },
     data() {
       return {
         tab1Msg: "Team pagina hier? 🎳",
-        tabIndex: 0, // setting this initially makes dev a little easier
+        tabIndex: 1, // setting this initially makes dev a little easier
         tabView: undefined, // set below
         isOfficial: true,
         logoSrc: "~/assets/images/fpr-logo-128.png"
