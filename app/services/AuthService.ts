@@ -6,7 +6,7 @@ import { getString } from "tns-core-modules/application-settings";
 
 export default class AuthService extends BackendService {
 
-  public userWrapper: {user: User} = { user: undefined };
+  public userWrapper: { user: User } = {user: undefined};
 
   // poor man's observable.. on any page you're currently at, you can register this callback
   // note that this has not been tested with more than one page, so an Array may be required, etc

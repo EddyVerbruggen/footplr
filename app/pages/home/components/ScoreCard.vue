@@ -1,49 +1,46 @@
 <template>
-  <GridLayout rows="auto, *" columns="*" @loaded="onScoreTabLoaded">
+  <GridLayout rows="auto, *" class="m-b-30" columns="*" @loaded="onScoreTabLoaded">
 
     <PlayerSelection></PlayerSelection>
 
-    <Image row="1" src="~/assets/images/rating.png" height="74%"></Image>
+    <Label text="football player ratings" class="app-name" horizontalAlignment="center" v-if="!isTrainer"></Label>
+
+    <Image row="1" src="~/assets/images/badge_unofficial.png" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
-    <GridLayout row="1" rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%"
-                horizontalAlignment="center">
-      <StackLayout colSpan="2" verticalAlignment="center">
-        <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center"
+    <GridLayout row="1" rows="3*, 4*, *, *, 4*, 3*" columns="2*, 2*, *, 2*" width="90%"
+                xstyle="background-color: rgba(200, 200, 200, 0.3)"
+                horizontalAlignment="center" verticalAlignment="center">
+
+      <StackLayout xstyle="background-color: rgba(100, 100, 100, 0.5)" row="1" colSpan="2" verticalAlignment="center">
+        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center"
                verticalAlignment="center"></Label>
         <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"
                @tap="selectRole"></Label>
-        <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"></Image>
-      </StackLayout>
-      <StackLayout col="0" colSpan="4" horizontalAlignment="center" class="card-photo" @tap="selectImage">
-        <Img :src="userWrapper.user.picture" stretch="aspectFill"></Img>
       </StackLayout>
 
-      <GridLayout row="1" colSpan="4" rows="2*, 2*, 2*, 2*, 3*" columns="2*, 2*, *, 2*" width="100%"
-                  horizontalAlignment="center">
-        <StackLayout row="0" colSpan="5" horizontalAlignment="center" orientation="horizontal">
-          <Label :text="playerName" class="card-name bold"></Label>
-          <StackLayout style="margin-left: 14" verticalAlignment="center" v-if="this.userWrapper.user.birthdate">
-            <Label :text="playerAgeYears" class="card-age-years" horizontalAlignment="right"></Label>
-            <Label :text="playerAgeMonths" class="card-age-months" horizontalAlignment="right"></Label>
-          </StackLayout>
-        </StackLayout>
+      <Img row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="center" class="card-photo card-photo-unofficial"></Img>
 
-        <Label row="1" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="1" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
-        <Label row="1" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="1" col="3" text="DRI" class="card-item-name" horizontalAlignment="left"></Label>
+      <Label :text="playerName" class="card-name bold" row="2" colSpan="4" horizontalAlignment="center" verticalAlignment="center"></Label>
 
-        <Label row="2" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="2" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"></Label>
-        <Label row="2" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="2" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"></Label>
+      <Label :text="playerAge" class="card-age bold" row="3" colSpan="4" horizontalAlignment="center" verticalAlignment="top"></Label>
 
-        <Label row="3" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="3" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"></Label>
-        <Label row="3" col="2" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="3" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
+      <GridLayout xstyle="background-color: rgba(50, 50, 50, 0.4)" row="4" colSpan="4" rows="*, *, *" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
+        <Label row="0" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="0" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="0" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="0" col="3" text="DRI" class="card-item-name" horizontalAlignment="left"></Label>
+
+        <Label row="1" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="1" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="1" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="1" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"></Label>
+
+        <Label row="2" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="2" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="2" col="2" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="2" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
       </GridLayout>
     </GridLayout>
   </GridLayout>
@@ -66,12 +63,19 @@
       playerName: function () {
         return this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname
       },
+      teamName: function () {
+        return this.userWrapper.user.teamName
+      },
       playerAgeYears: function () {
         return getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar"
       },
       playerAgeMonths: function () {
         const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
         return `${months} ${months === 1 ? "maand" : "maanden"}`;
+      },
+      playerAge: function () {
+        const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
+        return `${getYearsSince(new Date(this.userWrapper.user.birthdate))} jaar en ${months} ${months === 1 ? "maand" : "maanden"}`;
       }
     },
     data() {
@@ -114,53 +118,47 @@
 </script>
 
 <style scoped>
+  .app-name {
+    margin-top: 10;
+    font-size: 20;
+  }
+
   .card-score {
-    margin-top: 32%;
-    font-size: 50;
+    font-size: 56;
   }
 
   .card-role {
     font-size: 25;
-    margin-top: -15;
-  }
-
-  .card-club {
-    margin-top: 5%;
-    opacity: 0.5;
   }
 
   .card-photo {
-    margin-left: 19%;
-    margin-top: 5%;
-    border-width: 6;
-    border-color: #998225;
-    width: 120;
-    height: 120;
-    border-radius: 60;
+    clip-path: circle(100% at 50% 50%);
+    border-width: 4;
+    width: 122;
+    height: 122;
+  }
+
+  .card-photo-unofficial {
+    border-color: rgba(120, 208, 175, 0.85);
   }
 
   .card-name {
-    font-size: 24;
-    letter-spacing: -0.05;
+    color: #4e66df;
+    font-size: 28;
+    text-transform: uppercase;
   }
 
-  .card-age-years {
-    font-size: 14;
-    letter-spacing: -0.05;
-  }
-
-  .card-age-months {
-    font-size: 10;
-    letter-spacing: -0.05;
+  .card-age {
+    font-size: 13;
+    text-transform: uppercase;
   }
 
   .card-item-score {
-    font-size: 22;
+    font-size: 28;
     padding-right: 6;
   }
 
   .card-item-name {
-    font-size: 22;
-    letter-spacing: -0.05;
+    font-size: 24;
   }
 </style>
