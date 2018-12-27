@@ -240,6 +240,10 @@
     margin: 0
   }
 
+  .platform-android .table .add-measurement {
+    padding-top: 0;
+  }
+
   .table .latest-measurement-date {
     font-size: 9;
     margin-right: 10;
