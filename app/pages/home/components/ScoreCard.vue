@@ -9,7 +9,7 @@
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
-    <GridLayout row="1" rows="3*, 4*, *, *, 4*, 3*" columns="2*, 2*, *, 2*" width="90%"
+    <GridLayout row="1" rows="4*, 4*, *, *, 4*, 4*" columns="2*, 2*, *, 2*" width="90%"
                 xstyle="background-color: rgba(200, 200, 200, 0.3)"
                 horizontalAlignment="center" verticalAlignment="center">
 
@@ -132,14 +132,18 @@
   }
 
   .card-photo {
-    clip-path: circle(100% at 50% 50%);
-    border-width: 4;
+    border-width: 6;
     width: 122;
     height: 122;
+    border-radius: 61;
   }
 
   .card-photo-unofficial {
     border-color: rgba(120, 208, 175, 0.85);
+  }
+
+  .card-photo-official {
+    border-color: rgba(255, 214, 132, 0.85);
   }
 
   .card-name {
@@ -156,9 +160,11 @@
   .card-item-score {
     font-size: 28;
     padding-right: 6;
+    vertical-align: center;
   }
 
   .card-item-name {
     font-size: 24;
+    vertical-align: center;
   }
 </style>
