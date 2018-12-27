@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <Label row="0" :text="selectedPlayer" class="p-10 m-t-4 bold" style="text-transform: uppercase" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
+    <PlayerSelection v-on:player-selected="playerSelected($event)"></PlayerSelection>
 
     <!--GridLayout row="1" columns="50, 4*, 2*, 100" class="table">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -9,18 +9,27 @@
       <Label col="2" text="Overzicht" class=" p-y-10 p-x-5 bold"/>
     </GridLayout-->
 
-    <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table" @itemLoading="onListViewLoading">
+    <ListView row="2" for="(item, index) in exercises" separatorColor="transparent" class="table"
+              @itemLoading="onListViewLoading">
       <v-template>
         <GridLayout rows="auto, auto">
-          <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row" v-bind:class="'background-color-score-' + item.scoreClass">
-            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass" class="score round bold" horizontalAlignment="center" verticalAlignment="center" :opacity="item.hasMeasurement ? 1 : 0"></Label>
+          <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row"
+                      v-bind:class="'background-color-score-' + item.scoreClass">
+            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass" class="score round bold"
+                   horizontalAlignment="center" verticalAlignment="center"
+                   v-show="item.hasMeasurement"></Label>
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
-            <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true" verticalAlignment="center"></Label>
-            <Label col="3" class="round" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Label>
-            <Img col="3" color="white" width="14" height="14" src="~/assets/images/stats.png" horizontalAlignment="center" @tap="showDetails(item)" :opacity="item.hasMeasurement ? 1 : 0"></Img>
-            <Button col="4" text="+" class="add-measurement" horizontalAlignment="center" @tap="addMeasurement(item)"></Button>
+            <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
+                   verticalAlignment="center"></Label>
+            <Label col="3" class="round" src="~/assets/images/stats.png" horizontalAlignment="center"
+                   @tap="showDetails(item)" v-show="item.hasMeasurement"></Label>
+            <Img col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
+                 horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement"></Img>
+            <Button col="4" text="+" class="add-measurement" horizontalAlignment="center"
+                    @tap="addMeasurement(item)"></Button>
           </GridLayout>
-          <Label row="1" :text="'Laatste test ' + item.latestMeasurementDate" class="latest-measurement-date" horizontalAlignment="right" :opacity="item.hasMeasurement ? 1 : 0"></Label>
+          <Label row="1" :text="'Laatste test ' + item.latestMeasurementDate" class="latest-measurement-date"
+                 horizontalAlignment="right" v-show="item.hasMeasurement"></Label>
         </GridLayout>
       </v-template>
     </ListView>
@@ -28,18 +37,19 @@
 </template>
 
 <script>
-  import {action} from "tns-core-modules/ui/dialogs";
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
   import {getPlayersInTeam} from "~/services/TeamService"
   import {authService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
+  import PlayerSelection from "../PlayerSelection";
 
   export default {
     components: {
       AddMeasurement,
-      MeasurementDetails
+      MeasurementDetails,
+      PlayerSelection
     },
 
     created() {
@@ -80,26 +90,15 @@
           args.ios.selectionStyle = UITableViewCellSelectionStyle.None;
         }
       },
-      selectPlayer() {
-        // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
 
-        const options = this.players.map(player => player.firstname + " " + player.lastname); // ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
-        action({
-          title: "KIES EEN TEAM OF SPELER",
-          actions: ["vv Hoogland J09-7", ...options],
-          cancelable: true
-        }).then(picked => {
-          if (picked) {
-            this.player = undefined;
-            this.selectedPlayer = picked;
-            if (picked === "vv Hoogland J09-7") { // TODO the actual team
-              this.fetchTeamMeasurements();
-            } else {
-              this.player = this.players[options.indexOf(picked)];
-              this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
-            }
-          }
-        });
+      playerSelected(result) {
+        this.player = undefined;
+        if (result.picked === "vv Hoogland J09-7") { // TODO the actual team
+          this.fetchTeamMeasurements();
+        } else {
+          this.player = result.player;
+          this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
+        }
       },
 
       showDetails(item) {

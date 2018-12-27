@@ -1,57 +1,78 @@
 <template>
-    <GridLayout rows="auto, *" columns="*" @loaded="onScoreTabLoaded">
+  <GridLayout rows="auto, *" columns="*" @loaded="onScoreTabLoaded">
 
-      <Label row="0" :text="selectedPlayer" class="p-10 m-t-4 bold" style="text-transform: uppercase" horizontalAlignment="center" @tap="selectPlayer" v-if="isTrainer"></Label>
+    <PlayerSelection></PlayerSelection>
 
-      <Image row="1" src="~/assets/images/rating.png" height="74%"></Image>
-      <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
-      <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
-      <GridLayout row="1" rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%" horizontalAlignment="center">
-        <StackLayout colSpan="2" verticalAlignment="center">
-          <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center" verticalAlignment="center"></Label>
-          <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"></Label>
-          <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"></Image>
-        </StackLayout>
-        <StackLayout col="0" colSpan="4" horizontalAlignment="center" class="card-photo" @tap="selectImage">
-          <Img :src="userWrapper.user.picture" stretch="aspectFill"></Img>
-        </StackLayout>
+    <Image row="1" src="~/assets/images/rating.png" height="74%"></Image>
+    <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
+    <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
-        <GridLayout row="1" colSpan="4" rows="2*, 2*, 2*, 2*, 3*" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
-          <StackLayout row="0" colSpan="5" horizontalAlignment="center" orientation="horizontal">
-            <Label :text="playerName()" class="card-name bold"></Label>
-            <StackLayout style="margin-left: 14" verticalAlignment="center" v-if="this.userWrapper.user.birthdate">
-              <Label :text="playerAgeYears()" class="card-age-years" horizontalAlignment="right"></Label>
-              <Label :text="playerAgeMonths()" class="card-age-months" horizontalAlignment="right"></Label>
-            </StackLayout>
+    <GridLayout row="1" rows="16*, 13*" columns="2*, 2*, *, 2*" height="74%" style="margin-bottom: 9%"
+                horizontalAlignment="center">
+      <StackLayout colSpan="2" verticalAlignment="center">
+        <Label :text="score('TOTAL')" class="card-score" horizontalAlignment="center"
+               verticalAlignment="center"></Label>
+        <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"
+               @tap="selectRole"></Label>
+        <Image src="~/assets/images/botafogo.png" width="50" class="card-club" verticalAlignment="top"></Image>
+      </StackLayout>
+      <StackLayout col="0" colSpan="4" horizontalAlignment="center" class="card-photo" @tap="selectImage">
+        <Img :src="userWrapper.user.picture" stretch="aspectFill"></Img>
+      </StackLayout>
+
+      <GridLayout row="1" colSpan="4" rows="2*, 2*, 2*, 2*, 3*" columns="2*, 2*, *, 2*" width="100%"
+                  horizontalAlignment="center">
+        <StackLayout row="0" colSpan="5" horizontalAlignment="center" orientation="horizontal">
+          <Label :text="playerName" class="card-name bold"></Label>
+          <StackLayout style="margin-left: 14" verticalAlignment="center" v-if="this.userWrapper.user.birthdate">
+            <Label :text="playerAgeYears" class="card-age-years" horizontalAlignment="right"></Label>
+            <Label :text="playerAgeMonths" class="card-age-months" horizontalAlignment="right"></Label>
           </StackLayout>
+        </StackLayout>
 
-          <Label row="1" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
-          <Label row="1" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
-          <Label row="1" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
-          <Label row="1" col="3" text="DRI" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="1" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="1" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="1" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="1" col="3" text="DRI" class="card-item-name" horizontalAlignment="left"></Label>
 
-          <Label row="2" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"></Label>
-          <Label row="2" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"></Label>
-          <Label row="2" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"></Label>
-          <Label row="2" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="2" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="2" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="2" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="2" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"></Label>
 
-          <Label row="3" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"></Label>
-          <Label row="3" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"></Label>
-          <Label row="3" col="2" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"></Label>
-          <Label row="3" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
-        </GridLayout>
+        <Label row="3" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="3" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="3" col="2" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="3" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
       </GridLayout>
     </GridLayout>
+  </GridLayout>
 </template>
 
 <script>
   import {authService} from "~/main";
   import {getYearsSince, getMonthsSince} from "~/utils/date-util";
   import {action} from "tns-core-modules/ui/dialogs";
+  import PlayerSelection from "./PlayerSelection";
 
   export default {
+    components: {
+      PlayerSelection
+    },
     created() {
       console.log("ScoreCard created");
+    },
+    computed: {
+      playerName: function () {
+        return this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname
+      },
+      playerAgeYears: function () {
+        return getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar"
+      },
+      playerAgeMonths: function () {
+        const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
+        return `${months} ${months === 1 ? "maand" : "maanden"}`;
+      }
     },
     data() {
       return {
@@ -63,12 +84,6 @@
             return authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
           }
         },
-        playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
-        playerAgeYears: () => getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar",
-        playerAgeMonths: () => {
-          const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
-          return `${months} ${months === 1 ? "maand" : "maanden"}`;
-        }
       };
     },
     methods: {

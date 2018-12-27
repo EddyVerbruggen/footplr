@@ -1,10 +1,12 @@
 <template>
   <StackLayout>
+    <PlayerSelection></PlayerSelection>
+
     <Button @tap="onTapLogout" text="Uitloggen"></Button>
 
     <StackLayout horizontalAlignment="center" class="card-photo" @tap="selectImage">
       <Img :src="userWrapper.user.picture" style="border-radius: 10" stretch="aspectFill" v-if="!savingPicture"></Img>
-      <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
+      <ActivityIndicator busy="true" style="margin-top: 44" v-else></ActivityIndicator>
     </StackLayout>
 
     <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"></Label>
@@ -23,10 +25,14 @@
   import {ImageSource} from "tns-core-modules/image-source";
   import {action} from "tns-core-modules/ui/dialogs";
   import * as fs from "tns-core-modules/file-system";
+  import PlayerSelection from "./PlayerSelection";
 
   const firebaseWebApi = require("nativescript-plugin-firebase/app");
 
   export default {
+    components: {
+      PlayerSelection
+    },
     created() {
       console.log("Profile component created");
     },
