@@ -1,9 +1,9 @@
 <template>
   <GridLayout rows="auto, *" class="m-b-30" columns="*" @loaded="onScoreTabLoaded">
 
-    <PlayerSelection></PlayerSelection>
+    <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
-    <Label text="football player ratings" class="app-name" horizontalAlignment="center" v-if="!isTrainer"></Label>
+    <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
 
     <Image row="1" src="~/assets/images/badge_unofficial.png" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
@@ -113,11 +113,6 @@
 </script>
 
 <style scoped>
-  .app-name {
-    margin-top: 10;
-    font-size: 20;
-  }
-
   .card-score {
     font-size: 56;
   }

@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <PlayerSelection v-on:player-selected="playerSelected($event)"></PlayerSelection>
+    <PlayerSelection v-on:player-selected="playerSelected($event)" v-if="isTrainer"></PlayerSelection>
 
     <!--GridLayout row="1" columns="50, 4*, 2*, 100" class="table">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -79,7 +79,6 @@
         player: authService.userWrapper.user,
         players: [],
         exercises: [],
-        // TODO perhaps this component will be trainer-only, in which case we can remove this property
         isTrainer: authService.userWrapper.user.trains !== undefined
       }
     },

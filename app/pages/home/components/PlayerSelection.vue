@@ -2,8 +2,7 @@
   <StackLayout
       orientation="horizontal"
       horizontalAlignment="center"
-      @tap="selectPlayer"
-      v-if="isTrainer">
+      @tap="selectPlayer">
     <Label
         :text="iconPeople"
         class="icon"></Label>
@@ -26,12 +25,18 @@
     created() {
       console.log("PlayerSelection created");
     },
+    mounted() {
+      console.log("PlayerSelection mounted");
+    },
+    updated() {
+      console.log("PlayerSelection updated " + this + ", " + authService.userWrapper.user.firstname);
+    },
     data() {
       return {
         iconPeople: String.fromCharCode(0xe7fc),
         iconDropDown: String.fromCharCode(0xe5c5),
-        selectedPlayer: "vv Hoogland J09-7",
-        isTrainer: authService.userWrapper.user.trains !== undefined,
+        // selectedPlayer: "vv Hoogland J09-7",
+        selectedPlayer: authService.userWrapper.user.firstname + " " + (authService.userWrapper.user.lastname ? authService.userWrapper.user.lastname : ""),
         players: undefined,
       }
     },

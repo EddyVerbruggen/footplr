@@ -1,7 +1,8 @@
 <template>
   <StackLayout>
     <GridLayout rows="auto" columns="*">
-      <PlayerSelection></PlayerSelection>
+      <PlayerSelection v-if="isTrainer"></PlayerSelection>
+      <Label text="Jouw spelersprofiel" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
       <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
     </GridLayout>
 
@@ -92,6 +93,7 @@
         savingPicture: false,
         editingBirthDate: false,
         userWrapper: authService.userWrapper,
+        isTrainer: authService.userWrapper.user.trains !== undefined,
         playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
       };
     },
@@ -204,7 +206,7 @@
     padding: 24 24 24 12;
   }
 
-  .profile-form .profile-field {
+  .profile-field {
     font-size: 16;
     padding: 20 0;
     border-bottom-color: #cccdd6;
@@ -217,6 +219,7 @@
   }
 
   .logout {
+    padding-top: 12;
     padding-right: 12;
   }
 

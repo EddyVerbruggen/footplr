@@ -4,6 +4,7 @@ import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
 import { getString } from "tns-core-modules/application-settings";
 
+// TODO there's a difference between the logged in user and the one being 'watched' (for trainers, that is)
 export default class AuthService extends BackendService {
 
   public userWrapper: { user: User } = {user: undefined};
