@@ -1,19 +1,55 @@
 <template>
   <StackLayout>
-    <PlayerSelection></PlayerSelection>
-
-    <Button @tap="onTapLogout" text="Uitloggen"></Button>
+    <GridLayout rows="auto" columns="*">
+      <PlayerSelection></PlayerSelection>
+      <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
+    </GridLayout>
 
     <StackLayout horizontalAlignment="center" class="card-photo" @tap="selectImage">
-      <Img :src="userWrapper.user.picture" style="border-radius: 10" stretch="aspectFill" v-if="!savingPicture"></Img>
-      <ActivityIndicator busy="true" style="margin-top: 44" v-else></ActivityIndicator>
+      <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
+      <Img :src="userWrapper.user.picture" style="border-radius: 10" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
+      <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
     </StackLayout>
 
-    <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center" @tap="selectRole"></Label>
+    <GridLayout class="profile-form" rows="auto, auto, auto, auto, auto" columns="50, *">
+      <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
+      <TextField
+          row="0"
+          col="1"
+          class="profile-field"
+          hint="Voornaam"
+          returnKeyType="next"
+          @focus="focusFirstName"
+          @blur="blurFirstName"
+          @returnPress="focusLastName()"
+          v-model="userWrapper.user.firstname"
+          autocorrect="false"></TextField>
 
-    <!--<Label :text="playerName()" class="card-name bold"></Label>-->
+      <TextField
+          row="1"
+          col="1"
+          class="profile-field"
+          hint="Achternaam"
+          returnKeyType="done"
+          @focus="focusLastName"
+          @blur="blurLastName"
+          v-model="userWrapper.user.lastname"
+          autocorrect="false"></TextField>
 
-    <DatePicker row="3" colSpan="2" v-model="userWrapper.user.birthdate"></DatePicker>
+      <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
+      <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
+        <Label :text="userWrapper.user.position || 'Op welke positie speel je?'" verticalAlignment="center"></Label>
+        <Label :text="iconDropDown" class="icon"></Label>
+      </StackLayout>
+
+      <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
+      <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editingBirthDate = true" v-if="!editingBirthDate">
+        <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
+        <Label :text="iconDropDown" class="icon"></Label>
+      </StackLayout>
+      <DatePicker row="3" col="1" height="150" v-model="userWrapper.user.birthdate" v-if="editingBirthDate"></DatePicker>
+      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary btn-save-birthdate" @tap="saveBirthDate()" v-if="editingBirthDate"></Button>
+    </GridLayout>
 
   </StackLayout>
 </template>
@@ -22,6 +58,7 @@
   import routes from "~/router";
   import {authService} from "~/main";
   import {takeOrPickPhoto} from "~/utils/photo-util";
+  import {formatDate} from "~/utils/date-util";
   import {ImageSource} from "tns-core-modules/image-source";
   import {action} from "tns-core-modules/ui/dialogs";
   import * as fs from "tns-core-modules/file-system";
@@ -33,12 +70,27 @@
     components: {
       PlayerSelection
     },
-    created() {
-      console.log("Profile component created");
+
+    computed: {
+      birthDateFormatted: function () {
+        if (!this.userWrapper.user.birthdate) {
+          return "Wat is je geboortedatum?";
+        }
+        return formatDate(this.userWrapper.user.birthdate);
+      }
     },
+
     data() {
       return {
+        // for char codes, see https://github.com/google/material-design-icons/blob/master/iconfont/codepoints
+        iconCamera: String.fromCharCode(0xe3b0),
+        iconName: String.fromCharCode(0xe85d),
+        iconLocation: String.fromCharCode(0xe55f),
+        iconDate: String.fromCharCode(0xe916),
+        iconExit: String.fromCharCode(0xe879),
+        iconDropDown: String.fromCharCode(0xe5c5),
         savingPicture: false,
+        editingBirthDate: false,
         userWrapper: authService.userWrapper,
         playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
       };
@@ -54,9 +106,37 @@
           });
         });
       },
-      onScoreTabLoaded() {
-        console.log("Score tab loaded @ " + new Date().getTime());
+
+      focusFirstName() {
+        console.log("Focus firstname");
       },
+
+      blurFirstName() {
+        console.log("Blur firstname");
+        authService.updateUserDataInFirebase({
+          firstname: this.userWrapper.user.firstname
+        }).then(() => console.log("Updated firstname"));
+      },
+
+      blurLastName() {
+        console.log("Blur lastname");
+        authService.updateUserDataInFirebase({
+          lastname: this.userWrapper.user.lastname
+        }).then(() => console.log("Updated lastname"));
+      },
+
+      changeFirstName() {
+        console.log("Text change firstname");
+      },
+
+      changeLastName() {
+        console.log("Text change firstname");
+      },
+
+      focusLastName() {
+        console.log("Focus lastname");
+      },
+
       selectImage() {
         takeOrPickPhoto().then(img => {
           this.savingPicture = true;
@@ -90,7 +170,15 @@
           }
         });
       },
-      selectRole() {
+
+      saveBirthDate() {
+        this.editingBirthDate = false;
+        authService.updateUserDataInFirebase({
+          birthdate: this.userWrapper.user.birthdate
+        }).then(() => console.log("Updated birthdate"));
+      },
+
+      selectPosition() {
         const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
         action({
           title: "Op welke positie speel je?",
@@ -111,44 +199,36 @@
 </script>
 
 <style scoped>
-  .card-score {
-    margin-top: 32%;
-    font-size: 50;
+  .profile-form {
+    width: 100%;
+    padding: 24 24 24 12;
   }
 
-  .card-role {
-    font-size: 25;
-    margin-top: -15;
+  .profile-form .profile-field {
+    font-size: 16;
+    padding: 20 0;
+    border-bottom-color: #cccdd6;
+    border-bottom-width: 1;
+    placeholder-color: #9598a9;
   }
 
-  .card-club {
-    margin-top: 5%;
-    opacity: 0.5;
+  .icon-green {
+    color: #67d4a5;
+  }
+
+  .logout {
+    padding-right: 12;
   }
 
   .card-photo {
-    margin-left: 19%;
-    margin-top: 5%;
-    border-width: 6;
-    background-color: #2699fb;
-    border-color: #3649a9;
-    width: 120;
-    height: 120;
-    border-radius: 60;
+    background-color: #9093a6;
+    width: 110;
+    height: 110;
+    border-radius: 55;
+    margin-top: 60;
   }
 
-  .card-name {
-    font-size: 24;
-    letter-spacing: -0.05;
-  }
-
-  .card-age-years {
-    font-size: 14;
-    letter-spacing: -0.05;
-  }
-
-  .card-age-months {
-    font-size: 10;
-    letter-spacing: -0.05;
+  .btn-save-birthdate {
+    margin-top: 12;
   }
 </style>

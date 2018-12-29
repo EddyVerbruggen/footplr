@@ -17,5 +17,9 @@ export function getMonthsSince(date: Date): number {
 }
 
 export function formatDate(date: Date): string {
-  return `${date.getDate()} ${MONTHNAMES[date.getMonth()]} '${("" + date.getFullYear()).substring(2)}`;
+  if (!date) {
+    return "";
+  }
+  // return `${date.getDate()} ${MONTHNAMES[date.getMonth()]} '${("" + date.getFullYear()).substring(2)}`;
+  return `${date.getDate()} ${MONTHNAMES[date.getMonth()]} ${date.getFullYear()}`;
 }

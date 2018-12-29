@@ -65,14 +65,10 @@
       teamName: function () {
         return this.userWrapper.user.teamName
       },
-      playerAgeYears: function () {
-        return getYearsSince(new Date(this.userWrapper.user.birthdate)) + " jaar"
-      },
-      playerAgeMonths: function () {
-        const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
-        return `${months} ${months === 1 ? "maand" : "maanden"}`;
-      },
       playerAge: function () {
+        if (!this.userWrapper.user.birthdate) {
+          return "";
+        }
         const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
         return `${getYearsSince(new Date(this.userWrapper.user.birthdate))} jaar en ${months} ${months === 1 ? "maand" : "maanden"}`;
       }

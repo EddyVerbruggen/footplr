@@ -22,6 +22,12 @@ Page {
   font-family: "Core Sans D 55 Bold", CoreSansD55Bold, system, sans-serif;
 }
 
+.icon {
+  /* for char codes, see https://github.com/google/material-design-icons/blob/master/iconfont/codepoints */
+  font-family: 'Material Icons', MaterialIcons-Regular;
+  font-size: 24;
+}
+
 .listview-separator {
   border-bottom-width: 1px;
   border-bottom-color: #CBE3F0;

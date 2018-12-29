@@ -1,9 +1,19 @@
 <template>
-  <Label
-      :text="selectedPlayer"
-      class="player-selection bold"
-      v-if="isTrainer"
-      @tap="selectPlayer"></Label>
+  <StackLayout
+      orientation="horizontal"
+      horizontalAlignment="center"
+      @tap="selectPlayer"
+      v-if="isTrainer">
+    <Label
+        :text="iconPeople"
+        class="icon"></Label>
+    <Label
+        :text="selectedPlayer"
+        class="player-selection bold"></Label>
+    <Label
+        :text="iconDropDown"
+        class="icon"></Label>
+  </StackLayout>
 </template>
 
 <script>
@@ -18,6 +28,8 @@
     },
     data() {
       return {
+        iconPeople: String.fromCharCode(0xe7fc),
+        iconDropDown: String.fromCharCode(0xe5c5),
         selectedPlayer: "vv Hoogland J09-7",
         isTrainer: authService.userWrapper.user.trains !== undefined,
         players: undefined,
@@ -33,11 +45,12 @@
         }
 
         // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
-        const options = this.players.map(player => player.firstname + " " + player.lastname); // ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
+        const options = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
         action({
           title: "KIES EEN TEAM OF SPELER",
           actions: ["vv Hoogland J09-7", ...options],
-          cancelable: true
+          cancelable: true,
+          cancelButtonText: "Annuleren"
         }).then(picked => {
           if (picked) {
             this.selectedPlayer = picked;
@@ -50,11 +63,10 @@
 </script>
 
 <style scoped>
-  .player-selection {
-    font-size: 12;
-    text-transform: uppercase;
+  Label.player-selection {
+    font-size: 16;
     text-align: center;
-    padding: 10;
+    padding: 10 3 10 7;
     margin-top: 4;
   }
 </style>

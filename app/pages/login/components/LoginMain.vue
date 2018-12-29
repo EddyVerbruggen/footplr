@@ -12,6 +12,7 @@
           autocorrect="false"
           autocapitalizationType="none"
           row="0"></TextField>
+
       <TextField ref="password"
                  hint="Wachtwoord"
                  secure="true"
