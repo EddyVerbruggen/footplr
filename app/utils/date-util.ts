@@ -7,6 +7,9 @@ export function getYearsSince(date: Date): number {
 }
 
 export function getMonthsSince(date: Date): number {
+  if (!date) {
+    return 0;
+  }
   const dayCompensation = new Date().getDate() > date.getDate() ? 0 : 1;
   const monthsElapsedThisYear = new Date().getMonth();
   if (monthsElapsedThisYear > date.getMonth()) {

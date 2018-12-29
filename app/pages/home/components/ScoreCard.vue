@@ -13,13 +13,11 @@
                 horizontalAlignment="center" verticalAlignment="center">
 
       <StackLayout row="1" colSpan="2" verticalAlignment="center">
-        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center"
-               verticalAlignment="center"></Label>
-        <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"
-               @tap="selectRole"></Label>
+        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
+        <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"></Label>
       </StackLayout>
 
-      <Img row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="center" class="card-photo card-photo-unofficial"></Img>
+      <Img row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></Img>
 
       <Label :text="playerName" class="card-name bold" row="2" colSpan="4" horizontalAlignment="center" verticalAlignment="center"></Label>
 
@@ -46,10 +44,10 @@
 </template>
 
 <script>
-  import {authService} from "~/main";
+  import {authService, editingUserService} from "~/main";
   import {getYearsSince, getMonthsSince} from "~/utils/date-util";
-  import {action} from "tns-core-modules/ui/dialogs";
   import PlayerSelection from "./PlayerSelection";
+  import {EventBus} from "~/services/event-bus";
 
   export default {
     components: {
@@ -57,10 +55,11 @@
     },
     created() {
       console.log("ScoreCard created");
+      EventBus.$on("player-selected", stuff => this.userWrapper.user = stuff.player);
     },
     computed: {
       playerName: function () {
-        return this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname
+        return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname
       },
       teamName: function () {
         return this.userWrapper.user.teamName
@@ -77,10 +76,10 @@
       return {
         selectedPlayer: "Team gemiddelde",
         isTrainer: authService.userWrapper.user.trains !== undefined,
-        userWrapper: authService.userWrapper,
+        userWrapper: editingUserService.userWrapper,
         score: type => {
-          if (authService.userWrapper.user.scores) {
-            return authService.userWrapper.user.scores.official[type]; // TODO official/unofficial
+          if (this.$editingUserService.userWrapper.user.scores) {
+            return this.$editingUserService.userWrapper.user.scores.official[type]; // TODO official/unofficial
           }
         },
       };
@@ -89,25 +88,6 @@
       onScoreTabLoaded() {
         console.log("Score tab loaded @ " + new Date().getTime());
       },
-      selectImage() {
-        console.log("TODO: pick image and store in Firebase");
-      },
-      selectRole() {
-        const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
-        action({
-          title: "Op welke positie speel je?",
-          actions: options
-        }).then(picked => {
-          console.log("Picked option: " + picked);
-          if (picked) {
-            picked = picked.substring(0, picked.indexOf(" ("));
-            // this.playerPosition = picked;
-            authService.updateUserDataInFirebase({
-              position: picked
-            }).then(() => console.log("Updated!"));
-          }
-        });
-      }
     }
   };
 </script>
@@ -122,10 +102,10 @@
   }
 
   .card-photo {
-    border-width: 6;
-    width: 122;
-    height: 122;
-    border-radius: 61;
+    width: 110;
+    height: 110;
+    border-radius: 55;
+    background-color: rgba(255, 255, 255, 0.3);
   }
 
   .card-photo-unofficial {
@@ -138,12 +118,12 @@
 
   .card-name {
     color: #4e66df;
-    font-size: 28;
-    text-transform: uppercase;
+    font-size: 25;
+    /*text-transform: uppercase;*/
   }
 
   .card-age {
-    font-size: 13;
+    font-size: 11;
     text-transform: uppercase;
   }
 

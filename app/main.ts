@@ -1,6 +1,7 @@
 import Vue from "nativescript-vue"
 import routes from "./router";
 import AuthService from "./services/AuthService"
+import EditingUserService from "./services/EditingUserService"
 import BackendService from './services/BackendService';
 import * as firebase from "nativescript-plugin-firebase"
 
@@ -9,11 +10,13 @@ import "./styles.scss";
 
 export const backendService = new BackendService();
 export const authService = new AuthService();
+export const editingUserService = new EditingUserService();
 
 const v = <any>Vue;
 declare const TNS_ENV: any;
 
 v.prototype.$authService = authService;
+v.prototype.$editingUserService = editingUserService;
 
 firebase.init()
   .then(instance => {
@@ -38,7 +41,9 @@ firebase.init()
 const loggedIn = authService.isLoggedIn();
 
 if (loggedIn) {
-  authService.watchUser();
+  authService.userWrapper.user = authService.user;
+  editingUserService.userWrapper.user = authService.userWrapper.user;
+  editingUserService.watchUser();
 }
 
 new v({

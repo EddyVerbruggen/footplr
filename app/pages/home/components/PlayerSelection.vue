@@ -7,7 +7,7 @@
         :text="iconPeople"
         class="icon"></Label>
     <Label
-        :text="selectedPlayer"
+        :text="selectedPlayerName"
         class="player-selection bold"></Label>
     <Label
         :text="iconDropDown"
@@ -19,24 +19,26 @@
   import {action} from "tns-core-modules/ui/dialogs";
   import {authService} from "~/main";
   import {getPlayersInTeam} from "~/services/TeamService"
+  import {EventBus} from "~/services/event-bus";
 
   export default {
-    name: 'PlayerSelection',
+    name: "PlayerSelection",
     created() {
-      console.log("PlayerSelection created");
+      EventBus.$on("player-selected", stuff => {
+        console.log(">> selected, " + stuff.player.firstname);
+        this.selectedPlayer = stuff.player;
+      });
     },
-    mounted() {
-      console.log("PlayerSelection mounted");
-    },
-    updated() {
-      console.log("PlayerSelection updated " + this + ", " + authService.userWrapper.user.firstname);
+    computed: {
+      selectedPlayerName: function () {
+        return this.selectedPlayer.firstname + " " + (this.selectedPlayer.lastname ? this.selectedPlayer.lastname : "");
+      }
     },
     data() {
       return {
         iconPeople: String.fromCharCode(0xe7fc),
         iconDropDown: String.fromCharCode(0xe5c5),
-        // selectedPlayer: "vv Hoogland J09-7",
-        selectedPlayer: authService.userWrapper.user.firstname + " " + (authService.userWrapper.user.lastname ? authService.userWrapper.user.lastname : ""),
+        selectedPlayer: this.$editingUserService.userWrapper.user,
         players: undefined,
       }
     },
@@ -50,16 +52,31 @@
         }
 
         // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
+        // TODO for the profile page we don't want teams..
         const options = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
+        const cancelLabel = "Annuleren";
+        const myselfLabel = "Ikzelf";
         action({
           title: "KIES EEN TEAM OF SPELER",
-          actions: ["vv Hoogland J09-7", ...options],
+          actions: [myselfLabel, "vv Hoogland J09-7", ...options],
           cancelable: true,
-          cancelButtonText: "Annuleren"
+          cancelButtonText: cancelLabel
         }).then(picked => {
-          if (picked) {
+          if (picked && picked !== cancelLabel) {
             this.selectedPlayer = picked;
-            this.$emit('player-selected', {picked, player: this.players[options.indexOf(picked)]});
+            let player;
+            if (picked === myselfLabel) {
+              player = authService.userWrapper.user;
+            } else {
+              player = this.players[options.indexOf(picked)];
+            }
+
+            this.$editingUserService.clearListener();
+            this.$editingUserService.userWrapper.user = player;
+            this.$editingUserService.watchUser();
+
+            // this.$emit('player-selected', { picked, player });
+            EventBus.$emit('player-selected', { picked, player });
           }
         });
       }

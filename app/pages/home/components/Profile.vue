@@ -57,7 +57,7 @@
 
 <script>
   import routes from "~/router";
-  import {authService} from "~/main";
+  import {authService, editingUserService} from "~/main";
   import {takeOrPickPhoto} from "~/utils/photo-util";
   import {formatDate} from "~/utils/date-util";
   import {ImageSource} from "tns-core-modules/image-source";
@@ -92,7 +92,7 @@
         iconDropDown: String.fromCharCode(0xe5c5),
         savingPicture: false,
         editingBirthDate: false,
-        userWrapper: authService.userWrapper,
+        userWrapper: editingUserService.userWrapper,
         isTrainer: authService.userWrapper.user.trains !== undefined,
         playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
       };
@@ -100,6 +100,7 @@
     methods: {
       onTapLogout() {
         authService.logout().then(() => {
+          editingUserService.clearListener();
           this.$navigateTo(routes.login, {
             clearHistory: true,
             transition: {
@@ -115,14 +116,14 @@
 
       blurFirstName() {
         console.log("Blur firstname");
-        authService.updateUserDataInFirebase({
+        editingUserService.updateUserDataInFirebase({
           firstname: this.userWrapper.user.firstname
         }).then(() => console.log("Updated firstname"));
       },
 
       blurLastName() {
         console.log("Blur lastname");
-        authService.updateUserDataInFirebase({
+        editingUserService.updateUserDataInFirebase({
           lastname: this.userWrapper.user.lastname
         }).then(() => console.log("Updated lastname"));
       },
@@ -147,13 +148,13 @@
             let path = fs.path.join(fs.knownFolders.documents().path, "ProfilePicToUpload.jpeg");
             if (imageSource.saveToFile(path, "jpeg", 75)) {
 
-              const childRef = firebaseWebApi.storage().ref().child(`profilepics/${authService.userWrapper.user.id}.jpg`);
+              const childRef = firebaseWebApi.storage().ref().child(`profilepics/${editingUserService.userWrapper.user.id}.jpg`);
 
               childRef.put(fs.File.fromPath(path)).then(
                   uploadedFile => {
                     this.savingPicture = false;
                     if (uploadedFile.downloadURL) {
-                      authService.updateUserDataInFirebase({
+                      editingUserService.updateUserDataInFirebase({
                         picture: uploadedFile.downloadURL
                       }).then(() => console.log("Updated user pic!"));
                     }
@@ -175,7 +176,7 @@
 
       saveBirthDate() {
         this.editingBirthDate = false;
-        authService.updateUserDataInFirebase({
+        editingUserService.updateUserDataInFirebase({
           birthdate: this.userWrapper.user.birthdate
         }).then(() => console.log("Updated birthdate"));
       },
@@ -190,7 +191,7 @@
           if (picked) {
             picked = picked.substring(0, picked.indexOf(" ("));
             // this.playerPosition = picked;
-            authService.updateUserDataInFirebase({
+            editingUserService.updateUserDataInFirebase({
               position: picked
             }).then(() => console.log("Updated!"));
           }

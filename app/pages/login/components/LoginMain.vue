@@ -105,6 +105,8 @@
             .login(this.user)
             .then(() => {
               this.isAuthenticating = false;
+              this.$editingUserService.userWrapper.user = this.$authService.userWrapper.user;
+              this.$editingUserService.watchUser();
               this.$navigateTo(routes.home, {clearHistory: true});
               this.visible = false;
             })

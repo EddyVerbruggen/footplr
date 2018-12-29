@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <PlayerSelection v-on:player-selected="playerSelected($event)" v-if="isTrainer"></PlayerSelection>
+    <PlayerSelection xv-on:player-selected="playerSelected($event)" v-if="isTrainer"></PlayerSelection>
 
     <!--GridLayout row="1" columns="50, 4*, 2*, 100" class="table">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -40,10 +40,11 @@
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
   import {getPlayersInTeam} from "~/services/TeamService"
-  import {authService} from "~/main";
+  import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
   import PlayerSelection from "../PlayerSelection";
+  import {EventBus} from "~/services/event-bus";
 
   export default {
     components: {
@@ -53,8 +54,10 @@
     },
 
     created() {
-      authService.anyPageCallback = () => {
-        this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
+      EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
+
+      editingUserService.anyPageCallback = () => {
+        this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       };
 
       if (authService.userWrapper.user.trains !== undefined) {
@@ -76,7 +79,7 @@
       return {
         official: true, // TODO somewhere more generic
         selectedPlayer: "vv Hoogland J09-7",
-        player: authService.userWrapper.user,
+        player: editingUserService.userWrapper.user,
         players: [],
         exercises: [],
         isTrainer: authService.userWrapper.user.trains !== undefined

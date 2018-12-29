@@ -4,25 +4,12 @@ import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
 import { getString } from "tns-core-modules/application-settings";
 
-// TODO there's a difference between the logged in user and the one being 'watched' (for trainers, that is)
+// this class concerns the logged in user, not the actual user being edited
 export default class AuthService extends BackendService {
-
   public userWrapper: { user: User } = {user: undefined};
-
-  // poor man's observable.. on any page you're currently at, you can register this callback
-  // note that this has not been tested with more than one page, so an Array may be required, etc
-  public anyPageCallback: Function = null;
-
-  private userRef: firestore.DocumentReference;
-  private userLoginUnsubscribe;
 
   isLoggedIn(): boolean {
     return !!getString(this.userKey);
-  }
-
-  watchUser(): void {
-    this.userWrapper.user = this.user;
-    this.listenToUserUpdates(this.user.id);
   }
 
   async register(user) {
@@ -54,25 +41,8 @@ export default class AuthService extends BackendService {
 
     await this.syncUserData(userDoc);
 
-    this.listenToUserUpdates(firebaseUser.uid);
+    // this.listenToUserUpdates(firebaseUser.uid);
     return user;
-  }
-
-  private listenToUserUpdates(id: string) {
-    this.userRef = firebase.firestore.collection("users").doc(id);
-
-    this.userLoginUnsubscribe = this.userRef.onSnapshot(doc => {
-      if (doc.exists) {
-        this.syncUserData(doc);
-
-        if (this.anyPageCallback) {
-          this.anyPageCallback();
-        }
-      } else {
-        console.log("No such document!");
-      }
-    });
-    return null;
   }
 
   private async syncUserData(doc: firestore.DocumentSnapshot): Promise<void> {
@@ -97,10 +67,6 @@ export default class AuthService extends BackendService {
     return null;
   }
 
-  async updateUserDataInFirebase(userData) {
-    return this.userRef.update(userData);
-  }
-
   async resetPassword(email) {
     const result = await firebase.resetPassword({
       email: email
@@ -110,7 +76,6 @@ export default class AuthService extends BackendService {
 
   async logout() {
     this.user = null;
-    this.userLoginUnsubscribe();
     return firebase.logout();
   }
 }
