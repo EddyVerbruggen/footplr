@@ -12,7 +12,7 @@
       <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
     </StackLayout>
 
-    <GridLayout class="profile-form" rows="auto, auto, auto, auto, auto" columns="50, *">
+    <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
       <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
       <TextField
           row="0"
@@ -44,12 +44,11 @@
       </StackLayout>
 
       <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
-      <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editingBirthDate = true" v-if="!editingBirthDate">
+
+      <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editBirthDate()">
         <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
         <Label :text="iconDropDown" class="icon"></Label>
       </StackLayout>
-      <DatePicker row="3" col="1" height="150" v-model="userWrapper.user.birthdate" v-if="editingBirthDate"></DatePicker>
-      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary btn-save-birthdate" @tap="saveBirthDate()" v-if="editingBirthDate"></Button>
     </GridLayout>
 
   </StackLayout>
@@ -63,7 +62,8 @@
   import {ImageSource} from "tns-core-modules/image-source";
   import {action} from "tns-core-modules/ui/dialogs";
   import * as fs from "tns-core-modules/file-system";
-  import PlayerSelection from "./PlayerSelection";
+  import PlayerSelection from "../PlayerSelection";
+  import UpdateBirthDate from "./UpdateBirthDate.vue"
 
   const firebaseWebApi = require("nativescript-plugin-firebase/app");
 
@@ -174,11 +174,20 @@
         });
       },
 
-      saveBirthDate() {
-        this.editingBirthDate = false;
-        editingUserService.updateUserDataInFirebase({
-          birthdate: this.userWrapper.user.birthdate
-        }).then(() => console.log("Updated birthdate"));
+      editBirthDate() {
+        this.$showModal(UpdateBirthDate, {
+          fullscreen: true,
+          props: {
+            birthdate: this.userWrapper.user.birthdate
+          }
+        }).then(birthdate => {
+          console.log({birthdate});
+          if (birthdate) {
+            this.$editingUserService.updateUserDataInFirebase({
+              birthdate
+            }).then(() => console.log("Updated birthdate"));
+          }
+        });
       },
 
       selectPosition() {
@@ -190,8 +199,8 @@
           console.log("Picked option: " + picked);
           if (picked) {
             picked = picked.substring(0, picked.indexOf(" ("));
-            // this.playerPosition = picked;
-            editingUserService.updateUserDataInFirebase({
+            this.userWrapper.user.position = picked;
+            this.$editingUserService.updateUserDataInFirebase({
               position: picked
             }).then(() => console.log("Updated!"));
           }

@@ -57,7 +57,7 @@ export default class EditingUserService extends BackendService {
     return null;
   }
 
-  async updateUserDataInFirebase(userData) {
+  async updateUserDataInFirebase(userData): Promise<void> {
     return this.userRef.update(userData);
   }
 

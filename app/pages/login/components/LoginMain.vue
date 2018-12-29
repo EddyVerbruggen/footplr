@@ -72,7 +72,8 @@
         action({
           title: "Kies een login..",
           actions: options,
-          cancelable: true
+          cancelable: true,
+          cancelButtonText: "Annuleren"
         }).then(picked => {
           if (picked) {
             if (picked === "Trainer Hoogland JO9-7") {

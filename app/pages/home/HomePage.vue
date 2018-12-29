@@ -37,7 +37,7 @@
   import * as platformModule from "tns-core-modules/platform"
   import routes from "~/router";
   import Measurements from "./components/measurements/Measurements.vue"
-  import Profile from "./components/Profile.vue"
+  import Profile from "./components/profile/Profile.vue"
   import ScoreCard from "./components/ScoreCard.vue"
 
   export default {
