@@ -1,7 +1,6 @@
 import { firestore } from "nativescript-plugin-firebase";
+import { PlayerPosition } from "~/shared/player-position";
 import { SharedUser } from "~/shared/shared-user";
-
-export type PlayerPosition = "GK" | "CF" | "CAM"; // TODO
 
 export default interface User extends SharedUser {
   club: firestore.DocumentReference; // Club

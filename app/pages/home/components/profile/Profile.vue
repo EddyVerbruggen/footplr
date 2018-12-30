@@ -38,7 +38,7 @@
 
         <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
         <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
-          <Label :text="userWrapper.user.position || 'Op welke positie speel je?'" verticalAlignment="center"></Label>
+          <Label :text="playerPosition" verticalAlignment="center"></Label>
           <Label :text="iconDropDown" class="icon"></Label>
         </StackLayout>
 
@@ -59,6 +59,7 @@
   import {authService, editingUserService} from "~/main";
   import {takeOrPickPhoto} from "~/utils/photo-util";
   import {formatDate} from "~/utils/date-util";
+  import {getAllPlayerPositionDescriptions, getPlayerPositionKeyForValue, getPlayerPositionValueForKey} from "~/shared/player-position";
   import {ImageSource} from "tns-core-modules/image-source";
   import {action} from "tns-core-modules/ui/dialogs";
   import * as fs from "tns-core-modules/file-system";
@@ -73,6 +74,13 @@
     },
 
     computed: {
+      playerPosition: function () {
+        if (this.userWrapper.user.position) {
+          return getPlayerPositionValueForKey(this.userWrapper.user.position);
+        } else {
+          return 'Op welke positie speel je?';
+        }
+      },
       birthDateFormatted: function () {
         if (!this.userWrapper.user.birthdate) {
           return "Wat is je geboortedatum?";
@@ -173,14 +181,19 @@
       },
 
       selectPosition() {
-        const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
+        // const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
+        const options = getAllPlayerPositionDescriptions();
+        const cancelButtonLabel = "Annuleren";
         action({
           title: "Op welke positie speel je?",
-          actions: options
+          actions: options,
+          cancelable: true,
+          cancelButtonText: cancelButtonLabel
         }).then(picked => {
           console.log("Picked option: " + picked);
-          if (picked) {
-            picked = picked.substring(0, picked.indexOf(" ("));
+          if (picked && picked !== cancelButtonLabel) {
+            picked = getPlayerPositionKeyForValue(picked); //  picked.substring(0, picked.indexOf(" ("));
+            console.log("Picked option2: " + picked);
             this.userWrapper.user.position = picked;
             this.$editingUserService.updateUserDataInFirebase({
               position: picked
