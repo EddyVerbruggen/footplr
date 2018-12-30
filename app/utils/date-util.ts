@@ -20,7 +20,7 @@ export function getMonthsSince(date: Date): number {
 }
 
 export function formatDate(date: Date): string {
-  if (!date) {
+  if (!date || (typeof date === "string")) {
     return "";
   }
   // return `${date.getDate()} ${MONTHNAMES[date.getMonth()]} '${("" + date.getFullYear()).substring(2)}`;
