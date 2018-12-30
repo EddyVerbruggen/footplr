@@ -69,13 +69,14 @@
     methods: {
       quickLogin() {
         const options = ["Trainer Hoogland JO9-7", "Speler Hoogland JO9-7"];
+        const cancelLabel = "Annuleren";
         action({
           title: "Kies een login..",
           actions: options,
           cancelable: true,
-          cancelButtonText: "Annuleren"
+          cancelButtonText: cancelLabel
         }).then(picked => {
-          if (picked) {
+          if (picked && picked !== cancelLabel) {
             if (picked === "Trainer Hoogland JO9-7") {
               this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
               this.user.password = "xs4all";
@@ -189,7 +190,7 @@
   .login {
     .main-container {
       width: 300;
-      height: 430;
+      height: 450;
       margin-left: 30;
       margin-right: 30;
       border-radius: 10;

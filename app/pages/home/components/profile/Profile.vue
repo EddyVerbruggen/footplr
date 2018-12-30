@@ -21,7 +21,6 @@
             class="profile-field"
             hint="Voornaam"
             returnKeyType="next"
-            @focus="focusFirstName"
             @blur="blurFirstName"
             @returnPress="focusLastName()"
             v-model="userWrapper.user.firstname"
@@ -33,7 +32,6 @@
             class="profile-field"
             hint="Achternaam"
             returnKeyType="done"
-            @focus="focusLastName"
             @blur="blurLastName"
             v-model="userWrapper.user.lastname"
             autocorrect="false"></TextField>
@@ -112,34 +110,16 @@
         });
       },
 
-      focusFirstName() {
-        console.log("Focus firstname");
-      },
-
       blurFirstName() {
-        console.log("Blur firstname");
         editingUserService.updateUserDataInFirebase({
           firstname: this.userWrapper.user.firstname
         }).then(() => console.log("Updated firstname"));
       },
 
       blurLastName() {
-        console.log("Blur lastname");
         editingUserService.updateUserDataInFirebase({
           lastname: this.userWrapper.user.lastname
         }).then(() => console.log("Updated lastname"));
-      },
-
-      changeFirstName() {
-        console.log("Text change firstname");
-      },
-
-      changeLastName() {
-        console.log("Text change firstname");
-      },
-
-      focusLastName() {
-        console.log("Focus lastname");
       },
 
       selectImage() {

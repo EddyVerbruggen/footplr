@@ -18,7 +18,6 @@ export default class EditingUserService extends BackendService {
   }
 
   private listenToUserUpdates(id: string) {
-    console.log(">> id: " + id);
     this.userRef = firebase.firestore.collection("users").doc(id);
 
     this.userLoginUnsubscribe = this.userRef.onSnapshot(doc => {
@@ -26,7 +25,7 @@ export default class EditingUserService extends BackendService {
         this.syncUserData(doc);
 
         if (this.anyPageCallback) {
-          this.anyPageCallback();
+          this.anyPageCallback(doc.data());
         }
       } else {
         console.log("No such document!");
@@ -35,26 +34,11 @@ export default class EditingUserService extends BackendService {
     return null;
   }
 
-  private async syncUserData(doc: firestore.DocumentSnapshot): Promise<void> {
+  private syncUserData(doc: firestore.DocumentSnapshot): void {
     const userData = <User>doc.data();
-    const user = this.user;
     userData.id = doc.id;
-    user.id = userData.id;
-    user.admin = userData.admin;
-    user.birthdate = userData.birthdate;
-    user.club = userData.club;
-    user.playsin = userData.playsin;
-    user.trains = userData.trains;
-    user.firstname = userData.firstname;
-    user.lastname = userData.lastname;
-    user.height = userData.height;
-    user.weight = userData.weight;
-    user.picture = userData.picture;
-    user.position = userData.position;
-    user.scores = userData.scores;
     this.userWrapper.user = <User>userData;
-    this.user = user;
-    return null;
+    this.user = <User>userData;
   }
 
   async updateUserDataInFirebase(userData): Promise<void> {

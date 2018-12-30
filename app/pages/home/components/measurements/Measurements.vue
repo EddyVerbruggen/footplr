@@ -1,7 +1,7 @@
 <template>
   <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
 
-    <PlayerSelection xv-on:player-selected="playerSelected($event)" v-if="isTrainer"></PlayerSelection>
+    <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
     <!--GridLayout row="1" columns="50, 4*, 2*, 100" class="table">
       <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"/>
@@ -15,13 +15,13 @@
         <GridLayout rows="auto, auto">
           <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row"
                       v-bind:class="'background-color-score-' + item.scoreClass">
-            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass" class="score round bold"
+            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass" class="score icon-round bold"
                    horizontalAlignment="center" verticalAlignment="center"
                    v-show="item.hasMeasurement"></Label>
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
                    verticalAlignment="center"></Label>
-            <Label col="3" class="round" src="~/assets/images/stats.png" horizontalAlignment="center"
+            <Label col="3" class="icon-round" src="~/assets/images/stats.png" horizontalAlignment="center"
                    @tap="showDetails(item)" v-show="item.hasMeasurement"></Label>
             <Img col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
                  horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement"></Img>
@@ -56,15 +56,17 @@
     created() {
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
-      editingUserService.anyPageCallback = () => {
+      editingUserService.anyPageCallback = user => {
+        console.log(">> updating scores with " + JSON.stringify(editingUserService.userWrapper.user.latestmeasurements));
+        // this.fillExerciseScoresWithMeasurements(user.latestmeasurements);
         this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       };
 
-      if (authService.userWrapper.user.trains !== undefined) {
-        this.fetchTeamMeasurements();
-      } else {
-        this.fillExerciseScoresWithMeasurements(authService.userWrapper.user.latestmeasurements);
-      }
+      // if (authService.userWrapper.user.trains !== undefined) {
+      //   this.fetchTeamMeasurements();
+      // } else {
+        this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
+      // }
 
       // for quick dev of the 'add' or 'details' page
       // setTimeout(() => this.addMeasurement({
@@ -98,6 +100,7 @@
         if (result.picked === "vv Hoogland J09-7") { // TODO the actual team
           this.fetchTeamMeasurements();
         } else {
+          console.log("selected (@ measurements): " + result.player.firstname);
           this.player = result.player;
           this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
         }
@@ -208,13 +211,6 @@
 
   .table Label {
     font-size: 12;
-  }
-
-  .table .round {
-    width: 34;
-    height: 34;
-    border-radius: 50%;
-    background-color: #20284d;
   }
 
   .table .score {

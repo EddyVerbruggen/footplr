@@ -18,20 +18,21 @@
           <GridLayout columns="50, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
             <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
             <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
-            <Button col="2" text="🗑" class="p-x-5 m-r-10 delete-measurement" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Button>
+            <Label col="2" class="icon-round m-r-10" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
+            <Label col="2" :text="iconDelete" class="icon m-r-16 p-r-2" style="color: white; font-size: 18" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
           </GridLayout>
         </v-template>
       </ListView>
 
       <StackLayout row="4" class="c-bg-white">
-        <Button text="TERUG" class="btn btn-primary" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
+        <Button text="TERUG" class="btn btn-secondary" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
     </GridLayout>
   </Page>
 </template>
 
 <script>
-  import {authService} from "~/main";
+  import {editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {translateExerciseType} from "~/shared/exercises";
 
@@ -40,7 +41,7 @@
   export default {
     created() {
       console.log("MeasurementsGraph created");
-      // authService.anyPageCallback = () => this.fetchMeasurements(this.exercise);
+      // editingUserService.anyPageCallback = () => this.fetchMeasurements(this.exercise);
       this.fetchMeasurements(measurements);
     },
 
@@ -49,6 +50,7 @@
 
     data() {
       return {
+        iconDelete: String.fromCharCode(0xe872),
         webViewSRC: undefined, // `~/assets/graph-chartjs.html?${JSON.stringify(data)}`,
         measurements
       }
@@ -82,7 +84,7 @@
         const data = [];
         const labels = [];
 
-        authService.userRef
+        editingUserService.userRef
             .collection("measurements")
             .where("exercise", "==", this.exercise)
             .orderBy("date", "desc")
@@ -116,7 +118,7 @@
 
               // now render the graph, see http://www.chartjs.org/docs/latest/charts/line.html
               const datasets = [{
-                  label: authService.userWrapper.user.firstname,
+                  label: editingUserService.userWrapper.user.firstname,
                   data: data,
                   fill: true,
                   backgroundColor: [
@@ -137,10 +139,6 @@
 </script>
 
 <style scoped>
-  Page {
-    margin: 30 0 20 0;
-  }
-
   .table Label {
     font-size: 12;
   }

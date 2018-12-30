@@ -5,12 +5,14 @@
       @tap="selectPlayer">
     <Label
         :text="iconPeople"
+        verticalAlignment="center"
         class="icon"></Label>
     <Label
         :text="selectedPlayerName"
         class="player-selection bold"></Label>
     <Label
         :text="iconDropDown"
+        verticalAlignment="center"
         class="icon"></Label>
   </StackLayout>
 </template>
@@ -24,10 +26,7 @@
   export default {
     name: "PlayerSelection",
     created() {
-      EventBus.$on("player-selected", stuff => {
-        console.log(">> selected, " + stuff.player.firstname);
-        this.selectedPlayer = stuff.player;
-      });
+      EventBus.$on("player-selected", stuff => this.selectedPlayer = stuff.player);
     },
     computed: {
       selectedPlayerName: function () {
@@ -55,10 +54,12 @@
         // TODO for the profile page we don't want teams..
         const options = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
         const cancelLabel = "Annuleren";
-        const myselfLabel = "Ikzelf";
+        const myselfLabel = "Ikzelf 😀";
         action({
-          title: "KIES EEN TEAM OF SPELER",
-          actions: [myselfLabel, "vv Hoogland J09-7", ...options],
+          // title: "KIES EEN TEAM OF SPELER",
+          title: "Kies een speler",
+          // actions: [myselfLabel, "vv Hoogland J09-7", ...options],
+          actions: [myselfLabel, ...options],
           cancelable: true,
           cancelButtonText: cancelLabel
         }).then(picked => {

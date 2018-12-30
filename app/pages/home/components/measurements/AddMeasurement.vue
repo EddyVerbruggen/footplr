@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import {authService} from "~/main";
+  import {editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {translateExerciseType} from "~/shared/exercises";
 
@@ -56,12 +56,7 @@
         this.header = event.object;
       },
       doShowExplanation() {
-        console.log("show expl..");
         this.showExplanation = true;
-        // this.header.animate({
-        //   translate: { x: 300, y: 200},
-        //   duration: 3000
-        // })
       },
       sliderChanged(event) {
         this.score = parseInt(event.value);
@@ -77,7 +72,7 @@
           return;
         }
 
-        authService.userRef
+        editingUserService.userRef
             .collection("measurements")
             .add({
               date: this.date,

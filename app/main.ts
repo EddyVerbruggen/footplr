@@ -20,7 +20,6 @@ v.prototype.$editingUserService = editingUserService;
 
 firebase.init()
   .then(instance => {
-
     /*
     firebase.registerForPushNotifications(
         {
@@ -36,7 +35,7 @@ firebase.init()
   .catch(error => console.log(`firebase.init error: ${error}`));
 
 // Prints Vue logs when --env.production is *NOT* set while building
-// v.config.silent = (TNS_ENV === 'production');
+v.config.silent = true; // (TNS_ENV === 'production');
 
 const loggedIn = authService.isLoggedIn();
 
