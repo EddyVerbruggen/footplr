@@ -16,7 +16,7 @@
       <ListView row="3" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="table">
         <v-template>
           <GridLayout columns="50, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
-            <Label col="0" :text="item.score" v-bind:class="item.getScoreClass()" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
+            <Label col="0" :text="item.score" :class="'background-color-score-' + item.scoreClass" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
             <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
             <Label col="2" class="icon-round m-r-10" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
             <Label col="2" :text="iconDelete" class="icon m-r-16 p-r-2" style="color: white; font-size: 18" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
@@ -25,7 +25,7 @@
       </ListView>
 
       <StackLayout row="4" class="c-bg-white">
-        <Button text="TERUG" class="btn btn-secondary" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
+        <Button text="TERUG" class="btn btn-secondary" style="margin-right: 12" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
     </GridLayout>
   </Page>
@@ -99,18 +99,7 @@
                   ref: s.ref,
                   date: formatDate(measurementData.date),
                   score: measurementData.score,
-                  getScoreClass: () => {
-                    // TODO extract to util class (dupe of overview page)
-                    if (measurementData.score > 80) {
-                      return 'c-bg-purple';
-                    } else if (measurementData.score > 60) {
-                      return 'c-bg-blue';
-                    } else if (measurementData.score > 40) {
-                      return 'c-bg-orange';
-                    } else {
-                      return 'c-bg-ruby';
-                    }
-                  }
+                  scoreClass: (Math.ceil(measurementData.score / 10)) * 10
                 });
                 data.push(measurementData.score);
                 labels.push(measurementData.date.getTime())
@@ -122,10 +111,10 @@
                   data: data,
                   fill: true,
                   backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)'
+                    'rgba(32, 40, 77, .1)'
                   ],
                   borderColor: [
-                    'rgba(75, 192, 192, 1)'
+                    'rgba(32, 40, 77, 1)'
                   ],
                   borderWidth: 2
                 }];
