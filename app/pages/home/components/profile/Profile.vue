@@ -7,7 +7,7 @@
         <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
       </GridLayout>
 
-      <StackLayout horizontalAlignment="center" style="margin-top: 60" @tap="selectImage">
+      <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
         <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
         <Img :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
         <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
@@ -240,10 +240,15 @@
     width: 44;
   }
 
-  .card-photo {
+  .card-photo-wrapper {
     background-color: #9093a6;
+    margin-top: 60;
     width: 110;
     height: 110;
+    border-radius: 55;
+  }
+
+  .card-photo {
     border-radius: 55;
   }
 </style>

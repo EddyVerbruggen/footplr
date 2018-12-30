@@ -46,7 +46,7 @@
 <script>
   import {authService, editingUserService} from "~/main";
   import {getYearsSince, getMonthsSince} from "~/utils/date-util";
-  import PlayerSelection from "./PlayerSelection";
+  import PlayerSelection from "../PlayerSelection";
   import {EventBus} from "~/services/event-bus";
 
   export default {
@@ -106,14 +106,6 @@
     height: 110;
     border-radius: 55;
     background-color: rgba(255, 255, 255, 0.3);
-  }
-
-  .card-photo-unofficial {
-    border-color: rgba(120, 208, 175, 0.85);
-  }
-
-  .card-photo-official {
-    border-color: rgba(255, 214, 132, 0.85);
   }
 
   .card-name {

@@ -3,7 +3,7 @@
     <GridLayout rows="auto, *, auto" columns="*, *" class="m-20" horizontalAlignment="center" height="95%">
       <Label row="0" colSpan="2" text="Op welke dag ben je geboren?" horizontalAlignment="center"></Label>
 
-      <DatePicker row="1" colSpan="2" v-model="birthdate" :maxDate="maxDate"></DatePicker>
+      <DatePicker row="1" colSpan="2" v-model="birthdate" :maxDate="maxDate" verticalAlignment="center"></DatePicker>
 
       <Button row="2" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close()"></Button>
       <Button row="2" col="1" text="OPSLAAN" class="btn btn-primary" @tap="done()"></Button>
