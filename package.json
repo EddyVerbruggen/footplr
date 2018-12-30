@@ -16,6 +16,7 @@
   "scripts": {
     "tsc": "cd app && tsc --skipLibCheck --watch",
     "ios": "tns run ios --bundle",
+    "ios.release": "tns run ios --bundle --release --forDevice --provision 7dc8e2d2-5e21-4287-bb37-7fd948985326",
     "ios.emulator": "tns run ios --bundle --emulator",
     "android": "tns run android --bundle",
     "android.release": "tns build android --bundle --release --other-keystore-params.."
@@ -28,7 +29,7 @@
     "nativescript-plugin-firebase": "~7.6.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-vue": "~2.0.2",
-    "nativescript-web-image-cache": "^4.2.6",
+    "nativescript-web-image-cache": "git+https://github.com/EddyVerbruggen/nativescript-web-image-cache.git#2b7a51a36a289b39132daabca045e92784a26d70",
     "tns-core-modules": "~5.1.1",
     "vue-hot-reload-api": "~2.3.1"
   },
