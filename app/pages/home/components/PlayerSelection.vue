@@ -27,6 +27,7 @@
     name: "PlayerSelection",
     created() {
       EventBus.$on("player-selected", stuff => this.selectedPlayer = stuff.player);
+      EventBus.$on("update-players", () => this.players = undefined);
     },
     computed: {
       selectedPlayerName: function () {

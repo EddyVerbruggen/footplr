@@ -21,7 +21,7 @@
             class="profile-field"
             hint="Voornaam"
             returnKeyType="next"
-            @blur="blurFirstName"
+            @blur="blurName"
             @returnPress="focusLastName()"
             v-model="userWrapper.user.firstname"
             autocorrect="false"></TextField>
@@ -32,7 +32,7 @@
             class="profile-field"
             hint="Achternaam"
             returnKeyType="done"
-            @blur="blurLastName"
+            @blur="blurName"
             v-model="userWrapper.user.lastname"
             autocorrect="false"></TextField>
 
@@ -65,6 +65,7 @@
   import * as fs from "tns-core-modules/file-system";
   import PlayerSelection from "../PlayerSelection";
   import UpdateBirthDate from "./UpdateBirthDate.vue"
+  import {EventBus} from "~/services/event-bus";
 
   const firebaseWebApi = require("nativescript-plugin-firebase/app");
 
@@ -118,16 +119,14 @@
         });
       },
 
-      blurFirstName() {
+      blurName() {
         editingUserService.updateUserDataInFirebase({
-          firstname: this.userWrapper.user.firstname
-        }).then(() => console.log("Updated firstname"));
-      },
-
-      blurLastName() {
-        editingUserService.updateUserDataInFirebase({
-          lastname: this.userWrapper.user.lastname
-        }).then(() => console.log("Updated lastname"));
+          firstname: this.userWrapper.user.firstname,
+          lastname: this.userWrapper.user.lastname,
+        }).then(() => {
+          EventBus.$emit("player-selected", {player: this.userWrapper.user});
+          EventBus.$emit("update-players");
+        });
       },
 
       selectImage() {
@@ -181,7 +180,6 @@
       },
 
       selectPosition() {
-        // const options = ["GK (keeper)", "CM (mid-mid)", "CAM (aanvallende middenvelder)", "CF (mid-voor)"];
         const options = getAllPlayerPositionDescriptions();
         const cancelButtonLabel = "Annuleren";
         action({
