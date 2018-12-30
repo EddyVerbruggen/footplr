@@ -1,57 +1,59 @@
 <template>
-  <StackLayout>
-    <GridLayout rows="auto" columns="*">
-      <PlayerSelection v-if="isTrainer"></PlayerSelection>
-      <Label text="Jouw spelersprofiel" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
-      <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
-    </GridLayout>
+  <ScrollView>
+    <StackLayout>
+      <GridLayout rows="auto" columns="*">
+        <PlayerSelection v-if="isTrainer"></PlayerSelection>
+        <Label text="Jouw spelersprofiel" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
+        <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
+      </GridLayout>
 
-    <StackLayout horizontalAlignment="center" class="card-photo" @tap="selectImage">
-      <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
-      <Img :src="userWrapper.user.picture" style="border-radius: 10" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
-      <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
+      <StackLayout horizontalAlignment="center" style="margin-top: 60" @tap="selectImage">
+        <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
+        <Img :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
+        <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
+      </StackLayout>
+
+      <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
+        <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
+        <TextField
+            row="0"
+            col="1"
+            class="profile-field"
+            hint="Voornaam"
+            returnKeyType="next"
+            @focus="focusFirstName"
+            @blur="blurFirstName"
+            @returnPress="focusLastName()"
+            v-model="userWrapper.user.firstname"
+            autocorrect="false"></TextField>
+
+        <TextField
+            row="1"
+            col="1"
+            class="profile-field"
+            hint="Achternaam"
+            returnKeyType="done"
+            @focus="focusLastName"
+            @blur="blurLastName"
+            v-model="userWrapper.user.lastname"
+            autocorrect="false"></TextField>
+
+        <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
+        <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
+          <Label :text="userWrapper.user.position || 'Op welke positie speel je?'" verticalAlignment="center"></Label>
+          <Label :text="iconDropDown" class="icon"></Label>
+        </StackLayout>
+
+        <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
+
+        <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editBirthDate()">
+          <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
+          <Label :text="iconDropDown" class="icon"></Label>
+        </StackLayout>
+      </GridLayout>
+
     </StackLayout>
-
-    <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
-      <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
-      <TextField
-          row="0"
-          col="1"
-          class="profile-field"
-          hint="Voornaam"
-          returnKeyType="next"
-          @focus="focusFirstName"
-          @blur="blurFirstName"
-          @returnPress="focusLastName()"
-          v-model="userWrapper.user.firstname"
-          autocorrect="false"></TextField>
-
-      <TextField
-          row="1"
-          col="1"
-          class="profile-field"
-          hint="Achternaam"
-          returnKeyType="done"
-          @focus="focusLastName"
-          @blur="blurLastName"
-          v-model="userWrapper.user.lastname"
-          autocorrect="false"></TextField>
-
-      <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
-      <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
-        <Label :text="userWrapper.user.position || 'Op welke positie speel je?'" verticalAlignment="center"></Label>
-        <Label :text="iconDropDown" class="icon"></Label>
-      </StackLayout>
-
-      <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
-
-      <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editBirthDate()">
-        <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
-        <Label :text="iconDropDown" class="icon"></Label>
-      </StackLayout>
-    </GridLayout>
-
-  </StackLayout>
+  </ScrollView>
 </template>
 
 <script>
@@ -233,15 +235,15 @@
     padding-right: 12;
   }
 
+  .platform-android .logout {
+    border-radius: 1; /* nicer buttons on Android */
+    width: 44;
+  }
+
   .card-photo {
     background-color: #9093a6;
     width: 110;
     height: 110;
     border-radius: 55;
-    margin-top: 60;
-  }
-
-  .btn-save-birthdate {
-    margin-top: 12;
   }
 </style>
