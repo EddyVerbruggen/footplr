@@ -28,8 +28,7 @@
             <Button col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
-          <Label row="1" :text="'Laatste test ' + item.latestMeasurementDate" class="latest-measurement-date"
-                 horizontalAlignment="right" v-show="item.hasMeasurement"></Label>
+          <Label row="1" :text="item.hasMeasurement ? 'Laatste test ' + item.latestMeasurementDate : ' '" class="latest-measurement-date" horizontalAlignment="right"></Label>
         </GridLayout>
       </v-template>
     </ListView>

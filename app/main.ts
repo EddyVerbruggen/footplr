@@ -12,6 +12,8 @@ export const backendService = new BackendService();
 export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
 
+(<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
+
 const v = <any>Vue;
 declare const TNS_ENV: any;
 
