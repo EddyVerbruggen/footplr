@@ -22,7 +22,7 @@ export enum ExerciseType {
 
 // we don't require proper i18n for the time being, so doing this the poor mans way for now
 export function translateExerciseType(input: ExerciseType): string {
-  if (input === ExerciseType.CONTROL_HIGH_BALL) return "Aanname hoge bal";
+  if (input === ExerciseType.CONTROL_HIGH_BALL) return "Balcontrole (hooghouden)";
   else if (input === ExerciseType.CONTROL_LOW_BALL) return "Aanname lage bal";
   else if (input === ExerciseType.AGILITY) return "Behendigheid";
   else if (input === ExerciseType.CROSSPASS) return "Crosspass (lange bal)";
@@ -67,22 +67,23 @@ export class Exercise {
   }
 }
 
+// Note that the order here determines what the order is on-screen
 export const Excercises: { [t in ExerciseType]: Exercise } = {
-  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 90),
-  CONTROL_LOW_BALL: new Exercise("AALO", ["TEC"], "DISTANCE", "HIGH_LOW", 0 ,1200),
-  AGILITY: new Exercise("TTES", ["PAC"], "TIME", "HIGH_LOW",8, 14),
-  CROSSPASS: new Exercise("CRPS", ["PAS"], "DISTANCE", "LOW_HIGH",0, 90),
-  DRIBBLE: new Exercise("DRTE", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
-  EXPLOSIVENESS: new Exercise("EXPL", ["PAC", "PHY"], "TIME", "HIGH_LOW", 7 ,13),
-  SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS","LOW_HIGH",0,  100),
-  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0,41),
-  HEADER_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT", "LOW_HIGH", 0,300),
-  AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH",0,100, true),
-  PASSING_MOVEMENTS: new Exercise("TRIC", ["TEC"], "COUNT", "LOW_HIGH",0,20),
   PUSH_UPS: new Exercise("PUSH", ["PHY"], "COUNT","LOW_HIGH", 0,56),
-  SHOT_STRENGTH: new Exercise("SCHI", ["SHO"], "SPEED", "LOW_HIGH",0,211, true),
   SIT_UPS: new Exercise("SITU", ["PHY"], "COUNT", "LOW_HIGH",0,49),
+  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 90),
+  EXPLOSIVENESS: new Exercise("EXPL", ["PAC", "PHY"], "TIME", "HIGH_LOW", 7 ,13),
   SPRINT: new Exercise("SPRI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.5, 6.5),
-  JUMP_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT","LOW_HIGH", 0, 70),
+  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0,41),
+  PASSING_MOVEMENTS: new Exercise("TRIC", ["TEC"], "COUNT", "LOW_HIGH",0,20),
+  DRIBBLE: new Exercise("DRTE", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
+  AGILITY: new Exercise("TTES", ["PAC"], "TIME", "HIGH_LOW",8, 14),
   STAMINA: new Exercise("ISRT", ["PAC", "PHY"], "COUNT", "LOW_HIGH",0, 125),
+  SHOT_STRENGTH: new Exercise("SCHI", ["SHO"], "SPEED", "LOW_HIGH",0,211, true),
+  JUMP_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT","LOW_HIGH", 0, 70),
+  CROSSPASS: new Exercise("CRPS", ["PAS"], "DISTANCE", "LOW_HIGH",0, 90),
+  AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH",0,100, true),
+  SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS","LOW_HIGH",0,  100),
+  HEADER_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT", "LOW_HIGH", 0,300),
+  CONTROL_LOW_BALL: new Exercise("AALO", ["TEC"], "DISTANCE", "HIGH_LOW", 0 ,1200),
 };
