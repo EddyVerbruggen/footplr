@@ -1,9 +1,9 @@
-import * as functions from "firebase-functions";
 import * as firebase from "firebase-admin";
-import { Measurement } from "./shared/measurement";
-import { SharedUser, ScoresWrapper, LatestMeasurementsWrapper, LatestMeasurements } from "./shared/shared-user";
+import * as functions from "firebase-functions";
 import { Excercises, Exercise } from "./shared/exercises";
+import { Measurement } from "./shared/measurement";
 import Scores from "./shared/scores";
+import { LatestMeasurements, LatestMeasurementsWrapper, ScoresWrapper, SharedUser } from "./shared/shared-user";
 
 // perhaps it's more efficient to store measurements in the root.. that's probably easier to watch for Firebase: measurements/{measurementId}
 exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measurements/{measurementId}").onWrite(async (snap, context) => {
@@ -91,10 +91,15 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
 });
 
 function getLatestMeasurementsCombined(measurements: LatestMeasurementsWrapper): LatestMeasurements {
-  const result = measurements.official;
-  for (let k in measurements.unofficial) {
+  const result = <LatestMeasurements>{};
+
+  for (const k in measurements.official) {
+    result[k] = measurements.official[k];
+  }
+
+  for (const k in measurements.unofficial) {
     const val = measurements.unofficial[k];
-    if (!result[k] || result[k].date < val.date) {
+    if (!result[k] || result[k].date.toDate().getTime() < val.date.toDate().getTime()) {
       result[k] = val;
     }
   }
