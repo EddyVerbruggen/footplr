@@ -3,12 +3,12 @@
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
-    <StackLayout class="m-b-10" width="90%" v-if="!isTrainer">
+    <StackLayout class="m-t-10" width="90%" v-if="!isTrainer">
       <Label text="football player ratings" class="page-title" horizontalAlignment="center"></Label>
-      <SegmentedBar class="m-t-20" @selectedIndexChange="onSelectedModeIndexChanged">
-        <SegmentedBarItem title="Gemeten op de training"></SegmentedBarItem>
-        <SegmentedBarItem title="Eigen meting"></SegmentedBarItem>
-      </SegmentedBar>
+      <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center" @tap="isOfficial = !isOfficial">
+        <Switch :checked="!isOfficial"></Switch>
+        <Label col="1" text="toon ook eigen metingen" class="p-10"></Label>
+      </GridLayout>
     </StackLayout>
 
     <Image row="1" :src="'~/assets/images/badge_' + (isOfficial ? '' : 'un') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
@@ -95,10 +95,7 @@
     methods: {
       onScoreTabLoaded() {
         console.log("Score tab loaded @ " + new Date().getTime());
-      },
-      onSelectedModeIndexChanged() {
-        this.isOfficial = !this.isOfficial;
-      },
+      }
     }
   };
 </script>
