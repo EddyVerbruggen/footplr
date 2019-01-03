@@ -56,8 +56,6 @@
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
       editingUserService.anyPageCallback = user => {
-        console.log(">> updating scores with " + JSON.stringify(editingUserService.userWrapper.user.latestmeasurements));
-        // this.fillExerciseScoresWithMeasurements(user.latestmeasurements);
         this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       };
 

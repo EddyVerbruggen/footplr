@@ -69,12 +69,12 @@ export class Exercise {
 
 // Note that the order here determines what the order is on-screen
 export const Excercises: { [t in ExerciseType]: Exercise } = {
-  PUSH_UPS: new Exercise("PUSH", ["PHY"], "COUNT","LOW_HIGH", 0,56),
-  SIT_UPS: new Exercise("SITU", ["PHY"], "COUNT", "LOW_HIGH",0,49),
-  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 90),
+  PUSH_UPS: new Exercise("PUSH", ["PHY"], "COUNT","LOW_HIGH", 0,61),
+  SIT_UPS: new Exercise("SITU", ["PHY"], "COUNT", "LOW_HIGH",0,55),
+  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 130),
   EXPLOSIVENESS: new Exercise("EXPL", ["PAC", "PHY"], "TIME", "HIGH_LOW", 7 ,13),
-  SPRINT: new Exercise("SPRI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.5, 6.5),
-  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0,41),
+  SPRINT: new Exercise("SPRI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.32, 6.82),
+  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0,45),
   PASSING_MOVEMENTS: new Exercise("TRIC", ["TEC"], "COUNT", "LOW_HIGH",0,20),
   DRIBBLE: new Exercise("DRTE", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
   AGILITY: new Exercise("TTES", ["PAC"], "TIME", "HIGH_LOW",8, 14),

@@ -81,13 +81,14 @@
     },
     data() {
       return {
-        isOfficial: GlobalStore.isOfficial,
-        selectedPlayer: "Team gemiddelde",
         isTrainer: authService.userWrapper.user.trains !== undefined,
+        // trainers are always official, which also means they can't see non-official measurements by players
+        isOfficial: GlobalStore.isOfficial || authService.userWrapper.user.trains !== undefined,
+        selectedPlayer: "Team gemiddelde",
         userWrapper: editingUserService.userWrapper,
         score: type => {
           if (this.$editingUserService.userWrapper.user.scores) {
-            return this.$editingUserService.userWrapper.user.scores[this.isOfficial ? "official" : "unofficial"][type];
+            return this.$editingUserService.userWrapper.user.scores[this.isOfficial ? "official" : "combined"][type];
           }
         },
       };

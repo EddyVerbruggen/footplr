@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import {editingUserService} from "~/main";
+  import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {translateExerciseType} from "~/shared/exercises";
 
@@ -78,7 +78,7 @@
               date: this.date,
               score,
               exercise: this.exercise,
-              official: true
+              official: editingUserService.userWrapper.user.id !== authService.userWrapper.user.id
             })
             .then(() => this.$modal.close(true))
             .catch(err => console.log(err));
