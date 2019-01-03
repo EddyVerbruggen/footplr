@@ -39,6 +39,7 @@
   import Measurements from "./components/measurements/Measurements.vue"
   import Profile from "./components/profile/Profile.vue"
   import ScoreCard from "./components/scorecard/ScoreCard.vue"
+  import {GlobalStore} from "~/services/global-store";
 
   export default {
     components: {
@@ -60,14 +61,19 @@
     },
     data() {
       return {
+        isOfficial: GlobalStore.isOfficial,
         tabIndex: 0, // setting this initially makes dev a little easier
         tabView: undefined, // set below
-        isOfficial: true,
         logoSrc: "~/assets/images/fpr-logo-128.png"
       };
     },
     methods: {
+      scoreTabTapped(event) {
+        console.log("scoreTabTapped..");
+        return true;
+      },
       onSelectedIndexChanged(event) {
+        console.log("onSelectedIndexChanged..");
         this.tabIndex = event.newIndex;
       },
       onTabViewLoaded(event) {
@@ -87,10 +93,6 @@
           });
         });
       },
-      onTapToggleOfficial() {
-        this.isOfficial = !this.isOfficial;
-        this.logoSrc = this.isOfficial ? "~/assets/images/fpr-logo-128.png" : "~/assets/images/fpr-logo-128-gray.png";
-      }
     }
   };
 </script>

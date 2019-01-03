@@ -3,9 +3,15 @@
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
-    <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
+    <StackLayout class="m-b-10" width="90%" v-if="!isTrainer">
+      <Label text="football player ratings" class="page-title" horizontalAlignment="center"></Label>
+      <SegmentedBar class="m-t-20" @selectedIndexChange="onSelectedModeIndexChanged">
+        <SegmentedBarItem title="Gemeten op de training"></SegmentedBarItem>
+        <SegmentedBarItem title="Eigen meting"></SegmentedBarItem>
+      </SegmentedBar>
+    </StackLayout>
 
-    <Image row="1" src="~/assets/images/badge_unofficial.png" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
+    <Image row="1" :src="'~/assets/images/badge_' + (isOfficial ? '' : 'un') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
@@ -48,6 +54,7 @@
   import {getYearsSince, getMonthsSince} from "~/utils/date-util";
   import PlayerSelection from "../PlayerSelection";
   import {EventBus} from "~/services/event-bus";
+  import {GlobalStore} from "~/services/global-store";
 
   export default {
     components: {
@@ -74,12 +81,13 @@
     },
     data() {
       return {
+        isOfficial: GlobalStore.isOfficial,
         selectedPlayer: "Team gemiddelde",
         isTrainer: authService.userWrapper.user.trains !== undefined,
         userWrapper: editingUserService.userWrapper,
         score: type => {
           if (this.$editingUserService.userWrapper.user.scores) {
-            return this.$editingUserService.userWrapper.user.scores.official[type]; // TODO official/unofficial
+            return this.$editingUserService.userWrapper.user.scores[this.isOfficial ? "official" : "unofficial"][type];
           }
         },
       };
@@ -87,6 +95,9 @@
     methods: {
       onScoreTabLoaded() {
         console.log("Score tab loaded @ " + new Date().getTime());
+      },
+      onSelectedModeIndexChanged() {
+        this.isOfficial = !this.isOfficial;
       },
     }
   };

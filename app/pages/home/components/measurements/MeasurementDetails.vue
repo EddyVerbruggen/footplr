@@ -19,6 +19,7 @@
             <Label col="0" :text="item.score" :class="'background-color-score-' + item.scoreClass" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
             <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
             <Label col="2" class="icon-round m-r-10" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
+            <!-- TODO only allow delete if you entered it yourself -->
             <Label col="2" :text="iconDelete" class="icon m-r-16 p-r-2" style="color: white; font-size: 18" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
           </GridLayout>
         </v-template>
