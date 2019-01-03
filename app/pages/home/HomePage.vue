@@ -1,11 +1,5 @@
 <template>
   <Page :class="pageClasses" actionBarHidden="true" backgroundSpanUnderStatusBar="true">
-    <!--ActionBar title="" flat="true" DISABLED-backgroundColor="#011627">
-      <ActionItem @tap="onTapShare" icon="res://scorekaart" ios.position="left" android.position="actionBar" v-show="tabIndex === 0"/>
-      <Label style="font-size: 14" text="vv Hoogland JO9-7" horizontalAlignment="center"/>
-      <ActionItem @tap="onTapShare" ios.systemIcon="9" ios.position="right" android.systemIcon="ic_menu_share" android.position="actionBar" v-show="tabIndex === 1"/>
-    </ActionBar-->
-
     <!-- note that 'androidSelectedTabHighlightColor' is the line below the selected tab -->
     <TabView androidTabsPosition="bottom"
              androidSelectedTabHighlightColor="#ffffff"
@@ -14,8 +8,7 @@
              iosIconRenderingMode="alwaysTemplate"
              tabBackgroundColor="#20284d"
              :selectedIndex="tabIndex"
-             @selectedIndexChanged="onSelectedIndexChanged"
-             @loaded="onTabViewLoaded">
+             @selectedIndexChanged="onSelectedTabIndexChanged">
 
       <TabViewItem textTransform="none" iconSource="res://badge">
         <ScoreCard ref="scoreCard" :visible="tabIndex === 1"></ScoreCard>
@@ -47,9 +40,6 @@
       Profile,
       ScoreCard
     },
-    created() {
-      console.log("HomePage created");
-    },
     computed: {
       pageClasses: function () {
         return {
@@ -68,19 +58,8 @@
       };
     },
     methods: {
-      scoreTabTapped(event) {
-        console.log("scoreTabTapped..");
-        return true;
-      },
-      onSelectedIndexChanged(event) {
-        console.log("onSelectedIndexChanged..");
+      onSelectedTabIndexChanged(event) {
         this.tabIndex = event.newIndex;
-      },
-      onTabViewLoaded(event) {
-        this.tabView = event.object;
-      },
-      goToTab(tabNr) {
-        this.tabView.selectedIndex = tabNr;
       },
       onTapShare() {
         console.log("TODO: share.. but we're logging out for now.");
@@ -98,31 +77,7 @@
 </script>
 
 <style scoped>
-  .grass-background {
-    /*background-color: #FAEDCA;*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: center;*/
-    /*background-size: cover;*/
-    /*background-image: ~/assets/images/grass.jpg;*/
-  }
-
   TabView {
     font-size: 12;
-  }
-
-  ActionBar {
-    /*background-color: #0b8c93;*/
-    color: #20284d;
-  }
-
-  ActionBar .title {
-    font-size: 18;
-  }
-
-  .message {
-    vertical-align: center;
-    text-align: center;
-    font-size: 20;
-    color: #20284d;
   }
 </style>
