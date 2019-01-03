@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import {editingUserService} from "~/main";
+  import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {translateExerciseType} from "~/shared/exercises";
 
@@ -51,6 +51,7 @@
 
     data() {
       return {
+        isTrainer: authService.userWrapper.user.trains !== undefined,
         iconDelete: String.fromCharCode(0xe872),
         webViewSRC: undefined, // `~/assets/graph-chartjs.html?${JSON.stringify(data)}`,
         measurements
@@ -85,10 +86,16 @@
         const data = [];
         const labels = [];
 
-        editingUserService.userRef
+        let q = editingUserService.userRef
             .collection("measurements")
-            .where("exercise", "==", this.exercise)
-            .orderBy("date", "desc")
+            .where("exercise", "==", this.exercise);
+
+        // for trainers, we only show official measurements
+        if (this.isTrainer) {
+          q = q.where("official", "==", true);
+        }
+
+        q = q.orderBy("date", "desc")
             .limit(200) // we need to limit it somewhere, right?
             .get()
             .then(m => {

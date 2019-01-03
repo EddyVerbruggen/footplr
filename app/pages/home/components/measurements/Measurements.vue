@@ -44,6 +44,7 @@
   import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
   import PlayerSelection from "../PlayerSelection";
   import {EventBus} from "~/services/event-bus";
+  import {GlobalStore} from "~/services/global-store";
 
   export default {
     components: {
@@ -53,6 +54,7 @@
     },
 
     created() {
+      // TODO we need to clean this up upon logout, or when entering/leaving the tab
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
       editingUserService.anyPageCallback = user => {
@@ -76,12 +78,13 @@
 
     data() {
       return {
-        official: true, // TODO somewhere more generic
+        isTrainer: authService.userWrapper.user.trains !== undefined,
+        // trainers are always official, which also means they can't see non-official measurements by players
+        isOfficial: GlobalStore.isOfficial || authService.userWrapper.user.trains !== undefined,
         selectedPlayer: "vv Hoogland J09-7",
         player: editingUserService.userWrapper.user,
         players: [],
-        exercises: [],
-        isTrainer: authService.userWrapper.user.trains !== undefined
+        exercises: []
       }
     },
 
@@ -139,17 +142,16 @@
             .then(users => {
               this.players = users;
 
-              // TODO official/unofficial
               const sumMeasurements = {}; // Array<{ [t in ExerciseType]: Measurement }>
               const meas = {};
-              sumMeasurements[this.official ? "official" : "unofficial"] = meas;
+              sumMeasurements[this.isOfficial ? "official" : "unofficial"] = meas;
 
               for (let excercisesKey in Excercises) {
                 let totalScore = 0;
                 let totalUsersWithScore = 0;
                 let date = undefined;
                 users.forEach(user => {
-                  const latestMeass = user.latestmeasurements[this.official ? "official" : "unofficial"]
+                  const latestMeass = user.latestmeasurements[this.isOfficial ? "official" : "unofficial"]
                   const latestMeas = latestMeass && latestMeass[excercisesKey] ? latestMeass[excercisesKey] : undefined;
                   if (latestMeas) {
                     if (!date || latestMeas.date.getTime() > date.getTime()) {
@@ -182,8 +184,8 @@
 
         for (let excercisesKey in Excercises) {
           let latestMeasurement;
-          if (latestMeasurements && latestMeasurements[this.official ? "official" : "unofficial"]) {
-            latestMeasurement = latestMeasurements[this.official ? "official" : "unofficial"][excercisesKey];
+          if (latestMeasurements && latestMeasurements[this.isOfficial ? "official" : "unofficial"]) {
+            latestMeasurement = latestMeasurements[this.isOfficial ? "official" : "unofficial"][excercisesKey];
           }
 
           ex.push({

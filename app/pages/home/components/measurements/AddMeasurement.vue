@@ -44,6 +44,7 @@
 
     data() {
       return {
+        isTrainer: authService.userWrapper.user.trains !== undefined,
         date: new Date(),
         maxDate: new Date(),
         score: this.previousScore || 50,
@@ -78,7 +79,7 @@
               date: this.date,
               score,
               exercise: this.exercise,
-              official: editingUserService.userWrapper.user.id !== authService.userWrapper.user.id
+              official: this.isTrainer || editingUserService.userWrapper.user.id !== authService.userWrapper.user.id
             })
             .then(() => this.$modal.close(true))
             .catch(err => console.log(err));
