@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as firebase from "firebase-admin";
 import { Measurement } from "./shared/measurement";
-import { SharedUser, LatestMeasurements, LatestMeasurementsPart } from "./shared/shared-user";
+import { SharedUser, ScoresWrapper, LatestMeasurementsWrapper, LatestMeasurements } from "./shared/shared-user";
 import { Excercises, Exercise } from "./shared/exercises";
 import Scores from "./shared/scores";
 
@@ -44,14 +44,14 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
 
   // make sure the data we want to update exists
   if (!user.latestmeasurements) {
-    user.latestmeasurements = <any>{
+    user.latestmeasurements = <LatestMeasurementsWrapper>{
       official: {},
       unofficial: {}
     };
   }
 
   if (!user.scores) {
-    user.scores = <any>{
+    user.scores = <ScoresWrapper>{
       combined: {},
       official: {},
       unofficial: {}
@@ -72,10 +72,13 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
     // now update the scores, based on latestMeasurements
     if (measurementData.official) {
       user.scores.official = calculateScores(latestMeasurements);
+      // console.log("Scores official: " + JSON.stringify(user.scores.official));
     } else {
       user.scores.unofficial = calculateScores(latestMeasurements);
+      // console.log("Scores unofficial: " + JSON.stringify(user.scores.official));
     }
     user.scores.combined = calculateScores(getLatestMeasurementsCombined(user.latestmeasurements));
+    // console.log("Scores combined: " + JSON.stringify(user.scores.combined));
 
     await userRef.update({
       latestmeasurements: user.latestmeasurements,
@@ -87,10 +90,10 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   return null;
 });
 
-function getLatestMeasurementsCombined(measurements: LatestMeasurements): LatestMeasurementsPart {
+function getLatestMeasurementsCombined(measurements: LatestMeasurementsWrapper): LatestMeasurements {
   const result = measurements.official;
   for (let k in measurements.unofficial) {
-    const val = measurements.official[k];
+    const val = measurements.unofficial[k];
     if (!result[k] || result[k].date < val.date) {
       result[k] = val;
     }
@@ -98,7 +101,7 @@ function getLatestMeasurementsCombined(measurements: LatestMeasurements): Latest
   return result;
 }
 
-function calculateScores(measurements: LatestMeasurementsPart): Scores {
+function calculateScores(measurements: LatestMeasurements): Scores {
   const PAC = Math.round(
       (calculateScore(measurements.STAMINA, Excercises.STAMINA) +
           calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE) +
@@ -147,9 +150,7 @@ function calculateScores(measurements: LatestMeasurementsPart): Scores {
 
   const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / Math.max(divideBy, 1));
 
-  console.log("PAC: " + PAC + ", TEC: " + TEC + ", DRI: " + DRI + ", PAS: " + PAS + ", PHY: " + PHY + ", SHO: " + SHO);
-
-  return {
+  return <Scores>{
     PAC,
     TEC,
     DRI,
@@ -157,7 +158,7 @@ function calculateScores(measurements: LatestMeasurementsPart): Scores {
     PHY,
     SHO,
     TOTAL
-  }
+  };
 }
 
 function calculateScore(measurement: Measurement, exercise: Exercise): number {
