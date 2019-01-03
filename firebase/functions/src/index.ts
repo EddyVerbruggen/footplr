@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
 import * as firebase from "firebase-admin";
 import { Measurement } from "./shared/measurement";
-import { SharedUser } from "./shared/shared-user";
-import { Excercises, Exercise, ExerciseType } from "./shared/exercises";
+import { SharedUser, LatestMeasurements, LatestMeasurementsPart } from "./shared/shared-user";
+import { Excercises, Exercise } from "./shared/exercises";
 import Scores from "./shared/scores";
 
 // perhaps it's more efficient to store measurements in the root.. that's probably easier to watch for Firebase: measurements/{measurementId}
@@ -52,6 +52,7 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
 
   if (!user.scores) {
     user.scores = <any>{
+      combined: {},
       official: {},
       unofficial: {}
     };
@@ -74,6 +75,7 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
     } else {
       user.scores.unofficial = calculateScores(latestMeasurements);
     }
+    user.scores.combined = calculateScores(getLatestMeasurementsCombined(user.latestmeasurements));
 
     await userRef.update({
       latestmeasurements: user.latestmeasurements,
@@ -85,7 +87,18 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   return null;
 });
 
-function calculateScores(measurements: { [t in ExerciseType]: Measurement }): Scores {
+function getLatestMeasurementsCombined(measurements: LatestMeasurements): LatestMeasurementsPart {
+  const result = measurements.official;
+  for (let k in measurements.unofficial) {
+    const val = measurements.official[k];
+    if (!result[k] || result[k].date < val.date) {
+      result[k] = val;
+    }
+  }
+  return result;
+}
+
+function calculateScores(measurements: LatestMeasurementsPart): Scores {
   const PAC = Math.round(
       (calculateScore(measurements.STAMINA, Excercises.STAMINA) +
           calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE) +
