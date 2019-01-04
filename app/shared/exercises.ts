@@ -22,22 +22,22 @@ export enum ExerciseType {
 
 // we don't require proper i18n for the time being, so doing this the poor mans way for now
 export function translateExerciseType(input: ExerciseType): string {
-  if (input === ExerciseType.CONTROL_HIGH_BALL) return "Balcontrole (hooghouden)";
-  else if (input === ExerciseType.CONTROL_LOW_BALL) return "Aanname lage bal";
-  else if (input === ExerciseType.AGILITY) return "Behendigheid";
-  else if (input === ExerciseType.CROSSPASS) return "Crosspass (lange bal)";
-  else if (input === ExerciseType.DRIBBLE) return "Dribbelen";
+  if (input === ExerciseType.CONTROL_HIGH_BALL) return "Balcontrole: Hooghouden";
+  else if (input === ExerciseType.CONTROL_LOW_BALL) return "Balcontrole: Aanname";
+  else if (input === ExerciseType.AGILITY) return "Wendbaarheid";
+  else if (input === ExerciseType.CROSSPASS) return "Crosspass / Lange bal";
+  else if (input === ExerciseType.DRIBBLE) return "Dribbel";
   else if (input === ExerciseType.EXPLOSIVENESS) return "Explosiviteit";
   else if (input === ExerciseType.SPEED_OF_ACTION) return "Handelingssnelheid";
-  else if (input === ExerciseType.HEARTRATE) return "Hartslag";
-  else if (input === ExerciseType.HEADER_HEIGHT) return "Kopsprong hoogte";
+  else if (input === ExerciseType.HEARTRATE) return "Herstelvermogen / Hartslag";
+  else if (input === ExerciseType.HEADER_HEIGHT) return "Hoogte kopsprong";
   else if (input === ExerciseType.AIM) return "Mikken";
-  else if (input === ExerciseType.PASSING_MOVEMENTS) return "Passeerbewegingen";
-  else if (input === ExerciseType.PUSH_UPS) return "Push Ups (opdrukken)";
+  else if (input === ExerciseType.PASSING_MOVEMENTS) return "Balcontrole: Behendigheid / Skills";
+  else if (input === ExerciseType.PUSH_UPS) return "Kracht bovenlichaam / Push-ups";
   else if (input === ExerciseType.SHOT_STRENGTH) return "Schotkracht";
-  else if (input === ExerciseType.SIT_UPS) return "Sit Ups";
-  else if (input === ExerciseType.SPRINT) return "Sprinten";
-  else if (input === ExerciseType.JUMP_HEIGHT) return "Sprongkracht";
+  else if (input === ExerciseType.SIT_UPS) return "Kracht romp / Sit-ups";
+  else if (input === ExerciseType.SPRINT) return "Sprintsnelheid";
+  else if (input === ExerciseType.JUMP_HEIGHT) return "Kracht bovenbenen: VJT";
   else if (input === ExerciseType.STAMINA) return "Uithoudingsvermogen";
   else {
     console.log(`!!!!!!!!!!!!!!!!!!! no translation found for ExerciseType '${input}'`);
