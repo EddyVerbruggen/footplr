@@ -112,7 +112,7 @@
                   score: measurementData.score,
                   scoreClass: (Math.ceil(measurementData.score / 10)) * 10
                 });
-                data.push(measurementData.score);
+                data.push(measurementData.measurement);
                 labels.push(measurementData.date.getTime());
               });
 
