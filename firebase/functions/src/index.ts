@@ -167,14 +167,5 @@ function calculateScores(measurements: LatestMeasurements): Scores {
 }
 
 function calculateScore(measurement: Measurement, exercise: Exercise): number {
-  if (!measurement) {
-    return 0;
-  }
-  if (exercise.scoreCalculationType === "LOW_HIGH") {
-    return Math.max(100 * (measurement.score - exercise.lowbound) / (exercise.highbound - exercise.lowbound), 0);
-  } else if (exercise.scoreCalculationType === "HIGH_LOW") {
-    return Math.max(100 * (exercise.highbound - measurement.score) / (exercise.highbound - exercise.lowbound), 0);
-  }
-
-  return 0;
+  return measurement ? exercise.calculateScore(measurement.score) : 0;
 }

@@ -26,10 +26,11 @@
   var settings = JSON.parse(decodeURI(loc.substring(loc.indexOf("?") + 1)));
   var datasets = settings.datasets;
   var labels = settings.labels;
+  var bounds = settings.bounds;
 
   var ctx = document.getElementById("myChart").getContext('2d');
 
-  var myChart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'line',
     data: {
       labels,
@@ -63,6 +64,23 @@
         yAxes: [{
           type: 'linear',
           ticks: {
+            min: bounds.min,
+            max: bounds.max,
+            callback: function(value, index, values) {
+              // let's not render the '0' tick
+              return value === 0 ? '' : value;
+            }
+          },
+          position: 'left',
+          gridLines: {
+            display: true,
+            lineWidth: 0.5,
+            drawBorder: false,
+            zeroLineWidth: 0
+          }
+        }, {
+          type: 'linear',
+          ticks: {
             min: 0,
             max: 100,
             stepSize: 20,
@@ -71,6 +89,7 @@
               return value === 0 ? '' : value;
             }
           },
+          position: 'right',
           gridLines: {
             display: true,
             lineWidth: 0.5,

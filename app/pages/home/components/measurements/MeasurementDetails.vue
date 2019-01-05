@@ -8,19 +8,21 @@
 
       <!--<StackLayout row="2" class="c-bg-white"></StackLayout>-->
 
-      <GridLayout row="2" columns="50, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
+      <GridLayout row="2" columns="50, 80, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"></Label>
-        <Label col="1" text="Datum" class="p-y-10 p-x-5 bold"></Label>
+        <Label col="1" text="Meting" class="p-y-10 p-x-10 bold" horizontalAlignment="right"></Label>
+        <Label col="2" text="Datum" class="p-y-10 p-x-5 bold"></Label>
       </GridLayout>
 
       <ListView row="3" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="table">
         <v-template>
-          <GridLayout columns="50, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
+          <GridLayout columns="50, 80, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
             <Label col="0" :text="item.score" :class="'background-color-score-' + item.scoreClass" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
-            <Label col="1" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
-            <Label col="2" class="icon-round m-r-10" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
+            <Label col="1" color="#011627" :text="item.measurement" class="p-y-10 p-x-10" horizontalAlignment="right"></Label>
+            <Label col="2" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
+            <Label col="3" class="icon-round m-r-10" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
             <!-- TODO only allow delete if you entered it yourself -->
-            <Label col="2" :text="iconDelete" class="icon m-r-16 p-r-2" style="color: white; font-size: 18" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
+            <Label col="3" :text="iconDelete" class="icon m-r-16 p-r-2" style="color: white; font-size: 18" verticalAlignment="center" horizontalAlignment="right" @tap="deleteMeasurement(item)"></Label>
           </GridLayout>
         </v-template>
       </ListView>
@@ -35,7 +37,7 @@
 <script>
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
-  import {translateExerciseType} from "~/shared/exercises";
+  import {Excercises, translateExerciseType} from "~/shared/exercises";
 
   const measurements = [];
 
@@ -106,11 +108,12 @@
                   id: index++,
                   ref: s.ref,
                   date: formatDate(measurementData.date),
+                  measurement: measurementData.measurement,
                   score: measurementData.score,
                   scoreClass: (Math.ceil(measurementData.score / 10)) * 10
                 });
                 data.push(measurementData.score);
-                labels.push(measurementData.date.getTime())
+                labels.push(measurementData.date.getTime());
               });
 
               // now render the graph, see http://www.chartjs.org/docs/latest/charts/line.html
@@ -127,7 +130,8 @@
                   borderWidth: 2
                 }];
 
-              this.webViewSRC = `~/assets/graph-chartjs.html?${JSON.stringify({datasets, labels})}`;
+              const exercise = Excercises[this.exercise];
+              this.webViewSRC = `~/assets/graph-chartjs.html?${JSON.stringify({datasets, labels, bounds: { min: exercise.lowbound, max: exercise.highbound }})}`;
             })
             .catch(err => console.log(err));
       }

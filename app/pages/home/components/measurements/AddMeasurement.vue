@@ -1,26 +1,39 @@
 <template>
   <Page>
-    <GridLayout rows="auto, *, auto, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, auto, *, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top"
+                height="100%">
 
-      <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70" :class="'background-color-score-' + scoreClass" @loaded="headerLoaded">
-        <Label row="0" :text="exerciseTranslated" color="#fff" class="bold exercise" horizontalAlignment="right" verticalAlignment="bottom"></Label>
-        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()" horizontalAlignment="right" v-if="!showExplanation"></Button>
-        <Label row="1" color="#fff" class="c-white m-30 p-t-70" text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet." textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
+      <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
+                  :class="'background-color-score-' + scoreClass" @loaded="headerLoaded">
+        <Label row="0" :text="exerciseTranslated" color="#fff" class="bold exercise" width="65%" textWrap="true"
+               style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
+        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()"
+                horizontalAlignment="right" v-if="!showExplanation"></Button>
+        <Label row="1" color="#fff" class="c-white m-30 p-t-70"
+               text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
+               textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
       </GridLayout>
 
-      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="170" horizontalAlignment="left" verticalAlignment="top"></Image>
+      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="170" horizontalAlignment="left"
+             verticalAlignment="top"></Image>
 
-      <!--<Label row="1" colSpan="2" class="m-x-20 c-white" text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet." textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>-->
+      <StackLayout row="2" colSpan="2" class="m-20" v-if="!showExplanation">
+        <Dribble v-if="exercise === 'DRIBBLE'"></Dribble>
+        <Heartrate v-if="exercise === 'HEARTRATE'"></Heartrate>
+      </StackLayout>
 
-      <!--<TextField row="2" colSpan="2" width="50" height="50" keyboardType="number" v-model="score" hint="Score" horizontalAlignment="center"/>-->
-      <Label row="2" colSpan="2" :text="score" class="bold" style="margin-bottom: 60; color: #63d4a5" horizontalAlignment="center" v-if="!showExplanation"></Label>
-      <Slider row="2" colSpan="2" class="m-20" minValue="0" maxValue="100" width="90%" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>
+      <!--<Label row="3" colSpan="2" :text="score" class="bold" style="margin-bottom: 60; color: #63d4a5" horizontalAlignment="center" v-if="!showExplanation"></Label>-->
+      <!--<Slider row="3" colSpan="2" class="m-20" minValue="0" maxValue="100" width="90%" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>-->
 
-      <DatePicker row="3" colSpan="2" v-model="date" :maxDate="maxDate" v-if="!showExplanation"></DatePicker>
+      <DatePicker row="3" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
+                  v-if="!showExplanation"></DatePicker>
 
-      <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close(false)" v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()" v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass" @tap="showExplanation = false" v-if="showExplanation"></Button>
+      <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close(false)"
+              v-if="!showExplanation"></Button>
+      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()"
+              v-if="!showExplanation"></Button>
+      <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
+              @tap="showExplanation = false" v-if="showExplanation"></Button>
     </GridLayout>
   </Page>
 </template>
@@ -28,11 +41,23 @@
 <script>
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
-  import {translateExerciseType} from "~/shared/exercises";
+  import {Excercises, translateExerciseType} from "~/shared/exercises";
+  import Dribble from "./measurement-entry/Dribble";
+  import Heartrate from "./measurement-entry/Heartrate";
+  import {EventBus} from "~/services/event-bus";
 
   export default {
+    components: {
+      Dribble,
+      Heartrate
+    },
+
     created() {
-      console.log("AddMeasurement created");
+      EventBus.$on("score-entered", data => {
+        this.measurement = data.measurement;
+        this.score = Excercises[this.exercise].calculateScore(this.measurement);
+        this.scoreClass = (Math.ceil(this.score / 10)) * 10;
+      });
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
@@ -47,7 +72,8 @@
         isTrainer: authService.userWrapper.user.trains !== undefined,
         date: new Date(),
         maxDate: new Date(),
-        score: this.previousScore || 50,
+        measurement: undefined, // this is what's stored in the db
+        score: this.previousScore || 50, // this is calculated based on the score
         scoreClass: this.scoreClass, // this is updated in mounted()
         showExplanation: false,
       }
@@ -73,10 +99,14 @@
           return;
         }
 
+        // round to 2 decimals
+        const measurement = (Math.round(this.measurement * 100)) / 100;
+
         editingUserService.userRef
             .collection("measurements")
             .add({
               date: this.date,
+              measurement,
               score,
               exercise: this.exercise,
               official: this.isTrainer || editingUserService.userWrapper.user.id !== authService.userWrapper.user.id

@@ -65,6 +65,20 @@ export class Exercise {
     // TODO consider adding lowbound and LOW_HIGH (as seen in the table in the doc), and use it for entry validation
     // TODO Factor does not seem to be relevant now, also factor might be different per category the exercise is in.
   }
+
+  calculateScore(measurement?: number): number {
+    if (!measurement) {
+      return 0;
+    }
+
+    if (this.scoreCalculationType === "LOW_HIGH") {
+      return Math.min(100, Math.max(100 * (measurement - this.lowbound) / (this.highbound - this.lowbound), 0));
+    } else if (this.scoreCalculationType === "HIGH_LOW") {
+      return Math.min(100, Math.max(100 * (this.highbound - measurement) / (this.highbound - this.lowbound), 0));
+    }
+
+    return 0;
+  }
 }
 
 // Note that the order here determines what the order is on-screen

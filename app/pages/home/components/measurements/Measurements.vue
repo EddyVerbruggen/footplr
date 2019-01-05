@@ -68,12 +68,12 @@
       // }
 
       // for quick dev of the 'add' or 'details' page
-      // setTimeout(() => this.addMeasurement({
-      //   exercise: ExerciseType.DRIBBLE,
-      //   hasMeasurement: true,
-      //   scoreClass: 60,
-      //   exerciseTranslated: translateExerciseType(ExerciseType.DRIBBLE)
-      // }), 500);
+      setTimeout(() => this.addMeasurement({
+        exercise: ExerciseType.HEARTRATE,
+        hasMeasurement: true,
+        scoreClass: 60,
+        exerciseTranslated: translateExerciseType(ExerciseType.HEARTRATE)
+      }), 500);
     },
 
     data() {
@@ -123,6 +123,7 @@
       },
 
       addMeasurement(item) {
+        console.log("Go tot add, for exercise: " + item.exercise);
         this.$showModal(AddMeasurement, {
           fullscreen: true,
           props: {
