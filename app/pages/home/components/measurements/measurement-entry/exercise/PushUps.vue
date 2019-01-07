@@ -1,13 +1,13 @@
 <template>
-  <NumerInput :player="player"></NumerInput>
+  <NumberInput :player="player"></NumberInput>
 </template>
 
 <script>
-  import NumerInput from "./components/NumberInput";
+  import NumberInput from "./components/NumberInput";
 
   export default {
     components: {
-      NumerInput
+      NumberInput
     },
 
     props: ['player'],
