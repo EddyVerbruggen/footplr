@@ -1,10 +1,19 @@
 import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
+import Team from "~/models/team";
 import User from "~/models/user";
 
-export async function getPlayersInTeam(team: firestore.DocumentReference): Promise<Array<User>> {
+export async function getTeam(teamRef: firestore.DocumentReference): Promise<Team> {
+  const teamDoc = await teamRef.get();
+  const team = <Team>teamDoc.data();
+  team.id = teamDoc.id;
+  team.ref = teamDoc.ref;
+  return team;
+}
+
+export async function getPlayersInTeam(teamRef: firestore.DocumentReference): Promise<Array<User>> {
   const querySnapshot: firestore.QuerySnapshot = await firebase.firestore.collection("users")
-      .where("playsin", "==", team)
+      .where("playsin", "==", teamRef)
       .get();
 
   const users: Array<User> = [];

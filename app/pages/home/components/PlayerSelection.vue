@@ -21,7 +21,7 @@
 <script>
   import {action} from "tns-core-modules/ui/dialogs";
   import {authService} from "~/main";
-  import {getPlayersInTeam} from "~/services/TeamService"
+  import {getPlayersInTeam, getTeam} from "~/services/TeamService"
   import {EventBus} from "~/services/event-bus";
 
   export default {
@@ -52,6 +52,7 @@
         selectedPlayer: this.$editingUserService.userWrapper.user,
         // selectedPlayerName: this.$editingUserService.userWrapper.user ? (this.$editingUserService.userWrapper.user.firstname + " " + (this.$editingUserService.userWrapper.user.lastname ? this.$editingUserService.userWrapper.user.lastname : "")) : "GEHELE TEAM",
         players: undefined,
+        teams: undefined,
       }
     },
     methods: {
@@ -60,21 +61,26 @@
       },
       async selectPlayer() {
         // TODO better to cache this globally, because we have 3 instances of this component
-        if (!this.players) {
-          // TODO may train multiple teams
-          console.log(">> fetch players for: " + authService.userWrapper.user.trains[0]);
-          this.players = await getPlayersInTeam(authService.userWrapper.user.trains[0]);
+        if (!this.players || !this.teams) {
+          this.players = [];
+          this.teams = [];
+          for (let i = 0; i < authService.userWrapper.user.trains.length; i++) {
+            this.players = this.players.concat(await getPlayersInTeam(authService.userWrapper.user.trains[i]));
+            this.teams = this.teams.concat(await getTeam(authService.userWrapper.user.trains[i]));
+          }
         }
+        this.players.sort();
+        this.teams.sort();
 
-        // TODO for teamavg, consider using a Firebase Function instead of real-time calculation
-        // TODO for the profile page we don't want teams.. (so just show authUser if a team was selected.. or edit team settings (if any))
-        const options = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
+        const teamPrefix = "TEAM: ";
+        let options = this.teams.map(team => `${teamPrefix}${team.name}`);
+        const players = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
+        options = options.concat(players);
         const cancelLabel = "Annuleren";
-        const myselfLabel = "Ikzelf 😀";
-        const entireTeamLabel = "GEHELE TEAM";
+        const myselfLabel = "ik";
         action({
-          title: "Kies een speler",
-          actions: [myselfLabel, entireTeamLabel, ...options],
+          title: "Kies een team of speler",
+          actions: [myselfLabel, ...options],
           cancelable: true,
           cancelButtonText: cancelLabel
         }).then(picked => {
@@ -87,19 +93,15 @@
               player = authService.userWrapper.user;
               this.$editingUserService.userWrapper.user = player;
               this.$editingUserService.userWrapper.teamRef = undefined;
-            } else if (picked === entireTeamLabel) {
-              // TODO correct team
-              this.$editingUserService.userWrapper.teamRef = authService.userWrapper.user.trains[0];
+            } else if (picked.startsWith(teamPrefix)) {
+              this.$editingUserService.userWrapper.teamRef = this.teams[options.indexOf(picked)].ref;
             } else {
-              console.log({picked});
-              console.log("options.indexOf(picked): " + options.indexOf(picked));
-              player = this.players[options.indexOf(picked)];
+              player = this.players[options.indexOf(picked) - this.teams.length];
               this.$editingUserService.userWrapper.user = player;
               this.$editingUserService.userWrapper.teamRef = undefined;
             }
 
             this.$editingUserService.watchUser();
-
             EventBus.$emit('player-selected', { picked, player });
           }
         });
