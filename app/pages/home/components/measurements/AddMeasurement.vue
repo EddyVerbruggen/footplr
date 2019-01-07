@@ -1,7 +1,7 @@
 <template>
   <Page>
-    <GridLayout rows="auto, auto, auto, *, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top"
-                height="100%">
+    <GridLayout rows="auto, auto, auto, *, auto, auto" columns="*, *" horizontalAlignment="center"
+                verticalAlignment="top" height="100%">
 
       <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
                   :class="'background-color-score-' + scoreClass">
@@ -9,6 +9,8 @@
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
         <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()"
                 horizontalAlignment="right" v-if="!showExplanation"></Button>
+        <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore" class="previous-score" verticalAlignment="bottom"
+               v-if="!showExplanation"></Label>
         <Label row="1" color="#fff" class="c-white m-30 p-t-70"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
                textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
@@ -18,19 +20,25 @@
              verticalAlignment="top"></Image>
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
-      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10" v-if="showTimer"></Timer>
+      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
+             v-if="showTimer"></Timer>
 
-      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
+      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20"
+                                 v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
-      <GridLayout row="3" colSpan="2" class="m-12" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
-        <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></WebImage>
+      <GridLayout row="3" colSpan="2" class="m-12" :rows="nrOfPlayers" columns="auto, auto, *"
+                  v-if="!showExplanation && isTeam">
+        <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left"
+                  class="card-photo" v-for="(player, i) in players"></WebImage>
 
         <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
           <Label :text="player.firstname" class="bold firstname"></Label>
           <Label :text="player.lastname"></Label>
         </StackLayout>
 
-        <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20" verticalAlignment="center" horizontalAlignment="right" v-for="(player, i) in players"></AddMeasurementForExercise>
+        <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20"
+                                   verticalAlignment="center" horizontalAlignment="right"
+                                   v-for="(player, i) in players"></AddMeasurementForExercise>
       </GridLayout>
 
       <DatePicker row="4" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
@@ -177,5 +185,11 @@
 
   .firstname {
     font-size: 20;
+  }
+
+  .previous-score {
+    font-size: 13;
+    color: #fff;
+    margin: 0 0 6 6;
   }
 </style>
