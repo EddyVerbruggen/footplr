@@ -1,5 +1,5 @@
 <template>
-  <NumericKeyboard ref="input" @blur="blurInput" hint="Aantal" locale="nl_NL" :noDecimals="!decimals" returnKeyTitle="OK" horizontalAlignment="center"></NumericKeyboard>
+  <NumericKeyboard ref="input" @blur="blurInput" hint="Aantal" locale="nl_NL" :noDecimals="!decimals" returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
 </template>
 
 <script>
@@ -15,14 +15,3 @@
     }
   };
 </script>
-
-<style scoped>
-  TextField {
-    text-align: right;
-    font-size: 20;
-    border-bottom-color: red;
-    border-bottom-width: 1px;
-    width: 90;
-    padding: 12;
-  }
-</style>

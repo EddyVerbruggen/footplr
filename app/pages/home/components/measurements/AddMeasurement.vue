@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <GridLayout rows="auto, auto, *, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top"
+    <GridLayout rows="auto, auto, auto, *, auto, auto" columns="*, *" horizontalAlignment="center" verticalAlignment="top"
                 height="100%">
 
       <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
@@ -17,11 +17,12 @@
       <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="170" horizontalAlignment="left"
              verticalAlignment="top"></Image>
 
-      <!-- TODO add timer/stopwatch here, instead of in the component.. better for reuse -->
+      <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
+      <Timer row="2" colSpan="2" duration="15" label="Start meting" hint="Tel het aantal slagen.." class="m-t-10" v-if="showTimer"></Timer>
 
-      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="2" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
+      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
-      <GridLayout row="2" colSpan="2" class="m-20" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
+      <GridLayout row="3" colSpan="2" class="m-12" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
         <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></WebImage>
 
         <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
@@ -32,14 +33,14 @@
         <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20" verticalAlignment="center" horizontalAlignment="right" v-for="(player, i) in players"></AddMeasurementForExercise>
       </GridLayout>
 
-      <DatePicker row="3" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
+      <DatePicker row="4" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
                   v-if="!showExplanation"></DatePicker>
 
-      <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close(false)"
+      <Button row="5" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close(false)"
               v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()"
+      <Button row="5" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()"
               v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
+      <Button row="5" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
               @tap="showExplanation = false" v-if="showExplanation"></Button>
     </GridLayout>
   </Page>
@@ -52,10 +53,12 @@
   import {EventBus} from "~/services/event-bus";
   import {getPlayersInTeam} from "~/services/TeamService"
   import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
+  import Timer from "./measurement-entry/Timer";
 
   export default {
     components: {
-      AddMeasurementForExercise
+      AddMeasurementForExercise,
+      Timer
     },
 
     created() {
@@ -99,6 +102,11 @@
     },
 
     computed: {
+      showTimer: function () {
+        return !this.showExplanation &&
+            this.exercise === "HEARTRATE"
+      },
+
       nrOfPlayers: function () {
         if (this.players) {
           const rowsStr = Array(this.players.length + 1).join("auto,");
@@ -159,11 +167,11 @@
   }
 
   .card-photo {
-    width: 50;
-    height: 50;
-    border-radius: 25;
+    width: 44;
+    height: 44;
+    border-radius: 22;
     background-color: rgba(255, 255, 255, 0.3);
-    margin: 10 20 10 0;
+    margin: 10 12 10 0;
   }
 
   .firstname {
