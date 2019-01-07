@@ -18,7 +18,7 @@
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {translateExerciseType} from "~/shared/exercises";
-  import Stopwatch from "./Stopwatch";
+  import Stopwatch from "../Stopwatch";
 
   export default {
     components: {

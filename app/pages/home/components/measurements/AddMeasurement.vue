@@ -4,7 +4,7 @@
                 height="100%">
 
       <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
-                  :class="'background-color-score-' + scoreClass" @loaded="headerLoaded">
+                  :class="'background-color-score-' + scoreClass">
         <Label row="0" :text="exerciseTranslated" color="#fff" class="bold exercise" width="65%" textWrap="true"
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
         <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()"
@@ -17,13 +17,21 @@
       <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="170" horizontalAlignment="left"
              verticalAlignment="top"></Image>
 
-      <StackLayout row="2" colSpan="2" class="m-20" v-if="!showExplanation">
-        <Dribble v-if="exercise === 'DRIBBLE'"></Dribble>
-        <Heartrate v-if="exercise === 'HEARTRATE'"></Heartrate>
-      </StackLayout>
+      <!-- TODO add timer/stopwatch here, instead of in the component.. better for reuse -->
 
-      <!--<Label row="3" colSpan="2" :text="score" class="bold" style="margin-bottom: 60; color: #63d4a5" horizontalAlignment="center" v-if="!showExplanation"></Label>-->
-      <!--<Slider row="3" colSpan="2" class="m-20" minValue="0" maxValue="100" width="90%" :value="score" @valueChange="sliderChanged" horizontalAlignment="center" v-if="!showExplanation"></Slider>-->
+      <AddMeasurementForExercise :exercise="exercise" :player="authUser" row="2" colSpan="2" class="m-20" v-if="!showExplanation && (!isTrainer || !isSelf)"></AddMeasurementForExercise>
+
+      <!-- TODO temp hack: if trainer is editing self, assume he's editing a team -->
+      <GridLayout row="2" colSpan="2" class="m-20" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTrainer && isSelf">
+        <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></WebImage>
+
+        <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
+          <Label :text="player.firstname" class="bold firstname"></Label>
+          <Label :text="player.lastname"></Label>
+        </StackLayout>
+
+        <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20" verticalAlignment="center" horizontalAlignment="right" v-for="(player, i) in players"></AddMeasurementForExercise>
+      </GridLayout>
 
       <DatePicker row="3" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
                   v-if="!showExplanation"></DatePicker>
@@ -42,87 +50,109 @@
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {Excercises, translateExerciseType} from "~/shared/exercises";
-  import Dribble from "./measurement-entry/Dribble";
-  import Heartrate from "./measurement-entry/Heartrate";
   import {EventBus} from "~/services/event-bus";
+  import {getPlayersInTeam} from "~/services/TeamService"
+  import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
 
   export default {
     components: {
-      Dribble,
-      Heartrate
+      AddMeasurementForExercise
     },
 
     created() {
       EventBus.$on("score-entered", data => {
-        this.measurement = data.measurement;
-        this.score = Excercises[this.exercise].calculateScore(this.measurement);
-        this.scoreClass = (Math.ceil(this.score / 10)) * 10;
+        // remember the data for saving
+        this.playerMeasurements.set(data.player, data.measurement);
+
+        // calculate the (average) scoreClass so we can update the header color
+        let totalScore = 0;
+        this.playerMeasurements.forEach((value, key) => {
+          totalScore += Excercises[this.exercise].calculateScore(value);
+        });
+        this.scoreClass = (Math.ceil(totalScore / this.playerMeasurements.size / 10)) * 10;
       });
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
     props: ['exercise', 'exerciseTranslated', 'previousScore'],
 
-    mounted() {
+    async mounted() {
       this.scoreClass = (Math.ceil(this.score / 10)) * 10;
+
+      // TODO get currently selected team from editinguserservice
+      if (this.isTrainer && this.isSelf) {
+        this.players = await getPlayersInTeam(authService.userWrapper.user.trains[0]);
+      }
     },
 
     data() {
       return {
+        authUser: authService.userWrapper.user,
         isTrainer: authService.userWrapper.user.trains !== undefined,
+        isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         date: new Date(),
         maxDate: new Date(),
-        measurement: undefined, // this is what's stored in the db
+        playerMeasurements: new Map(),
         score: this.previousScore || 50, // this is calculated based on the score
         scoreClass: this.scoreClass, // this is updated in mounted()
         showExplanation: false,
+        players: undefined,
       }
     },
+
+    computed: {
+      nrOfPlayers: function () {
+        if (this.players) {
+          const rowsStr = Array(this.players.length + 1).join("auto,");
+          return rowsStr.substring(0, rowsStr.length - 1);
+        }
+      }
+    },
+
     methods: {
-      headerLoaded(event) {
-        this.header = event.object;
-      },
       doShowExplanation() {
         this.showExplanation = true;
       },
-      sliderChanged(event) {
-        this.score = parseInt(event.value);
-        this.scoreClass = (Math.ceil(this.score / 10)) * 10;
-      },
+
       saveScore() {
-        if (!this.score) {
+        console.log("this.playerMeasurements.size: " + this.playerMeasurements.size);
+        if (this.playerMeasurements.size === 0) {
           return;
         }
 
-        const score = parseInt(this.score);
-        if (score < 0 || score > 100) {
-          return;
-        }
+        this.playerMeasurements.forEach((value, player) => {
+          console.log("v: " + value);
+          console.log("k: " + player.ref);
 
-        // round to 2 decimals
-        const measurement = (Math.round(this.measurement * 100)) / 100;
+          // round to 2 decimals
+          const measurement = (Math.round(value * 100)) / 100;
 
-        editingUserService.userRef
-            .collection("measurements")
-            .add({
-              date: this.date,
-              measurement,
-              score,
-              exercise: this.exercise,
-              official: this.isTrainer || editingUserService.userWrapper.user.id !== authService.userWrapper.user.id
-            })
-            .then(() => this.$modal.close(true))
-            .catch(err => console.log(err));
+          // round to 0 decimals
+          const score = Math.round(Excercises[this.exercise].calculateScore(measurement));
+
+          player
+              .ref
+              .collection("measurements")
+              .add({
+                date: this.date,
+                measurement,
+                score,
+                exercise: this.exercise,
+                official: this.isTrainer || !this.isSelf,
+                measuredby: authService.userWrapper.user.ref
+              })
+              .then(() => console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`))
+              .catch(err => console.log(err));
+        });
+
+        // note that this closes the modal before player data has been saved (which is 🆗)
+        this.$modal.close(true);
       }
     }
   };
 </script>
 
 <style scoped>
-  Page {
-    /*margin: 30 0 0 0;*/
-  }
-
   .exercise {
     font-size: 22;
   }
@@ -132,5 +162,17 @@
     border-color: #fff;
     color: #fff;
     margin: 24 0 24 16;
+  }
+
+  .card-photo {
+    width: 50;
+    height: 50;
+    border-radius: 25;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 10 20 10 0;
+  }
+
+  .firstname {
+    font-size: 20;
   }
 </style>

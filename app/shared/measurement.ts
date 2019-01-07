@@ -1,9 +1,10 @@
 import { ExerciseType } from "./exercises";
 
 export interface Measurement {
-  measuredby?: any; // docRef
   exercise: ExerciseType;
   date: Date;
+  measurement: number;
   score: number;
   official: boolean;
+  measuredby: any;
 }

@@ -13,6 +13,7 @@ export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
 
 (<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
+(<any>Vue).registerElement('NumericKeyboard', () => require('nativescript-numeric-keyboard').NumericKeyboardView);
 
 const v = <any>Vue;
 declare const TNS_ENV: any;

@@ -11,6 +11,7 @@ export async function getPlayersInTeam(team: firestore.DocumentReference): Promi
   querySnapshot.docSnapshots.forEach(userDoc => {
     const user = <User>userDoc.data();
     user.id = userDoc.id;
+    user.ref = userDoc.ref;
     users.push(user);
   });
   return users;

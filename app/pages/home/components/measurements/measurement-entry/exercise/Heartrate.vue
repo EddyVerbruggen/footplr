@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import Timer from "./Timer";
+  import Timer from "../Timer";
   import {EventBus} from "~/services/event-bus";
   import {Excercises} from "~/shared/exercises";
 

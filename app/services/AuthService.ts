@@ -35,6 +35,7 @@ export default class AuthService extends BackendService {
     const userDoc = await firebase.firestore.getDocument("users", firebaseUser.uid);
 
     const user = <User>userDoc.data();
+    user.ref = userDoc.ref;
     user.id = firebaseUser.uid;
     user.email = firebaseUser.email;
     this.user = user;
@@ -49,6 +50,7 @@ export default class AuthService extends BackendService {
     const userData = <User>doc.data();
     const user = this.user;
     userData.id = doc.id;
+    user.ref = doc.ref;
     user.id = userData.id;
     user.admin = userData.admin;
     user.birthdate = userData.birthdate;

@@ -69,10 +69,10 @@
 
       // for quick dev of the 'add' or 'details' page
       setTimeout(() => this.addMeasurement({
-        exercise: ExerciseType.HEARTRATE,
+        exercise: ExerciseType.PUSH_UPS,
         hasMeasurement: true,
         scoreClass: 60,
-        exerciseTranslated: translateExerciseType(ExerciseType.HEARTRATE)
+        exerciseTranslated: translateExerciseType(ExerciseType.PUSH_UPS)
       }), 500);
     },
 
@@ -185,8 +185,14 @@
 
         for (let excercisesKey in Excercises) {
           let latestMeasurement;
-          if (latestMeasurements && latestMeasurements[this.isOfficial ? "official" : "unofficial"]) {
-            latestMeasurement = latestMeasurements[this.isOfficial ? "official" : "unofficial"][excercisesKey];
+          // get the latest measurement (either official or unofficial)
+          if (latestMeasurements) {
+            if (latestMeasurements.official) {
+              latestMeasurement = latestMeasurements.official[excercisesKey];
+            }
+            if (latestMeasurements.unofficial && latestMeasurements.unofficial[excercisesKey] && (!latestMeasurement || latestMeasurement.date.getTime() < latestMeasurements.unofficial[excercisesKey].date.getTime())) {
+              latestMeasurement = latestMeasurements.unofficial[excercisesKey];
+            }
           }
 
           ex.push({

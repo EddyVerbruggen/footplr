@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO add team selection here as well, but don't show in case the trainer only trains one team -->
   <StackLayout
       orientation="horizontal"
       horizontalAlignment="center"
