@@ -18,7 +18,7 @@
              verticalAlignment="top"></Image>
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
-      <Timer row="2" colSpan="2" duration="15" label="Start meting" hint="Tel het aantal slagen.." class="m-t-10" v-if="showTimer"></Timer>
+      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10" v-if="showTimer"></Timer>
 
       <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
@@ -91,6 +91,7 @@
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: !editingUserService.userWrapper.team && editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         isTeam: !!editingUserService.userWrapper.team,
+        timerHint: this.exercise === "HEARTRATE" ? "Tel het aantal slagen.." : "",
         date: new Date(),
         maxDate: new Date(),
         playerMeasurements: new Map(),
