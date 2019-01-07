@@ -58,6 +58,7 @@
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
       editingUserService.anyPageCallback = user => {
+        console.log(">> measurements, anyPageCallback");
         this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       };
 
@@ -68,12 +69,12 @@
       // }
 
       // for quick dev of the 'add' or 'details' page
-      setTimeout(() => this.addMeasurement({
-        exercise: ExerciseType.PUSH_UPS,
-        hasMeasurement: true,
-        scoreClass: 60,
-        exerciseTranslated: translateExerciseType(ExerciseType.PUSH_UPS)
-      }), 500);
+      // setTimeout(() => this.addMeasurement({
+      //   exercise: ExerciseType.PUSH_UPS,
+      //   hasMeasurement: true,
+      //   scoreClass: 60,
+      //   exerciseTranslated: translateExerciseType(ExerciseType.PUSH_UPS)
+      // }), 500);
     },
 
     data() {
@@ -97,7 +98,7 @@
 
       playerSelected(result) {
         this.player = undefined;
-        if (result.picked === "vv Hoogland J09-7") { // TODO the actual team
+        if (!result.player) {
           this.fetchTeamMeasurements();
         } else {
           console.log("selected (@ measurements): " + result.player.firstname);
@@ -138,8 +139,7 @@
       },
 
       fetchTeamMeasurements() {
-        // TODO may train multiple teams
-        getPlayersInTeam(authService.userWrapper.user.trains[0])
+        getPlayersInTeam(editingUserService.userWrapper.teamRef)
             .then(users => {
               this.players = users;
 
@@ -152,16 +152,13 @@
                 let totalUsersWithScore = 0;
                 let date = undefined;
                 users.forEach(user => {
-                  const latestMeass = user.latestmeasurements[this.isOfficial ? "official" : "unofficial"]
-                  const latestMeas = latestMeass && latestMeass[excercisesKey] ? latestMeass[excercisesKey] : undefined;
+                  const latestMeas = this.getLatestMeasurementForExercise(user.latestmeasurements, excercisesKey);
                   if (latestMeas) {
                     if (!date || latestMeas.date.getTime() > date.getTime()) {
-                      console.log("latestMeas.date: " + latestMeas.date.getTime());
                       date = latestMeas.date;
                     }
                     totalUsersWithScore++;
                     totalScore += latestMeas.score;
-                    console.log("totalScore now: " + totalScore);
                   }
                 });
 
@@ -173,9 +170,6 @@
                 }
               }
 
-              console.log("sumMeasurements: " + JSON.stringify(sumMeasurements));
-
-              // this.fillExerciseScoresWithMeasurements(users[0].latestmeasurements);
               this.fillExerciseScoresWithMeasurements(sumMeasurements);
             });
       },
@@ -184,17 +178,7 @@
         const ex = [];
 
         for (let excercisesKey in Excercises) {
-          let latestMeasurement;
-          // get the latest measurement (either official or unofficial)
-          if (latestMeasurements) {
-            if (latestMeasurements.official) {
-              latestMeasurement = latestMeasurements.official[excercisesKey];
-            }
-            if (latestMeasurements.unofficial && latestMeasurements.unofficial[excercisesKey] && (!latestMeasurement || latestMeasurement.date.getTime() < latestMeasurements.unofficial[excercisesKey].date.getTime())) {
-              latestMeasurement = latestMeasurements.unofficial[excercisesKey];
-            }
-          }
-
+          const latestMeasurement = this.getLatestMeasurementForExercise(latestMeasurements, excercisesKey);
           ex.push({
             hasMeasurement: latestMeasurement !== undefined,
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
@@ -206,6 +190,19 @@
         }
         this.exercises = ex;
       },
+
+      getLatestMeasurementForExercise(latestMeasurements, excercisesKey) {
+        let latestMeasurement;
+        if (latestMeasurements) {
+          if (latestMeasurements.official) {
+            latestMeasurement = latestMeasurements.official[excercisesKey];
+          }
+          if (latestMeasurements.unofficial && latestMeasurements.unofficial[excercisesKey] && (!latestMeasurement || latestMeasurement.date.getTime() < latestMeasurements.unofficial[excercisesKey].date.getTime())) {
+            latestMeasurement = latestMeasurements.unofficial[excercisesKey];
+          }
+        }
+        return latestMeasurement;
+      }
     }
   };
 </script>

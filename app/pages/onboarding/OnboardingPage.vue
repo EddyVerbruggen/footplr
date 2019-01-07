@@ -85,7 +85,6 @@
   Label.pager-text {
     vertical-align: center;
     text-align: center;
-    font-size: 15;
     color: #011627;
     line-height: 9;
   }

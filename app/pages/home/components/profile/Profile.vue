@@ -7,48 +7,52 @@
         <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
       </GridLayout>
 
-      <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
-        <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
-        <WebImage :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></WebImage>
-        <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
+      <Label v-if="userWrapper.teamRef" text="Kies hierboven een speler.." horizontalAlignment="center" class="m-30"></Label>
+
+      <StackLayout v-else>
+        <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
+          <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
+          <WebImage :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></WebImage>
+          <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
+        </StackLayout>
+
+        <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
+          <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
+          <TextField
+              row="0"
+              col="1"
+              class="profile-field"
+              hint="Voornaam"
+              returnKeyType="next"
+              @blur="blurName"
+              @returnPress="focusLastName()"
+              v-model="userWrapper.user.firstname"
+              autocorrect="false"></TextField>
+
+          <TextField
+              row="1"
+              col="1"
+              class="profile-field"
+              hint="Achternaam"
+              returnKeyType="done"
+              @blur="blurName"
+              v-model="userWrapper.user.lastname"
+              autocorrect="false"></TextField>
+
+          <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
+          <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
+            <Label :text="playerPosition" verticalAlignment="center"></Label>
+            <Label :text="iconDropDown" class="icon"></Label>
+          </StackLayout>
+
+          <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
+
+          <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editBirthDate()">
+            <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
+            <Label :text="iconDropDown" class="icon"></Label>
+          </StackLayout>
+        </GridLayout>
       </StackLayout>
-
-      <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
-        <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
-        <TextField
-            row="0"
-            col="1"
-            class="profile-field"
-            hint="Voornaam"
-            returnKeyType="next"
-            @blur="blurName"
-            @returnPress="focusLastName()"
-            v-model="userWrapper.user.firstname"
-            autocorrect="false"></TextField>
-
-        <TextField
-            row="1"
-            col="1"
-            class="profile-field"
-            hint="Achternaam"
-            returnKeyType="done"
-            @blur="blurName"
-            v-model="userWrapper.user.lastname"
-            autocorrect="false"></TextField>
-
-        <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
-        <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
-          <Label :text="playerPosition" verticalAlignment="center"></Label>
-          <Label :text="iconDropDown" class="icon"></Label>
-        </StackLayout>
-
-        <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
-
-        <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editBirthDate()">
-          <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
-          <Label :text="iconDropDown" class="icon"></Label>
-        </StackLayout>
-      </GridLayout>
 
     </StackLayout>
   </ScrollView>
@@ -103,7 +107,7 @@
         editingBirthDate: false,
         userWrapper: editingUserService.userWrapper,
         isTrainer: authService.userWrapper.user.trains !== undefined,
-        playerName: () => this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname,
+        playerName: () => this.userWrapper.user ? this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname : "unset..",
       };
     },
     methods: {
@@ -124,7 +128,7 @@
           firstname: this.userWrapper.user.firstname,
           lastname: this.userWrapper.user.lastname,
         }).then(() => {
-          EventBus.$emit("player-selected", {player: this.userWrapper.user});
+          EventBus.$emit("player-selected", {player: this.userWrapper.user}); // TODO
           EventBus.$emit("update-players");
         });
       },

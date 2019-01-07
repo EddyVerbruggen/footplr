@@ -62,16 +62,24 @@
     },
     created() {
       console.log("ScoreCard created");
-      EventBus.$on("player-selected", stuff => this.userWrapper.user = stuff.player);
+      EventBus.$on("player-selected", stuff => {
+        // TODO add a scorecard for the entire team.. ignoring teams for now
+        if (stuff.player) {
+          this.userWrapper.user = stuff.player;
+        }
+      });
     },
     computed: {
       playerName: function () {
+        console.log("playerName");
         return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname
       },
       teamName: function () {
+        console.log("teamName");
         return this.userWrapper.user.teamName
       },
       playerAge: function () {
+        console.log("playerAge");
         if (!this.userWrapper.user.birthdate) {
           return "";
         }
@@ -87,7 +95,7 @@
         selectedPlayer: "Team gemiddelde",
         userWrapper: editingUserService.userWrapper,
         score: type => {
-          if (this.$editingUserService.userWrapper.user.scores) {
+          if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
             return this.$editingUserService.userWrapper.user.scores[this.isOfficial ? "official" : "combined"][type];
           }
         },

@@ -244,7 +244,6 @@
         color: white;
         horizontal-align: center;
         text-align: center;
-        font-size: 15;
         height: 50;
       }
     }

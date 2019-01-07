@@ -19,10 +19,9 @@
 
       <!-- TODO add timer/stopwatch here, instead of in the component.. better for reuse -->
 
-      <AddMeasurementForExercise :exercise="exercise" :player="authUser" row="2" colSpan="2" class="m-20" v-if="!showExplanation && (!isTrainer || !isSelf)"></AddMeasurementForExercise>
+      <AddMeasurementForExercise :exercise="exercise" :player="authUser" row="2" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
-      <!-- TODO temp hack: if trainer is editing self, assume he's editing a team -->
-      <GridLayout row="2" colSpan="2" class="m-20" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTrainer && isSelf">
+      <GridLayout row="2" colSpan="2" class="m-20" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
         <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></WebImage>
 
         <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
@@ -79,9 +78,8 @@
     async mounted() {
       this.scoreClass = (Math.ceil(this.score / 10)) * 10;
 
-      // TODO get currently selected team from editinguserservice
-      if (this.isTrainer && this.isSelf) {
-        this.players = await getPlayersInTeam(authService.userWrapper.user.trains[0]);
+      if (this.isTeam) {
+        this.players = await getPlayersInTeam(editingUserService.userWrapper.teamRef);
       }
     },
 
@@ -89,7 +87,8 @@
       return {
         authUser: authService.userWrapper.user,
         isTrainer: authService.userWrapper.user.trains !== undefined,
-        isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
+        isSelf: !editingUserService.userWrapper.teamRef && editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
+        isTeam: !!editingUserService.userWrapper.teamRef,
         date: new Date(),
         maxDate: new Date(),
         playerMeasurements: new Map(),
@@ -115,15 +114,11 @@
       },
 
       saveScore() {
-        console.log("this.playerMeasurements.size: " + this.playerMeasurements.size);
         if (this.playerMeasurements.size === 0) {
           return;
         }
 
         this.playerMeasurements.forEach((value, player) => {
-          console.log("v: " + value);
-          console.log("k: " + player.ref);
-
           // round to 2 decimals
           const measurement = (Math.round(value * 100)) / 100;
 

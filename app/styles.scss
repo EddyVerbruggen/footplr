@@ -9,6 +9,10 @@
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
 
+* {
+  font-size: 15;
+}
+
 Page {
   /* font-family: "Source Sans Pro", SourceSansPro-Regular, system, sans-serif; */
   font-family: "Core Sans D 35 Regular", CoreSansD35Regular, system, sans-serif;

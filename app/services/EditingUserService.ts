@@ -4,23 +4,26 @@ import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
 
 export default class EditingUserService extends BackendService {
-  public userWrapper: { user: User } = {user: undefined};
+  // TODO with team added the name is a bit silly
+  public userWrapper: { user: User, teamRef: firestore.DocumentReference } = {user: undefined, teamRef: undefined};
 
   // poor man's observable.. on any page you're currently at, you can register this callback
   // note that this has not been tested with more than one page, so an Array may be required, etc
   public anyPageCallback: Function = null;
 
   private userRef: firestore.DocumentReference;
-  private userLoginUnsubscribe;
+  private userListenerUnsubscribe;
 
   watchUser(): void {
-    this.listenToUserUpdates(this.userWrapper.user.id);
+    if (this.userWrapper.user) {
+      this.listenToUserUpdates(this.userWrapper.user.id);
+    }
   }
 
   private listenToUserUpdates(id: string) {
     this.userRef = firebase.firestore.collection("users").doc(id);
 
-    this.userLoginUnsubscribe = this.userRef.onSnapshot(doc => {
+    this.userListenerUnsubscribe = this.userRef.onSnapshot(doc => {
       if (doc.exists) {
         this.syncUserData(doc);
 
@@ -46,7 +49,6 @@ export default class EditingUserService extends BackendService {
   }
 
   async clearListener() {
-    this.user = null;
-    this.userLoginUnsubscribe();
+    this.userListenerUnsubscribe();
   }
 }
