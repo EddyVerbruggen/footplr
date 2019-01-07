@@ -10,7 +10,7 @@
         <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()"
                 horizontalAlignment="right" v-if="!showExplanation"></Button>
         <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore" class="previous-score" verticalAlignment="bottom"
-               v-if="!showExplanation"></Label>
+               v-if="!showExplanation && previousScore"></Label>
         <Label row="1" color="#fff" class="c-white m-30 p-t-70"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
                textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
