@@ -15,7 +15,10 @@ export const editingUserService = new EditingUserService();
 
 declare const IQKeyboardManager: any;
 if (isIOS) {
-  IQKeyboardManager.sharedManager().enableAutoToolbar = false;
+  const iqKeyboard = IQKeyboardManager.sharedManager();
+  iqKeyboard.enableAutoToolbar = false;
+  iqKeyboard.keyboardDistanceFromTextField = 50;
+  iqKeyboard.shouldResignOnTouchOutside = true;
 }
 
 (<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
