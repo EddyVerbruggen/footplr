@@ -10,11 +10,13 @@
   import {Excercises} from "~/shared/exercises";
 
   export default {
+    props: ['player'],
+
     methods: {
       blurNrOfBeats() {
         if (this.$refs.nrOfBeats1.nativeView.text && this.$refs.nrOfBeats2.nativeView.text) {
           const measurement = (this.$refs.nrOfBeats1.nativeView.text * 4) - (this.$refs.nrOfBeats2.nativeView.text * 4);
-          EventBus.$emit("score-entered", {measurement});
+          EventBus.$emit("score-entered", {measurement, player: this.player});
         }
       }
     }

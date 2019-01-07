@@ -123,7 +123,6 @@
       },
 
       addMeasurement(item) {
-        console.log("Go tot add, for exercise: " + item.exercise);
         this.$showModal(AddMeasurement, {
           fullscreen: true,
           props: {

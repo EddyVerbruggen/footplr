@@ -1,7 +1,7 @@
 <template>
   <StackLayout verticalAlignment="center">
-    <Dribble v-if="exercise === 'DRIBBLE'"></Dribble>
-    <Heartrate v-if="exercise === 'HEARTRATE'"></Heartrate>
+    <Dribble :player="player" v-if="exercise === 'DRIBBLE'"></Dribble>
+    <Heartrate :player="player" v-if="exercise === 'HEARTRATE'"></Heartrate>
     <PushUps :player="player" v-if="exercise === 'PUSH_UPS'"></PushUps>
   </StackLayout>
 </template>

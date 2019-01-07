@@ -71,6 +71,6 @@
 
   Label.countdown {
     font-size: 40;
-    color: red;
+    color: #b43e3e;
   }
 </style>
