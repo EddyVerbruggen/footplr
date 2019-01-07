@@ -1,6 +1,6 @@
 {
   "name": "footplr",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A native application built with NativeScript-Vue",
   "author": "Eddy Verbruggen <eddyverbruggen@gmail.com>",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "ios.release": "tns run ios --bundle --release --forDevice --provision 7dc8e2d2-5e21-4287-bb37-7fd948985326",
     "ios.emulator": "tns run ios --bundle --emulator",
     "android": "tns run android --bundle",
-    "android.release": "tns build android --bundle --release --other-keystore-params.."
+    "android.release": "tns build android --bundle --release --for-device --key-store-path ./keystore-footplr.jks --key-store-password xs4all --key-store-alias footplr --key-store-alias-password xs4all"
   },
   "dependencies": {
     "nativescript-camera": "~4.1.1",

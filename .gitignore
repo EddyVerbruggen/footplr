@@ -14,3 +14,6 @@ app/**/*.js
 firebase/functions/lib
 firebase/functions/src/shared
 firebase/functions/src/**/*.js
+
+# Android app signing keystore
+keystore-footplr.jks
