@@ -79,7 +79,7 @@
       this.scoreClass = (Math.ceil(this.score / 10)) * 10;
 
       if (this.isTeam) {
-        this.players = await getPlayersInTeam(editingUserService.userWrapper.teamRef);
+        this.players = await getPlayersInTeam(editingUserService.userWrapper.team.ref);
       }
     },
 
@@ -87,8 +87,8 @@
       return {
         authUser: authService.userWrapper.user,
         isTrainer: authService.userWrapper.user.trains !== undefined,
-        isSelf: !editingUserService.userWrapper.teamRef && editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
-        isTeam: !!editingUserService.userWrapper.teamRef,
+        isSelf: !editingUserService.userWrapper.team && editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
+        isTeam: !!editingUserService.userWrapper.team,
         date: new Date(),
         maxDate: new Date(),
         playerMeasurements: new Map(),

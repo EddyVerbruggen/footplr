@@ -71,15 +71,12 @@
     },
     computed: {
       playerName: function () {
-        console.log("playerName");
         return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname
       },
       teamName: function () {
-        console.log("teamName");
         return this.userWrapper.user.teamName
       },
       playerAge: function () {
-        console.log("playerAge");
         if (!this.userWrapper.user.birthdate) {
           return "";
         }

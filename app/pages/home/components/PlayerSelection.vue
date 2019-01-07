@@ -5,7 +5,7 @@
       horizontalAlignment="center"
       @tap="selectPlayer">
     <Label
-        :text="iconPeople"
+        :text="selectedPlayer ? iconPerson : iconPeople"
         verticalAlignment="center"
         class="icon"></Label>
     <Label
@@ -36,21 +36,20 @@
     },
     computed: {
       selectedPlayerName: function () {
-        console.log("calling selectedPlayerName");
         if (this.selectedPlayer) {
           return this.selectedPlayer.firstname + " " + (this.selectedPlayer.lastname ? this.selectedPlayer.lastname : "");
-        } else {
-          return "GEHELE TEAM";
+        } else if (this.$editingUserService.userWrapper.team) {
+          return this.$editingUserService.userWrapper.team.name
         }
       }
     },
     data() {
       return {
         date: new Date().getTime(),
+        iconPerson: String.fromCharCode(0xe7fd),
         iconPeople: String.fromCharCode(0xe7fc),
         iconDropDown: String.fromCharCode(0xe5c5),
         selectedPlayer: this.$editingUserService.userWrapper.user,
-        // selectedPlayerName: this.$editingUserService.userWrapper.user ? (this.$editingUserService.userWrapper.user.firstname + " " + (this.$editingUserService.userWrapper.user.lastname ? this.$editingUserService.userWrapper.user.lastname : "")) : "GEHELE TEAM",
         players: undefined,
         teams: undefined,
       }
@@ -92,13 +91,13 @@
             if (picked === myselfLabel) {
               player = authService.userWrapper.user;
               this.$editingUserService.userWrapper.user = player;
-              this.$editingUserService.userWrapper.teamRef = undefined;
+              this.$editingUserService.userWrapper.team = undefined;
             } else if (picked.startsWith(teamPrefix)) {
-              this.$editingUserService.userWrapper.teamRef = this.teams[options.indexOf(picked)].ref;
+              this.$editingUserService.userWrapper.team = this.teams[options.indexOf(picked)];
             } else {
               player = this.players[options.indexOf(picked) - this.teams.length];
               this.$editingUserService.userWrapper.user = player;
-              this.$editingUserService.userWrapper.teamRef = undefined;
+              this.$editingUserService.userWrapper.team = undefined;
             }
 
             this.$editingUserService.watchUser();

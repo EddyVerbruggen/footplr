@@ -139,7 +139,7 @@
       },
 
       fetchTeamMeasurements() {
-        getPlayersInTeam(editingUserService.userWrapper.teamRef)
+        getPlayersInTeam(editingUserService.userWrapper.team.ref)
             .then(users => {
               this.players = users;
 

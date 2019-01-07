@@ -7,7 +7,7 @@
         <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
       </GridLayout>
 
-      <Label v-if="userWrapper.teamRef" text="Kies hierboven een speler.." horizontalAlignment="center" class="m-30"></Label>
+      <Label v-if="userWrapper.team" text="Kies hierboven een speler.." horizontalAlignment="center" class="m-30"></Label>
 
       <StackLayout v-else>
         <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
