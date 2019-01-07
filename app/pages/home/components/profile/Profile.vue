@@ -12,8 +12,8 @@
       <StackLayout v-else>
         <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
           <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
-          <WebImage :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></WebImage>
-          <ActivityIndicator busy="true" style="margin-top: 44" v-if="savingPicture"></ActivityIndicator>
+          <Img :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
+          <ActivityIndicator busy="true" style="margin-top: 45" v-if="savingPicture"></ActivityIndicator>
         </StackLayout>
 
         <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
