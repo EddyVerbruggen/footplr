@@ -50,6 +50,7 @@ export default class AuthService extends BackendService {
     const userData = <User>doc.data();
     const user = this.user;
     userData.id = doc.id;
+    userData.ref = doc.ref;
     user.ref = doc.ref;
     user.id = userData.id;
     user.admin = userData.admin;

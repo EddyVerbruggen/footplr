@@ -28,7 +28,6 @@
     name: "PlayerSelection",
     created() {
       EventBus.$on("player-selected", stuff => {
-        console.log("player-selected @ PlayerSelection: " + stuff.player);
         this.selectedPlayer = stuff.player;
         this.date = new Date().getTime();
       });

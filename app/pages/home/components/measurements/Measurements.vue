@@ -101,7 +101,6 @@
         if (!result.player) {
           this.fetchTeamMeasurements();
         } else {
-          console.log("selected (@ measurements): " + result.player.firstname);
           this.player = result.player;
           this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
         }
@@ -130,7 +129,8 @@
           props: {
             exercise: item.exercise,
             exerciseTranslated: item.exerciseTranslated,
-            previousScore: item.score
+            previousScore: item.score,
+            editingUser: this.player
           }
         }).then(added => {
           console.log(`Returned from modal, added? ${added}`);

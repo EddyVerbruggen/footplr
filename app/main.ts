@@ -1,4 +1,5 @@
 import Vue from "nativescript-vue"
+import { isIOS } from "tns-core-modules/platform";
 import routes from "./router";
 import AuthService from "./services/AuthService"
 import EditingUserService from "./services/EditingUserService"
@@ -11,6 +12,11 @@ import "./styles.scss";
 export const backendService = new BackendService();
 export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
+
+declare const IQKeyboardManager: any;
+if (isIOS) {
+  IQKeyboardManager.sharedManager().enableAutoToolbar = false;
+}
 
 (<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
 (<any>Vue).registerElement('NumericKeyboard', () => require('nativescript-numeric-keyboard').NumericKeyboardView);

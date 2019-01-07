@@ -19,7 +19,7 @@
 
       <!-- TODO add timer/stopwatch here, instead of in the component.. better for reuse -->
 
-      <AddMeasurementForExercise :exercise="exercise" :player="authUser" row="2" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
+      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="2" colSpan="2" class="m-20" v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
       <GridLayout row="2" colSpan="2" class="m-20" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
         <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></WebImage>
@@ -73,7 +73,7 @@
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
-    props: ['exercise', 'exerciseTranslated', 'previousScore'],
+    props: ['exercise', 'exerciseTranslated', 'previousScore', 'editingUser'],
 
     async mounted() {
       this.scoreClass = (Math.ceil(this.score / 10)) * 10;
@@ -85,7 +85,6 @@
 
     data() {
       return {
-        authUser: authService.userWrapper.user,
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: !editingUserService.userWrapper.team && editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         isTeam: !!editingUserService.userWrapper.team,

@@ -4,15 +4,8 @@
 
 <script>
   import {EventBus} from "~/services/event-bus";
-  import {isIOS} from "tns-core-modules/platform"
 
   export default {
-    created() {
-      if (isIOS) {
-        IQKeyboardManager.sharedManager().enableAutoToolbar = false;
-      }
-    },
-
     props: ['decimals', 'player'],
 
     methods: {
