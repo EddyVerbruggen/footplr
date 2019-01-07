@@ -23,7 +23,8 @@
         <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"></Label>
       </StackLayout>
 
-      <WebImage row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></WebImage>
+      <!--<WebImage row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></WebImage>-->
+      <Img row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></Img>
 
       <Label :text="playerName" class="card-name bold" row="2" colSpan="4" horizontalAlignment="center" verticalAlignment="center"></Label>
 

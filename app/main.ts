@@ -21,7 +21,7 @@ if (isIOS) {
   iqKeyboard.shouldResignOnTouchOutside = true;
 }
 
-(<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
+// (<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
 (<any>Vue).registerElement('NumericKeyboard', () => require('nativescript-numeric-keyboard').NumericKeyboardView);
 
 const v = <any>Vue;
