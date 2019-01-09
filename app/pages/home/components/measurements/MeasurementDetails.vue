@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 210, auto, *, auto" :class="'background-color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 210, auto, auto, *" :class="'background-color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
       <Label row="0" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
 
@@ -27,7 +27,7 @@
         </v-template>
       </ListView>
 
-      <StackLayout row="4" class="c-bg-white">
+      <StackLayout row="4" class="c-bg-white" height="100%" verticalAlignment="bottom">
         <Button text="TERUG" class="btn btn-secondary" style="margin-right: 12" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
     </GridLayout>
