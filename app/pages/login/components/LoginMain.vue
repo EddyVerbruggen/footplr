@@ -44,6 +44,7 @@
 
 <script>
   import {action, prompt} from "tns-core-modules/ui/dialogs"
+  import {applicationSettingsService} from "~/main";
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
   import alert from "~/utils/alert"
   import routes from "~/router";
@@ -60,7 +61,7 @@
         isLoggingIn: true,
         isAuthenticating: false,
         user: {
-          email: "",
+          email: applicationSettingsService.getUsername(),
           password: ""
         }
       }
@@ -121,6 +122,7 @@
         return this.$authService
             .login(this.user)
             .then(() => {
+              applicationSettingsService.setUsername(this.user.email);
               this.isAuthenticating = false;
               this.$editingUserService.userWrapper.user = this.$authService.userWrapper.user;
               this.$editingUserService.watchUser();

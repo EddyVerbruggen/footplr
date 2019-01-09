@@ -1,5 +1,6 @@
 import Vue from "nativescript-vue"
 import { isIOS } from "tns-core-modules/platform";
+import ApplicationSettingsService from "~/services/ApplicationSettingsService";
 import { onAndroidKeyboardShowingListener } from "~/utils/keyboard-util";
 import routes from "./router";
 import AuthService from "./services/AuthService"
@@ -12,6 +13,7 @@ import "./styles.scss";
 
 export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
+export const applicationSettingsService = new ApplicationSettingsService();
 
 declare const IQKeyboardManager: any;
 if (isIOS) {
@@ -67,7 +69,5 @@ if (loggedIn) {
 }
 
 new v({
-  // TODO also check 'registered' state
-  // render: h => h("frame", [h(loggedIn ? routes.home : routes.onboarding)])
-  render: h => h("frame", [h(loggedIn ? routes.home : routes.login)])
+  render: h => h("frame", [h(loggedIn ? routes.home : (applicationSettingsService.getUsername() ? routes.login : routes.onboarding))])
 }).$start();

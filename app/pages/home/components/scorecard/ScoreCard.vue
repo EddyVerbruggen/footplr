@@ -1,13 +1,13 @@
 <template>
-  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*" @loaded="onScoreTabLoaded">
+  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*">
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
-    <StackLayout row="1" xclass="m-t-10" verticalAlignment="top" v-if="isSelf">
+    <StackLayout row="1" verticalAlignment="top" v-if="isSelf">
       <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
       <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center">
         <Switch v-model="showOwnMeasurements"></Switch>
-        <Label col="1" text="toon ook eigen metingen" class="p-10" @tap="showOwnMeasurements = !showOwnMeasurements"></Label>
+        <Label col="1" text="toon ook eigen metingen" class="p-10" @tap="toggleShowOwnMeasurements"></Label>
       </GridLayout>
     </StackLayout>
 
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-  import {authService, editingUserService} from "~/main";
+  import {authService, editingUserService, applicationSettingsService} from "~/main";
   import {getYearsSince, getMonthsSince} from "~/utils/date-util";
   import PlayerSelection from "../PlayerSelection";
   import {EventBus} from "~/services/event-bus";
@@ -85,13 +85,14 @@
         return `${getYearsSince(new Date(this.userWrapper.user.birthdate))} jaar en ${months} ${months === 1 ? "maand" : "maanden"}`;
       }
     },
+
     data() {
       return {
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         // trainers are always official, which also means they can't see non-official measurements by players
-        showOwnMeasurements: authService.userWrapper.user.trains === undefined,
-        selectedPlayer: "Team gemiddelde",
+        showOwnMeasurements: editingUserService.userWrapper.user.id === authService.userWrapper.user.id && applicationSettingsService.isShowOwnMeasurements(),
+        selectedPlayer: "Team gemiddelde", // TODO cleanup
         userWrapper: editingUserService.userWrapper,
         score: type => {
           if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
@@ -100,9 +101,17 @@
         },
       };
     },
+
+    watch: {
+      // when the Switch itself is toggled there's no event (on iOS), so can't do this in toggleShowOwnMeasurements
+      showOwnMeasurements: function () {
+        applicationSettingsService.setShowOwnMeasurements(this.showOwnMeasurements);
+      }
+    },
+
     methods: {
-      onScoreTabLoaded() {
-        console.log("Score tab loaded @ " + new Date().getTime());
+      toggleShowOwnMeasurements() {
+        this.showOwnMeasurements = !this.showOwnMeasurements;
       }
     }
   };
