@@ -23,7 +23,6 @@
 </template>
 
 <script>
-  import routes from "~/router";
   import LoginPage from "../login/LoginPage.vue"
   import Vue from "nativescript-vue"
   import Pager from "nativescript-pager/vue"
@@ -32,9 +31,7 @@
 
   export default {
     components: {},
-    created() {
-      console.log("Onboarding created");
-    },
+
     data() {
       return {
         loginPage: LoginPage,
@@ -54,29 +51,6 @@
           }
         ]
       };
-    },
-    methods: {
-      onSelectedIndexChanged(event) {
-        this.tabIndex = event.newIndex;
-      },
-      onTabViewLoaded(event) {
-        const tabView = event.object;
-        this.tabView = tabView;
-        console.log("onTabViewLoaded " + tabView);
-      },
-      onTab3Loaded() {
-        console.log("Loaded tab 1");
-      },
-      goToTab(tabNr) {
-        this.tabView.selectedIndex = tabNr;
-      },
-      onTapShare() {
-        console.log("TODO: share.. but we're logging out for now.");
-        this.$authService.logout().then(() => {
-          console.log(">>>> logged out ;)");
-          this.$navigateTo(routes.login, {clearHistory: true});
-        });
-      }
     }
   };
 </script>
