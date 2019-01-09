@@ -17,7 +17,7 @@
                  hint="Wachtwoord"
                  secure="true"
                  returnKeyType="done"
-                 @returnPress="submit()"
+                 @returnPress="login()"
                  v-model="user.password"
                  row="1"></TextField>
 
