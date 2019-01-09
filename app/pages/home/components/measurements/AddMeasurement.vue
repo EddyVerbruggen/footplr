@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <GridLayout rows="auto, auto, auto, *, auto, auto" columns="*, *" horizontalAlignment="center"
+    <GridLayout rows="auto, auto, auto, *, auto" columns="*, *" horizontalAlignment="center"
                 verticalAlignment="top" height="100%">
 
       <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
@@ -41,14 +41,13 @@
                                    v-for="(player, i) in players"></AddMeasurementForExercise>
       </GridLayout>
 
-      <DatePicker row="4" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
-                  v-if="!showExplanation"></DatePicker>
+      <!--<DatePicker row="4" colSpan="2" height="130" v-model="date" :maxDate="maxDate" v-if="!showExplanation"></DatePicker>-->
 
-      <Button row="5" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal"
+      <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal"
               v-if="!showExplanation"></Button>
-      <Button row="5" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()"
+      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"
               v-if="!showExplanation"></Button>
-      <Button row="5" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
+      <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
               @tap="showExplanation = false" v-if="showExplanation"></Button>
     </GridLayout>
   </Page>
@@ -131,13 +130,14 @@
       },
 
       closeModal(event) {
-        if (ad) {
+        if (ad && event.object) {
           ad.dismissSoftInput(event.object.android);
         }
         this.$modal.close(false);
       },
 
-      saveScore() {
+      saveScore(event) {
+        console.log("save, size: " + this.playerMeasurements.size);
         if (this.playerMeasurements.size === 0) {
           return;
         }
