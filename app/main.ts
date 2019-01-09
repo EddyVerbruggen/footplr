@@ -17,7 +17,7 @@ declare const IQKeyboardManager: any;
 if (isIOS) {
   const iqKeyboard = IQKeyboardManager.sharedManager();
   iqKeyboard.enableAutoToolbar = false;
-  iqKeyboard.keyboardDistanceFromTextField = 50;
+  iqKeyboard.keyboardDistanceFromTextField = 60;
   iqKeyboard.shouldResignOnTouchOutside = true;
 }
 

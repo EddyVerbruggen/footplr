@@ -21,14 +21,13 @@
              verticalAlignment="top"></Image>
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
-      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
-             v-if="showTimer"></Timer>
+      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10" v-if="showTimer"></Timer>
 
       <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20"
                                  v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
-      <ScrollView row="3" colSpan="2">
-        <GridLayout class="m-12" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
+      <ScrollView row="3" colSpan="2" v-if="!showExplanation && isTeam">
+        <GridLayout class="player-row" :rows="nrOfPlayers" columns="auto, auto, *">
           <Img backgroundColor="#e6e6e6" :row="i" col="0" :src="player.picture" stretch="aspectFill"
                horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></Img>
 
@@ -37,13 +36,13 @@
             <Label :text="player.lastname"></Label>
           </StackLayout>
 
-          <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20"
+          <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2"
                                      verticalAlignment="center" horizontalAlignment="right"
                                      v-for="(player, i) in players"></AddMeasurementForExercise>
         </GridLayout>
       </ScrollView>
 
-      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!isTeam || !keyboardShowing">
+      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!keyboardShowing">
         <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-if="!showExplanation"></Button>
         <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"
                 :isEnabled="playerMeasurements.size > 0" v-if="!showExplanation"></Button>
@@ -198,6 +197,10 @@
     border-color: #fff;
     color: #fff;
     margin: 24 0 16 0;
+  }
+
+  .player-row {
+    margin: 12;
   }
 
   .card-photo {

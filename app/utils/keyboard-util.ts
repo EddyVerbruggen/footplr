@@ -46,8 +46,7 @@ export function onAndroidKeyboardShowingListener(callback: (showing: boolean) =>
 
       lastKeyboardHeight = newKeyboardHeight;
 
-      if (newKeyboardHeight === 0 && _currentlyActiveElement) {
-        console.log("Clearing focus");
+      if (newKeyboardHeight === 0 && _currentlyActiveElement && _currentlyActiveElement.android) {
         _currentlyActiveElement.android.clearFocus();
       }
 
