@@ -1,13 +1,14 @@
 <template>
   <Page>
-    <GridLayout rows="auto, auto, auto, *, auto" columns="*, *" horizontalAlignment="center"
-                verticalAlignment="top" height="100%">
+    <GridLayout id="addView" @loaded="onViewLoaded" rows="auto, auto, auto, *, auto" columns="*, *"
+                horizontalAlignment="center"
+                verticalAlignment="top" style="margin-bottom: 200" height="100%">
 
       <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
                   :class="'background-color-score-' + scoreClass">
         <Label row="0" :text="exerciseTranslated" color="#fff" class="bold exercise" width="65%" textWrap="true"
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
-        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()"
+        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation"
                 horizontalAlignment="right" v-if="!showExplanation"></Button>
         <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore"
                class="previous-score bold" verticalAlignment="bottom" v-if="!showExplanation && previousScore"></Label>
@@ -26,29 +27,29 @@
       <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20"
                                  v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
-      <GridLayout row="3" colSpan="2" class="m-12" :rows="nrOfPlayers" columns="auto, auto, *"
-                  v-if="!showExplanation && isTeam">
-        <WebImage :row="i" col="0" :src="player.picture" stretch="aspectFill" horizontalAlignment="left"
-                  class="card-photo" v-for="(player, i) in players"></WebImage>
+      <ScrollView row="3" colSpan="2">
+        <GridLayout class="m-12" :rows="nrOfPlayers" columns="auto, auto, *" v-if="!showExplanation && isTeam">
+          <Img backgroundColor="#e6e6e6" :row="i" col="0" :src="player.picture" stretch="aspectFill"
+               horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></Img>
 
-        <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
-          <Label :text="player.firstname" class="bold firstname"></Label>
-          <Label :text="player.lastname"></Label>
-        </StackLayout>
+          <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
+            <Label :text="player.firstname" class="bold firstname"></Label>
+            <Label :text="player.lastname"></Label>
+          </StackLayout>
 
-        <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20"
-                                   verticalAlignment="center" horizontalAlignment="right"
-                                   v-for="(player, i) in players"></AddMeasurementForExercise>
+          <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2" class="m-20"
+                                     verticalAlignment="center" horizontalAlignment="right"
+                                     v-for="(player, i) in players"></AddMeasurementForExercise>
+        </GridLayout>
+      </ScrollView>
+
+      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!isTeam || !keyboardShowing">
+        <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-if="!showExplanation"></Button>
+        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"
+                :isEnabled="playerMeasurements.size > 0" v-if="!showExplanation"></Button>
+        <Button col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
+                @tap="toggleShowExplanation" v-if="showExplanation"></Button>
       </GridLayout>
-
-      <!--<DatePicker row="4" colSpan="2" height="130" v-model="date" :maxDate="maxDate" v-if="!showExplanation"></DatePicker>-->
-
-      <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal"
-              v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"
-              :isEnabled="playerMeasurements.size > 0" v-if="!showExplanation"></Button>
-      <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
-              @tap="showExplanation = false" v-if="showExplanation"></Button>
     </GridLayout>
   </Page>
 </template>
@@ -56,12 +57,12 @@
 <script>
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
+  import {dismissKeyboard} from "~/utils/keyboard-util";
   import {Excercises, translateExerciseType} from "~/shared/exercises";
   import {EventBus} from "~/services/event-bus";
   import {getPlayersInTeam} from "~/services/TeamService"
   import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
   import Timer from "./measurement-entry/Timer";
-  import { ad } from "tns-core-modules/utils/utils";
 
   export default {
     components: {
@@ -86,6 +87,10 @@
           });
           this.scoreClass = (Math.ceil(totalScore / this.playerMeasurements.size / 10)) * 10;
         }
+      });
+
+      EventBus.$on("keyboard-showing", showing => {
+        this.keyboardShowing = showing;
       });
     },
 
@@ -113,6 +118,7 @@
         scoreClass: this.scoreClass, // this is updated in mounted()
         showExplanation: false,
         players: undefined,
+        keyboardShowing: false
       }
     },
 
@@ -131,14 +137,19 @@
     },
 
     methods: {
-      doShowExplanation() {
-        this.showExplanation = true;
+      onViewLoaded(event) {
+        // const page = topmost().currentPage;
+        // const forView = page.getViewById("addView");
+
+        // TODO also remove this listener.. although it may happen automatically
+      },
+
+      toggleShowExplanation() {
+        this.showExplanation = !this.showExplanation;
       },
 
       closeModal(event) {
-        if (ad && event.object) {
-          ad.dismissSoftInput(event.object.android);
-        }
+        dismissKeyboard(event.object);
         this.$modal.close(false);
       },
 

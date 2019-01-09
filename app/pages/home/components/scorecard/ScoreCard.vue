@@ -1,21 +1,21 @@
 <template>
-  <GridLayout rows="auto, *" class="m-b-30" columns="*" @loaded="onScoreTabLoaded">
+  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*" @loaded="onScoreTabLoaded">
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
-    <StackLayout class="m-t-10" width="90%" v-if="!isTrainer">
-      <Label text="football player ratings" class="page-title" horizontalAlignment="center"></Label>
+    <StackLayout row="1" xclass="m-t-10" verticalAlignment="top" v-if="isSelf">
+      <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
       <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center">
         <Switch v-model="showOwnMeasurements"></Switch>
         <Label col="1" text="toon ook eigen metingen" class="p-10" @tap="showOwnMeasurements = !showOwnMeasurements"></Label>
       </GridLayout>
     </StackLayout>
 
-    <Image row="1" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
+    <Image row="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
-    <GridLayout row="1" rows="4*, 4*, *, *, 4*, 4*" columns="2*, 2*, *, 2*" width="90%"
+    <GridLayout row="2" rows="4*, 4*, *, *, 4*, 4*" columns="2*, 2*, *, 2*" width="90%"
                 horizontalAlignment="center" verticalAlignment="center">
 
       <StackLayout row="1" colSpan="2" verticalAlignment="center">
@@ -88,6 +88,7 @@
     data() {
       return {
         isTrainer: authService.userWrapper.user.trains !== undefined,
+        isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         // trainers are always official, which also means they can't see non-official measurements by players
         showOwnMeasurements: authService.userWrapper.user.trains === undefined,
         selectedPlayer: "Team gemiddelde",

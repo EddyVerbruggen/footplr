@@ -15,5 +15,5 @@ export default interface User extends SharedUser {
   height?: number;
   weight?: number;
   position?: PlayerPosition;
-  picture?: string; // Firebase Storage URL
+  picture?: string; // URL to Firebase Storage @ 'clublogos'
 }

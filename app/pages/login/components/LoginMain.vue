@@ -60,15 +60,21 @@
         isLoggingIn: true,
         isAuthenticating: false,
         user: {
-          email: "eddyverbruggen@gmail.com",
-          password: "xs4all"
+          email: "",
+          password: ""
         }
       }
     },
 
     methods: {
       quickLogin() {
-        const options = ["Trainer Hoogland JO9-7", "Speler Hoogland JO9-7"];
+        const options = [
+          "Mark (trainer Victoria Heren 2)",
+          "Nick (speler Victoria Heren 2)",
+          "Daniel (speler Victoria Heren 2)",
+          "Annette (trainer Hoogland JO9-7)",
+          "Bas V (speler Hoogland JO9-7)"
+        ];
         const cancelLabel = "Annuleren";
         action({
           title: "Kies een login..",
@@ -77,10 +83,19 @@
           cancelButtonText: cancelLabel
         }).then(picked => {
           if (picked && picked !== cancelLabel) {
-            if (picked === "Trainer Hoogland JO9-7") {
+            if (picked === "Mark (trainer Victoria Heren 2)") {
+              this.user.email = "fennemrdejong@gmail.com";
+              this.user.password = "fpr123";
+            } else if (picked === "Nick (speler Victoria Heren 2)") {
+              this.user.email = "eddyverbruggen+nickwagenaar@gmail.com";
+              this.user.password = "fpr123";
+            } else if (picked === "Daniel (speler Victoria Heren 2)") {
+              this.user.email = "eddyverbruggen+danielhindriks@gmail.com";
+              this.user.password = "fpr123";
+            } else if (picked === "Annette (trainer Hoogland JO9-7)") {
               this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
               this.user.password = "xs4all";
-            } else if (picked === "Speler Hoogland JO9-7") {
+            } else if (picked === "Bas V (speler Hoogland JO9-7)") {
               this.user.email = "hoogland.JO9-7.player1@fpr.com";
               this.user.password = "xs4all";
             }
@@ -195,18 +210,22 @@
       margin-right: 30;
       border-radius: 10;
     }
+
     .main-label {
       horizontal-align: center;
       color: #131426;
     }
+
     .form-controls,
     .sign-up-stack {
       /*opacity: 0;*/
     }
+
     Image {
       margin-top: 5;
       margin-bottom: 20;
     }
+
     Button,
     TextField {
       margin-left: 16;
@@ -214,21 +233,25 @@
       margin-bottom: 10;
       border-radius: 2;
     }
+
     TextField {
       color: #131426;
       placeholder-color: #ACA6A7;
       margin-bottom: 10;
+
       &.light {
         color: #C4AFB4;
         placeholder-color: #C4AFB4;
       }
     }
+
     .submit-button {
       background-color: #F5D1E9;
       color: #131426;
       margin-top: 15;
       border-radius: 10;
     }
+
     .forgot-password {
       font-size: 13;
       /*margin-left: 20;*/
@@ -237,8 +260,10 @@
       text-align: center;
       margin-top: 6;
     }
+
     .sign-up-stack {
       background-color: #66A59A;
+
       label {
         width: 100%;
         color: white;
@@ -257,14 +282,17 @@
       margin-bottom: 52;
       letter-spacing: 0.2;
     }
+
     TextField {
       /*border-width: 1;*/
       /*border-color: #131426;*/
       margin-bottom: 20;
+
       &.light {
         /*border-color: #C4AFB4;*/
       }
     }
+
     .submit-button {
       height: 40;
     }
@@ -277,10 +305,12 @@
       margin-bottom: 32;
       letter-spacing: 0.3;
     }
+
     .sign-up-stack label {
       margin-top: 15;
       text-transform: uppercase;
     }
+
     .forgot-password {
       font-size: 13;
       text-transform: uppercase;

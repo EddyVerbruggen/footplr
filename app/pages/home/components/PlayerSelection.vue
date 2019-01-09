@@ -3,6 +3,7 @@
   <StackLayout
       orientation="horizontal"
       horizontalAlignment="center"
+      verticalAlignment="top"
       @tap="selectPlayer">
     <Label
         :text="selectedPlayer ? iconPerson : iconPeople"
@@ -10,6 +11,7 @@
         class="icon"></Label>
     <Label
         :text="selectedPlayerName"
+        verticalAlignment="center"
         class="player-selection bold"></Label>
     <Label
         :text="iconDropDown"
@@ -26,6 +28,7 @@
 
   export default {
     name: "PlayerSelection",
+
     created() {
       EventBus.$on("player-selected", stuff => {
         this.selectedPlayer = stuff.player;
@@ -33,6 +36,11 @@
       });
       EventBus.$on("update-players", () => this.players = undefined);
     },
+
+    mounted() {
+      this.fillPlayersAndTeams();
+    },
+
     computed: {
       selectedPlayerName: function () {
         if (this.selectedPlayer) {
@@ -42,6 +50,7 @@
         }
       }
     },
+
     data() {
       return {
         date: new Date().getTime(),
@@ -53,24 +62,32 @@
         teams: undefined,
       }
     },
+
     methods: {
-      getSelectedPlayerName() {
-        return new Date().getTime()
-      },
-      async selectPlayer() {
-        // TODO better to cache this globally, because we have 3 instances of this component
-        if (!this.players || !this.teams) {
-          this.players = [];
-          this.teams = [];
-          for (let i = 0; i < authService.userWrapper.user.trains.length; i++) {
-            this.players = this.players.concat(await getPlayersInTeam(authService.userWrapper.user.trains[i]));
-            this.teams = this.teams.concat(await getTeam(authService.userWrapper.user.trains[i]));
-          }
+      async fillPlayersAndTeams() {
+        // TODO better to do this somewhere globally and grab that, because we have 3 instances of this component
+        this.players = [];
+        this.teams = [];
+        console.log("authService.userWrapper.user.trains: " + authService.userWrapper.user.trains.length);
+        for (let i = 0; i < authService.userWrapper.user.trains.length; i++) {
+          this.players = this.players.concat(await getPlayersInTeam(authService.userWrapper.user.trains[i]));
+          this.teams = this.teams.concat(await getTeam(authService.userWrapper.user.trains[i]));
         }
+        // make sure the trainer is not included in this list (looks silly)
+        this.players = this.players.filter(player => player.id !== authService.userWrapper.user.id);
         this.players.sort();
         this.teams.sort();
+      },
 
-        const teamPrefix = "TEAM: ";
+      async selectPlayer() {
+        console.log("selectPlayer tapped, this.teams: " + this.teams);
+
+        // just to be on the safe side
+        if (!this.teams || !this.players) {
+          await this.fillPlayersAndTeams();
+        }
+
+        const teamPrefix = "TEAM: "; // TODO add the club name
         let options = this.teams.map(team => `${teamPrefix}${team.name}`);
         const players = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
         options = options.concat(players);
@@ -100,7 +117,7 @@
             }
 
             this.$editingUserService.watchUser();
-            EventBus.$emit('player-selected', { picked, player });
+            EventBus.$emit('player-selected', {picked, player});
           }
         });
       }

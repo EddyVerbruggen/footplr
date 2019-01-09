@@ -1,15 +1,15 @@
 import Vue from "nativescript-vue"
 import { isIOS } from "tns-core-modules/platform";
+import { onAndroidKeyboardShowingListener } from "~/utils/keyboard-util";
 import routes from "./router";
 import AuthService from "./services/AuthService"
 import EditingUserService from "./services/EditingUserService"
-import BackendService from './services/BackendService';
 import * as firebase from "nativescript-plugin-firebase"
+import {EventBus} from "~/services/event-bus";
 
 // To include the stylesheets, use this:
 import "./styles.scss";
 
-export const backendService = new BackendService();
 export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
 
@@ -29,6 +29,15 @@ declare const TNS_ENV: any;
 
 v.prototype.$authService = authService;
 v.prototype.$editingUserService = editingUserService;
+
+setTimeout(() => {
+  onAndroidKeyboardShowingListener(showing => {
+    // we only need to emit this in case of showing=false because on Android the 'blur' event doesn't fire
+    if (!showing) {
+      EventBus.$emit("keyboard-showing", showing);
+    }
+  });
+}, 2000);
 
 firebase.init()
   .then(instance => {
@@ -59,5 +68,6 @@ if (loggedIn) {
 
 new v({
   // TODO also check 'registered' state
-  render: h => h("frame", [h(loggedIn ? routes.home : routes.onboarding)])
+  // render: h => h("frame", [h(loggedIn ? routes.home : routes.onboarding)])
+  render: h => h("frame", [h(loggedIn ? routes.home : routes.login)])
 }).$start();

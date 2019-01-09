@@ -12,6 +12,7 @@ export async function getTeam(teamRef: firestore.DocumentReference): Promise<Tea
 }
 
 export async function getPlayersInTeam(teamRef: firestore.DocumentReference): Promise<Array<User>> {
+  // note that this fails during livesync 😔
   const querySnapshot: firestore.QuerySnapshot = await firebase.firestore.collection("users")
       .where("playsin", "==", teamRef)
       .get();
