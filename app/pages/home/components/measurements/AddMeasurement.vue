@@ -46,7 +46,7 @@
       <Button row="4" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal"
               v-if="!showExplanation"></Button>
       <Button row="4" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"
-              v-if="!showExplanation"></Button>
+              :isEnabled="playerMeasurements.size > 0" v-if="!showExplanation"></Button>
       <Button row="4" col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
               @tap="showExplanation = false" v-if="showExplanation"></Button>
     </GridLayout>
@@ -72,14 +72,20 @@
     created() {
       EventBus.$on("score-entered", data => {
         // remember the data for saving
-        this.playerMeasurements.set(data.player, data.measurement);
+        if (data.measurement === "") {
+          this.playerMeasurements.delete(data.player);
+        } else {
+          this.playerMeasurements.set(data.player, data.measurement);
+        }
 
         // calculate the (average) scoreClass so we can update the header color
-        let totalScore = 0;
-        this.playerMeasurements.forEach((value, key) => {
-          totalScore += Excercises[this.exercise].calculateScore(value);
-        });
-        this.scoreClass = (Math.ceil(totalScore / this.playerMeasurements.size / 10)) * 10;
+        if (this.playerMeasurements.size > 0) {
+          let totalScore = 0;
+          this.playerMeasurements.forEach((value, key) => {
+            totalScore += Excercises[this.exercise].calculateScore(value);
+          });
+          this.scoreClass = (Math.ceil(totalScore / this.playerMeasurements.size / 10)) * 10;
+        }
       });
     },
 
@@ -138,9 +144,9 @@
 
       saveScore(event) {
         console.log("save, size: " + this.playerMeasurements.size);
-        if (this.playerMeasurements.size === 0) {
-          return;
-        }
+        // if (this.playerMeasurements.size === 0) {
+        //   return;
+        // }
 
         this.playerMeasurements.forEach((value, player) => {
           // round to 2 decimals
