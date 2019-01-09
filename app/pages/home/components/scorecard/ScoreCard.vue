@@ -5,13 +5,13 @@
 
     <StackLayout class="m-t-10" width="90%" v-if="!isTrainer">
       <Label text="football player ratings" class="page-title" horizontalAlignment="center"></Label>
-      <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center" @tap="isOfficial = !isOfficial">
-        <Switch :checked="!isOfficial"></Switch>
-        <Label col="1" text="toon ook eigen metingen" class="p-10"></Label>
+      <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center">
+        <Switch v-model="showOwnMeasurements"></Switch>
+        <Label col="1" text="toon ook eigen metingen" class="p-10" @tap="showOwnMeasurements = !showOwnMeasurements"></Label>
       </GridLayout>
     </StackLayout>
 
-    <Image row="1" :src="'~/assets/images/badge_' + (isOfficial ? '' : 'un') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
+    <Image row="1" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
@@ -89,12 +89,12 @@
       return {
         isTrainer: authService.userWrapper.user.trains !== undefined,
         // trainers are always official, which also means they can't see non-official measurements by players
-        isOfficial: GlobalStore.isOfficial || authService.userWrapper.user.trains !== undefined,
+        showOwnMeasurements: authService.userWrapper.user.trains === undefined,
         selectedPlayer: "Team gemiddelde",
         userWrapper: editingUserService.userWrapper,
         score: type => {
           if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
-            return this.$editingUserService.userWrapper.user.scores[this.isOfficial ? "official" : "combined"][type];
+            return this.$editingUserService.userWrapper.user.scores[this.showOwnMeasurements ? "combined" : "official"][type];
           }
         },
       };

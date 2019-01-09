@@ -6,6 +6,7 @@ interface GlobalStoreData {
 }
 
 // note that we wanted to make this a global thing, but we currently only use this on the Score tab, so no real need for this construct..
+// .. so this baby is currently unused
 export const GlobalStore = new v({
   data: <GlobalStoreData>{
     mode: "UNOFFICIAL"

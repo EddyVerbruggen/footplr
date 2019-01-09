@@ -32,7 +32,6 @@
   import Measurements from "./components/measurements/Measurements.vue"
   import Profile from "./components/profile/Profile.vue"
   import ScoreCard from "./components/scorecard/ScoreCard.vue"
-  import {GlobalStore} from "~/services/global-store";
 
   export default {
     components: {
@@ -51,7 +50,6 @@
     },
     data() {
       return {
-        isOfficial: GlobalStore.isOfficial,
         tabIndex: 1, // setting this initially makes dev a little easier
         tabView: undefined, // set below
         logoSrc: "~/assets/images/fpr-logo-128.png"

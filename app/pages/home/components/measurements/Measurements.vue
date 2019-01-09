@@ -80,9 +80,6 @@
     data() {
       return {
         isTrainer: authService.userWrapper.user.trains !== undefined,
-        // trainers are always official, which also means they can't see non-official measurements by players
-        isOfficial: GlobalStore.isOfficial || authService.userWrapper.user.trains !== undefined,
-        selectedPlayer: "vv Hoogland J09-7",
         player: editingUserService.userWrapper.user,
         players: [],
         exercises: []
@@ -144,7 +141,8 @@
 
               const sumMeasurements = {}; // Array<{ [t in ExerciseType]: Measurement }>
               const meas = {};
-              sumMeasurements[this.isOfficial ? "official" : "unofficial"] = meas;
+              // (un)official doesn't matter as this gets combined anyway
+              sumMeasurements.unofficial = meas;
 
               for (let excercisesKey in Excercises) {
                 let totalScore = 0;
