@@ -9,8 +9,8 @@
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
         <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="doShowExplanation()"
                 horizontalAlignment="right" v-if="!showExplanation"></Button>
-        <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore" class="previous-score" verticalAlignment="bottom"
-               v-if="!showExplanation && previousScore"></Label>
+        <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore"
+               class="previous-score bold" verticalAlignment="bottom" v-if="!showExplanation && previousScore"></Label>
         <Label row="1" color="#fff" class="c-white m-30 p-t-70"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
                textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
@@ -180,7 +180,7 @@
     border-width: 2;
     border-color: #fff;
     color: #fff;
-    margin: 24 0 24 16;
+    margin: 24 0 16 0;
   }
 
   .card-photo {
@@ -198,6 +198,6 @@
   .previous-score {
     font-size: 13;
     color: #fff;
-    margin: 0 0 6 6;
+    margin: 0 0 12 12;
   }
 </style>
