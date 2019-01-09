@@ -44,7 +44,7 @@
       <DatePicker row="4" colSpan="2" height="130" v-model="date" :maxDate="maxDate"
                   v-if="!showExplanation"></DatePicker>
 
-      <Button row="5" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="$modal.close(false)"
+      <Button row="5" col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal"
               v-if="!showExplanation"></Button>
       <Button row="5" col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore()"
               v-if="!showExplanation"></Button>
@@ -62,6 +62,7 @@
   import {getPlayersInTeam} from "~/services/TeamService"
   import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
   import Timer from "./measurement-entry/Timer";
+  import { ad } from "tns-core-modules/utils/utils";
 
   export default {
     components: {
@@ -127,6 +128,13 @@
     methods: {
       doShowExplanation() {
         this.showExplanation = true;
+      },
+
+      closeModal(event) {
+        if (ad) {
+          ad.dismissSoftInput(event.object.android);
+        }
+        this.$modal.close(false);
       },
 
       saveScore() {
