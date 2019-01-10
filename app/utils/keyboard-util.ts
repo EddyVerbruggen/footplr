@@ -6,6 +6,12 @@ import { ad } from "tns-core-modules/utils/utils";
 declare const android: any;
 let lastKeyboardHeight: number;
 
+export function showKeyboard(view: View): void {
+  if (ad && view.android) {
+    ad.showSoftInput(view.android);
+  }
+}
+
 export function dismissKeyboard(view: View): void {
   if (ad && view.android) {
     ad.dismissSoftInput(view.android);
@@ -36,7 +42,7 @@ export function onAndroidKeyboardShowingListener(callback: (showing: boolean) =>
 
       const newKeyboardHeight = (getUsableScreenSizeY() - rect.bottom) / screen.mainScreen.scale;
 
-      if (newKeyboardHeight === 0 && lastKeyboardHeight === undefined) {
+      if (newKeyboardHeight <= 0 && lastKeyboardHeight === undefined) {
         return;
       }
 
@@ -46,11 +52,11 @@ export function onAndroidKeyboardShowingListener(callback: (showing: boolean) =>
 
       lastKeyboardHeight = newKeyboardHeight;
 
-      if (newKeyboardHeight === 0 && _currentlyActiveElement && _currentlyActiveElement.android) {
+      if (newKeyboardHeight <= 0 && _currentlyActiveElement && _currentlyActiveElement.android) {
         _currentlyActiveElement.android.clearFocus();
       }
 
-      callback(newKeyboardHeight !== 0);
+      callback(newKeyboardHeight > 0);
     }
   });
 
