@@ -2,6 +2,10 @@
 
 > A native application built with NativeScript-Vue, using Firebase!
 
+## Configuration
+Download your `google-services.json` and `GoogleService-Info.plist` from the Firebase console,
+and add them to the appropriate `App_Resources` folders.
+
 ## Usage
 
 Note that this project works best with NativeScript 5+, so: `npm i -g nativescript@latest`.
