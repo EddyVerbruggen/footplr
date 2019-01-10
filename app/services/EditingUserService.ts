@@ -2,10 +2,9 @@ import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
 import Team from "~/models/team";
 import User from "~/models/User";
-import BackendService from "./BackendService";
 
-export default class EditingUserService extends BackendService {
-  // TODO with team added the name is a bit silly
+export default class EditingUserService {
+  // TODO with team added, the name is a bit silly
   public userWrapper: { user: User, team: Team } = {user: undefined, team: undefined};
 
   // poor man's observable.. on any page you're currently at, you can register this callback
@@ -42,7 +41,6 @@ export default class EditingUserService extends BackendService {
     const userData = <User>doc.data();
     userData.id = doc.id;
     this.userWrapper.user = <User>userData;
-    this.user = <User>userData;
   }
 
   async updateUserDataInFirebase(userData): Promise<void> {

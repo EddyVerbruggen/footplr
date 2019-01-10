@@ -1,6 +1,9 @@
 <template>
-  <NumericKeyboard @focus="onFocus" @blur="onBlur" hint="Aantal" locale="nl_NL" :noDecimals="!decimals"
-                   returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
+  <StackLayout>
+    <NumericKeyboard @focus="onFocus" @blur="onBlur" @textChange="textChange"
+                     hint="Aantal" locale="nl_NL" :noDecimals="!decimals" returnKeyTitle="OK"
+                     horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
+  </StackLayout>
 </template>
 
 <script>
@@ -12,7 +15,12 @@
     props: ['decimals', 'player'],
 
     methods: {
+      textChange(event) {
+        EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
+      },
+
       onFocus(event) {
+        console.log(">> onFocus");
         if (isAndroid) {
           EventBus.$emit("keyboard-showing", true);
           setCurrentlyActiveElement(event.object);
@@ -20,7 +28,8 @@
       },
 
       onBlur(event) {
-        EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
+        console.log(">> onBlur");
+        // EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
       }
     }
   };

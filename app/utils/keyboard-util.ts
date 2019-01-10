@@ -6,12 +6,6 @@ import { ad } from "tns-core-modules/utils/utils";
 declare const android: any;
 let lastKeyboardHeight: number;
 
-export function showKeyboard(view: View): void {
-  if (ad && view.android) {
-    ad.showSoftInput(view.android);
-  }
-}
-
 export function dismissKeyboard(view: View): void {
   if (ad && view.android) {
     ad.dismissSoftInput(view.android);

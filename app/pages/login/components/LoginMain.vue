@@ -124,6 +124,7 @@
             .then(() => {
               applicationSettingsService.setUsername(this.user.email);
               this.isAuthenticating = false;
+              this.$editingUserService.userWrapper.team = undefined;
               this.$editingUserService.userWrapper.user = this.$authService.userWrapper.user;
               this.$editingUserService.watchUser();
               this.$navigateTo(routes.home, {clearHistory: true});

@@ -56,7 +56,6 @@ firebase.init()
       */
 
       application.on(application.uncaughtErrorEvent, args => {
-        // TODO send to crashlytics
         if (application.android) {
           // For Android applications, args.android is an NativeScriptError.
           console.log(" *** NativeScriptError *** : " + args.android);

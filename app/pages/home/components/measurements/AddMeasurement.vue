@@ -42,10 +42,9 @@
         </GridLayout>
       </ScrollView>
 
-      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!keyboardShowing">
+      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!keyboardShowing || !isTeam">
         <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-if="!showExplanation"></Button>
-        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"
-                :isEnabled="playerMeasurements.size > 0" v-if="!showExplanation"></Button>
+        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore" v-if="!showExplanation"></Button>
         <Button col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
                 @tap="toggleShowExplanation" v-if="showExplanation"></Button>
       </GridLayout>
@@ -154,9 +153,9 @@
 
       saveScore(event) {
         console.log("save, size: " + this.playerMeasurements.size);
-        // if (this.playerMeasurements.size === 0) {
-        //   return;
-        // }
+        if (this.playerMeasurements.size === 0) {
+          return;
+        }
 
         this.playerMeasurements.forEach((value, player) => {
           // round to 2 decimals
