@@ -129,7 +129,10 @@
       },
 
       blurName() {
-        console.log(">> saving first/last: " + JSON.stringify(this.userWrapper.user));
+        if (this.userWrapper.user.firstname === "text" && this.userWrapper.user.lastname === "text") {
+          throw new Error(">> WTF, not saving first/last: " + JSON.stringify(this.userWrapper.user));
+        }
+
         editingUserService.updateUserDataInFirebase({
           firstname: this.userWrapper.user.firstname,
           lastname: this.userWrapper.user.lastname,
