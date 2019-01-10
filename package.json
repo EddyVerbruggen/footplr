@@ -22,6 +22,7 @@
     "android.release": "tns build android --bundle --release --for-device --key-store-path ./keystore-footplr.jks --key-store-password xs4all --key-store-alias footplr --key-store-alias-password xs4all"
   },
   "dependencies": {
+    "nativescript-appversion": "~1.4.1",
     "nativescript-camera": "~4.1.1",
     "nativescript-imagepicker": "~6.0.5",
     "nativescript-iqkeyboardmanager": "~1.3.0",

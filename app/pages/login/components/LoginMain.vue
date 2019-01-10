@@ -1,6 +1,6 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-    <Image src="~/assets/images/fpr-logo-full.png" width="200" horizontalalignment="center" @tap="quickLogin"></Image>
+    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
       <TextField
@@ -33,8 +33,9 @@
     <Label
         class="forgot-password"
         text="Wachtwoord vergeten?"
-        horizontalalignment="center"
         @tap="forgotPassword()"></Label>
+
+    <Label :text="appVersion" class="app-version"></Label>
 
     <StackLayout ref="signUpStack" class="sign-up-stack" @tap="toggleDisplay()" translateY="50">
       <Label :text="isLoggingIn ? 'Sign up here' : 'Back to login'"></Label>
@@ -44,6 +45,7 @@
 
 <script>
   import {action, prompt} from "tns-core-modules/ui/dialogs"
+  import * as AppVersion from "nativescript-appversion";
   import {applicationSettingsService} from "~/main";
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
   import alert from "~/utils/alert"
@@ -58,6 +60,7 @@
 
     data() {
       return {
+        appVersion: undefined,
         isLoggingIn: true,
         isAuthenticating: false,
         user: {
@@ -65,6 +68,10 @@
           password: ""
         }
       }
+    },
+
+    mounted() {
+      this.appVersion = `v ${AppVersion.getVersionNameSync()} (${AppVersion.getVersionCodeSync()})`;
     },
 
     methods: {
@@ -206,9 +213,16 @@
 
 <style lang="scss" scoped>
   .login {
+    .app-version {
+      color: #d6d6d6;
+      font-size: 11;
+      horizontal-align: center;
+      margin-top: 10;
+    }
+
     .main-container {
       width: 300;
-      height: 450;
+      height: 470;
       margin-left: 30;
       margin-right: 30;
       border-radius: 10;
@@ -257,8 +271,6 @@
 
     .forgot-password {
       font-size: 13;
-      /*margin-left: 20;*/
-      /*margin-bottom: 45;*/
       color: #888888;
       text-align: center;
       margin-top: 6;
