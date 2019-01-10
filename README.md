@@ -2,9 +2,18 @@
 
 > A native application built with NativeScript-Vue, using Firebase!
 
+## Disclaimer
+This is a Dutch app that will be available in the App stores in Q1 2019.
+Feel free to look at the code and copy anything you like.
+
 ## Configuration
-Download your `google-services.json` and `GoogleService-Info.plist` from the Firebase console,
+I don't recommend trying to run the app, because the Firebase config files are missing in this repo.
+
+If you still want to try and run the app you'll need your own Firebase backend configured properly,
+and download your `google-services.json` and `GoogleService-Info.plist` from the Firebase console,
 and add them to the appropriate `App_Resources` folders.
+
+Ask me for a DB dump if you're really anxious to run it locally.
 
 ## Usage
 
