@@ -82,7 +82,8 @@
         isTrainer: authService.userWrapper.user.trains !== undefined,
         player: editingUserService.userWrapper.user,
         players: [],
-        exercises: []
+        exercises: [],
+        isModalOpen: false
       }
     },
 
@@ -104,7 +105,7 @@
       },
 
       showDetails(item) {
-        if (!item.hasMeasurement) {
+        if (this.isModalOpen || !item.hasMeasurement) {
           return;
         }
         this.$showModal(MeasurementDetails, {
@@ -116,10 +117,14 @@
           }
         }).then(data => {
           console.log(`Returned from showDetails: ${data}`);
+          this.isModalOpen = false;
         });
       },
 
       addMeasurement(item) {
+        if (this.isModalOpen) {
+          return;
+        }
         this.$showModal(AddMeasurement, {
           fullscreen: true,
           props: {
@@ -130,7 +135,7 @@
           }
         }).then(added => {
           console.log(`Returned from modal, added? ${added}`);
-          // refresh will happen via our 'anyPageCallback'
+          this.isModalOpen = false;
         });
       },
 
