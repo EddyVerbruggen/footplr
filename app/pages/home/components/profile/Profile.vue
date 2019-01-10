@@ -30,6 +30,7 @@
               autocorrect="false"></TextField>
 
           <TextField
+              ref="lastname"
               row="1"
               col="1"
               class="profile-field"
@@ -111,6 +112,10 @@
       };
     },
     methods: {
+      focusLastName() {
+        this.$refs.lastname.nativeView.focus();
+      },
+
       onTapLogout() {
         authService.logout().then(() => {
           editingUserService.clearListener();
@@ -124,6 +129,7 @@
       },
 
       blurName() {
+        console.log(">> saving first/last: " + JSON.stringify(this.userWrapper.user));
         editingUserService.updateUserDataInFirebase({
           firstname: this.userWrapper.user.firstname,
           lastname: this.userWrapper.user.lastname,
