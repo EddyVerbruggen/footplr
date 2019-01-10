@@ -3,7 +3,7 @@
     "v8Flags": "--expose_gc",
     "markingMode": "none"
   },
-  "discardUncaughtJsExceptions": true,
+  "discardUncaughtJsExceptions": false,
   "main": "main",
   "name": "footplr",
   "version": "1.0.0"
