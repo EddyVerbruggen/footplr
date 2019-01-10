@@ -1,6 +1,9 @@
 # JetBrains project files
 .idea
 
+# macOS crap
+.DS_Store
+
 # NPM
 node_modules
 
@@ -17,3 +20,7 @@ firebase/functions/src/**/*.js
 
 # Android app signing keystore
 keystore-footplr.jks
+
+# Firebase config files (download 'em from console.firebase.com)
+app/App_Resources/Android/google-services.json
+app/App_Resources/iOS/GoogleService-Info.plist
