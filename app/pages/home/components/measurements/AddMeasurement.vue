@@ -6,19 +6,19 @@
 
       <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
                   :class="'background-color-score-' + scoreClass">
-        <Label row="0" :text="exerciseTranslated" color="#fff" class="bold exercise" width="65%" textWrap="true"
+        <Label row="0" :text="exerciseTranslated" class="bold exercise" width="65%" textWrap="true"
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
         <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation"
                 horizontalAlignment="right" v-if="!showExplanation"></Button>
         <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore"
                class="previous-score bold" verticalAlignment="bottom" v-if="!showExplanation && previousScore"></Label>
-        <Label row="1" color="#fff" class="c-white m-30 p-t-70"
+        <Label row="1" class="c-white m-30 p-t-70"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
                textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
       </GridLayout>
 
-      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="170" horizontalAlignment="left"
-             verticalAlignment="top"></Image>
+      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="150" class="m-l-12 m-t-4"
+             horizontalAlignment="left" verticalAlignment="top"></Image>
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
       <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10" v-if="showTimer"></Timer>
@@ -189,6 +189,7 @@
 <style scoped>
   .exercise {
     font-size: 22;
+    color: #fff;
   }
 
   Button.btn-explanation {

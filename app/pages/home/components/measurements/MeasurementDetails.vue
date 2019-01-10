@@ -1,20 +1,22 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 210, auto, auto, *" :class="'background-color-score-' + scoreClass" columns="*" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 210, auto, 2*, *" columns="auto, *" :class="'background-color-score-' + scoreClass" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
-      <Label row="0" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
 
-      <WebView row="1" height="100%" :src="webViewSRC"></WebView>
+      <Image row="0" col="0" class="m-l-12 m-t-4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="30" horizontalAlignment="left" verticalAlignment="top"></Image>
+      <Label row="0" col="1" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
+
+      <WebView row="1" colSpan="2" height="100%" :src="webViewSRC"></WebView>
 
       <!--<StackLayout row="2" class="c-bg-white"></StackLayout>-->
 
-      <GridLayout row="2" columns="50, 80, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
+      <GridLayout row="2" colSpan="2" columns="50, 80, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"></Label>
         <Label col="1" text="Meting" class="p-y-10 p-x-10 bold" horizontalAlignment="right"></Label>
         <Label col="2" text="Datum" class="p-y-10 p-x-5 bold"></Label>
       </GridLayout>
 
-      <ListView row="3" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="table">
+      <ListView row="3" colSpan="2" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="table c-bg-white">
         <v-template>
           <GridLayout columns="50, 80, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
             <Label col="0" :text="item.score" :class="'background-color-score-' + item.scoreClass" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
@@ -27,7 +29,7 @@
         </v-template>
       </ListView>
 
-      <StackLayout row="4" class="c-bg-white" height="100%" verticalAlignment="bottom">
+      <StackLayout row="4" colSpan="2" class="c-bg-white" height="100%" verticalAlignment="bottom">
         <Button text="TERUG" class="btn btn-secondary" style="margin-right: 12" width="140" horizontalAlignment="right" @tap="$modal.close()"></Button>
       </StackLayout>
     </GridLayout>

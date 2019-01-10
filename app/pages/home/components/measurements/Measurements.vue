@@ -199,7 +199,7 @@
           if (latestMeasurements.official) {
             latestMeasurement = latestMeasurements.official[excercisesKey];
           }
-          if (latestMeasurements.unofficial && latestMeasurements.unofficial[excercisesKey] && (!latestMeasurement || latestMeasurement.date.getTime() < latestMeasurements.unofficial[excercisesKey].date.getTime())) {
+          if (latestMeasurements.unofficial && latestMeasurements.unofficial[excercisesKey] && (!latestMeasurement || (latestMeasurement.date.getTime && latestMeasurement.date.getTime() < latestMeasurements.unofficial[excercisesKey].date.getTime()))) {
             latestMeasurement = latestMeasurements.unofficial[excercisesKey];
           }
         }
