@@ -24,6 +24,7 @@
 
 <script>
   import LoginPage from "../login/LoginPage.vue"
+  import {setScreenName} from "~/utils/analytics-util";
   import Vue from "nativescript-vue"
   import Pager from "nativescript-pager/vue"
 
@@ -31,6 +32,10 @@
 
   export default {
     components: {},
+
+    created() {
+      setScreenName("onboarding");
+    },
 
     data() {
       return {

@@ -38,6 +38,7 @@
 
 <script>
   import {authService, editingUserService} from "~/main";
+  import {setScreenName} from "~/utils/analytics-util";
   import {formatDate} from "~/utils/date-util";
   import {Excercises, translateExerciseType} from "~/shared/exercises";
 
@@ -45,7 +46,8 @@
 
   export default {
     created() {
-      console.log("MeasurementsGraph created");
+      setScreenName(`measurement.details.${this.exercise}`);
+
       // editingUserService.anyPageCallback = () => this.fetchMeasurements(this.exercise);
       this.fetchMeasurements(measurements);
     },

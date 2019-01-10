@@ -46,6 +46,7 @@
 <script>
   import {action, prompt} from "tns-core-modules/ui/dialogs"
   import * as AppVersion from "nativescript-appversion";
+  import {setScreenName, setUserId} from "~/utils/analytics-util";
   import {applicationSettingsService} from "~/main";
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
   import alert from "~/utils/alert"
@@ -136,6 +137,7 @@
               this.$editingUserService.watchUser();
               this.$navigateTo(routes.home, {clearHistory: true});
               this.visible = false;
+              setUserId(this.$authService.userWrapper.user.id);
             })
             .catch(error => {
               this.isAuthenticating = false;

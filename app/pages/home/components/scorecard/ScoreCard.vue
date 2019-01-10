@@ -61,8 +61,8 @@
     components: {
       PlayerSelection
     },
+
     created() {
-      console.log("ScoreCard created");
       EventBus.$on("player-selected", stuff => {
         // TODO add a scorecard for the entire team.. ignoring teams for now
         if (stuff.player) {
@@ -70,6 +70,7 @@
         }
       });
     },
+
     computed: {
       playerName: function () {
         return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname

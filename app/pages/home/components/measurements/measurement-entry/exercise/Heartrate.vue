@@ -31,10 +31,15 @@
       },
 
       blurNrOfBeats() {
-        if (this.$refs.nrOfBeats1.nativeView.text && this.$refs.nrOfBeats2.nativeView.text) {
-          const factor = this.hasHeartrateDevice ? 1 : 4;
-          const measurement = (this.$refs.nrOfBeats1.nativeView.text * factor) - (this.$refs.nrOfBeats2.nativeView.text * factor);
-          EventBus.$emit("score-entered", {measurement, player: this.player});
+        // TODO there was a logged crash in Firebase from Bas' device: "cannot read nativeView of undefined", so added a try-catch for now.. and see if we can reproduce it
+        try {
+          if (this.$refs.nrOfBeats1.nativeView.text && this.$refs.nrOfBeats2.nativeView.text) {
+            const factor = this.hasHeartrateDevice ? 1 : 4;
+            const measurement = (this.$refs.nrOfBeats1.nativeView.text * factor) - (this.$refs.nrOfBeats2.nativeView.text * factor);
+            EventBus.$emit("score-entered", {measurement, player: this.player});
+          }
+        } catch (e) {
+          console.log(">> error caught in blurNrOfBeats: " + e);
         }
       }
     }

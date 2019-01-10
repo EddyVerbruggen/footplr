@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="pageLoaded">
     <GridLayout id="addView" @loaded="onViewLoaded" rows="auto, auto, auto, *, auto" columns="*, *"
                 horizontalAlignment="center"
                 verticalAlignment="top" style="margin-bottom: 200" height="100%">
@@ -55,6 +55,7 @@
 <script>
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
+  import {setScreenName} from "~/utils/analytics-util";
   import {dismissKeyboard} from "~/utils/keyboard-util";
   import {Excercises, translateExerciseType} from "~/shared/exercises";
   import {EventBus} from "~/services/event-bus";
@@ -135,11 +136,8 @@
     },
 
     methods: {
-      onViewLoaded(event) {
-        // const page = topmost().currentPage;
-        // const forView = page.getViewById("addView");
-
-        // TODO also remove this listener.. although it may happen automatically
+      pageLoaded() {
+        setScreenName(`measurement.add.${this.exercise}`);
       },
 
       toggleShowExplanation() {

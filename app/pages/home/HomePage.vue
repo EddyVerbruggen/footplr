@@ -32,6 +32,7 @@
   import Measurements from "./components/measurements/Measurements.vue"
   import Profile from "./components/profile/Profile.vue"
   import ScoreCard from "./components/scorecard/ScoreCard.vue"
+  import {setScreenName} from "~/utils/analytics-util";
 
   export default {
     components: {
@@ -58,6 +59,13 @@
     methods: {
       onSelectedTabIndexChanged(event) {
         this.tabIndex = event.newIndex;
+        if (this.tabIndex === 0) {
+          setScreenName("scorecard");
+        } else if (this.tabIndex === 1) {
+          setScreenName("measurements");
+        } else if (this.tabIndex === 2) {
+          setScreenName("profile");
+        }
       },
       onTapShare() {
         console.log("TODO: share.. but we're logging out for now.");

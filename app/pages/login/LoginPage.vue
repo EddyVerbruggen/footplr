@@ -9,20 +9,24 @@
 <script>
   import * as platformModule from "tns-core-modules/platform"
   import LoginMain from "./components/LoginMain.vue"
+  import {setScreenName} from "~/utils/analytics-util";
   // import * as enums from "tns-core-modules/ui/enums";
 
   export default {
     components: {
       LoginMain
     },
+
     created() {
-      console.log(">> login component created");
+      setScreenName("login");
     },
+
     data() {
       return {
         state: 'initial'
       }
     },
+
     computed: {
       pageClasses: function () {
         return {
