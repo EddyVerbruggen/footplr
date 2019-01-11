@@ -21,7 +21,8 @@
              horizontalAlignment="left" verticalAlignment="top"></Image>
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
-      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10" v-if="showTimer"></Timer>
+      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
+             v-if="showTimer"></Timer>
 
       <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20"
                                  v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
@@ -55,7 +56,7 @@
 <script>
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
-  import {setScreenName} from "~/utils/analytics-util";
+  import {setScreenName, logEvent} from "~/utils/analytics-util";
   import {dismissKeyboard} from "~/utils/keyboard-util";
   import {Excercises, translateExerciseType} from "~/shared/exercises";
   import {EventBus} from "~/services/event-bus";
@@ -173,7 +174,10 @@
                 official: this.isTrainer || !this.isSelf,
                 measuredby: authService.userWrapper.user.ref
               })
-              .then(() => console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`))
+              .then(() => {
+                console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`);
+                logEvent("measurement_added");
+              })
               .catch(err => console.log(err));
         });
 

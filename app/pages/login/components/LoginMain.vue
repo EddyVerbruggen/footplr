@@ -46,7 +46,7 @@
 <script>
   import {action, prompt} from "tns-core-modules/ui/dialogs"
   import * as AppVersion from "nativescript-appversion";
-  import {setScreenName, setUserId} from "~/utils/analytics-util";
+  import {setScreenName, setUserId, setUserPropertyUsertype} from "~/utils/analytics-util";
   import {applicationSettingsService} from "~/main";
   import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
   import alert from "~/utils/alert"
@@ -78,9 +78,9 @@
     methods: {
       quickLogin() {
         const options = [
-          "Mark (trainer Victoria Heren 2)",
-          "Nick (speler Victoria Heren 2)",
-          "Daniel (speler Victoria Heren 2)",
+          "Mark (trainer & speler Victoria H2)",
+          "Nick (speler Victoria H2)",
+          "Daniel (speler Victoria H2)",
           "Annette (trainer Hoogland JO9-7)",
           "Bas V (speler Hoogland JO9-7)"
         ];
@@ -92,13 +92,13 @@
           cancelButtonText: cancelLabel
         }).then(picked => {
           if (picked && picked !== cancelLabel) {
-            if (picked === "Mark (trainer Victoria Heren 2)") {
+            if (picked === "Mark (trainer & speler Victoria H2)") {
               this.user.email = "fennemrdejong@gmail.com";
               this.user.password = "fpr123";
-            } else if (picked === "Nick (speler Victoria Heren 2)") {
+            } else if (picked === "Nick (speler Victoria H2)") {
               this.user.email = "eddyverbruggen+nickwagenaar@gmail.com";
               this.user.password = "fpr123";
-            } else if (picked === "Daniel (speler Victoria Heren 2)") {
+            } else if (picked === "Daniel (speler Victoria H2)") {
               this.user.email = "eddyverbruggen+danielhindriks@gmail.com";
               this.user.password = "fpr123";
             } else if (picked === "Annette (trainer Hoogland JO9-7)") {
@@ -138,6 +138,12 @@
               this.$navigateTo(routes.home, {clearHistory: true});
               this.visible = false;
               setUserId(this.$authService.userWrapper.user.id);
+              if (this.$authService.userWrapper.user.trains) {
+                setUserPropertyUsertype("trainer");
+              }
+              if (this.$authService.userWrapper.user.playsin) {
+                setUserPropertyUsertype("player");
+              }
             })
             .catch(error => {
               this.isAuthenticating = false;
