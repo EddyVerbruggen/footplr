@@ -1,16 +1,12 @@
 <template>
-  <StackLayout horizontalAlignment="center">
-    <Label :text="countdown" class="countdown" horizontalAlignment="center"></Label>
-    <Button :text="text" @tap="timerTapped" class="btn btn-timer" horizontalAlignment="center"></Button>
+  <StackLayout orientation="horizontal" horizontalAlignment="center">
+    <Label :text="countdown" class="countdown" horizontalAlignment="center" verticalAlignment="center"></Label>
+    <Button :text="text" @tap="timerTapped" class="btn btn-timer" horizontalAlignment="center" verticalAlignment="center"></Button>
   </StackLayout>
 </template>
 
 <script>
   export default {
-    created() {
-      console.log("Timer created");
-    },
-
     // these have been passed to the modal and can be accessed as this.<property>
     props: ['label', 'hint', 'duration'],
 
@@ -66,7 +62,7 @@
     background-color: #2699fb;
     color: #fff;
     min-width: 120;
-    height: 44;
+    /*height: 48;*/
   }
 
   Label.countdown {

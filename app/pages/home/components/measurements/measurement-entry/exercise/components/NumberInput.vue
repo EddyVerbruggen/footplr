@@ -1,9 +1,7 @@
 <template>
-  <StackLayout>
-    <NumericKeyboard @focus="onFocus" @blur="onBlur" @textChange="textChange"
-                     hint="Aantal" locale="nl_NL" :noDecimals="!decimals" returnKeyTitle="OK"
-                     horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
-  </StackLayout>
+  <NumericKeyboard @focus="onFocus" @blur="onBlur" @textChange="textChange" hint="Aantal" locale="nl_NL"
+                   :noDecimals="!decimals" returnKeyTitle="OK" horizontalAlignment="center"
+                   class="numeric-input"></NumericKeyboard>
 </template>
 
 <script>

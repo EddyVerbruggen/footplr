@@ -43,7 +43,7 @@
         </GridLayout>
       </ScrollView>
 
-      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!keyboardShowing || !isTeam">
+      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!keyboardShowing">
         <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-if="!showExplanation"></Button>
         <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore" v-if="!showExplanation"></Button>
         <Button col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
