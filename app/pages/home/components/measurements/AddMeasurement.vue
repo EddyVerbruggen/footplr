@@ -8,13 +8,13 @@
                   :class="'background-color-score-' + scoreClass">
         <Label row="0" :text="exerciseTranslated" class="bold exercise" width="65%" textWrap="true"
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
-        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation"
-                horizontalAlignment="right" v-if="!showExplanation"></Button>
+        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation()"
+                horizontalAlignment="right" v-show="!showExplanation"></Button>
         <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore"
-               class="previous-score bold" verticalAlignment="bottom" v-if="!showExplanation && previousScore"></Label>
+               class="previous-score bold" verticalAlignment="bottom" v-show="!showExplanation && previousScore"></Label>
         <Label row="1" class="c-white m-30 p-t-70"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
-               textWrap="true" verticalAlignment="top" v-if="showExplanation"></Label>
+               textWrap="true" verticalAlignment="top" v-show="showExplanation"></Label>
       </GridLayout>
 
       <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="150" class="m-l-12 m-t-4"
@@ -22,12 +22,12 @@
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
       <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
-             v-if="showTimer"></Timer>
+             v-show="showTimer"></Timer>
 
       <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20"
-                                 v-if="!showExplanation && !isTeam"></AddMeasurementForExercise>
+                                 v-show="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
-      <ScrollView row="3" colSpan="2" v-if="!showExplanation && isTeam">
+      <ScrollView row="3" colSpan="2" v-show="!showExplanation && isTeam">
         <GridLayout class="player-row" :rows="nrOfPlayers" columns="auto, auto, *">
           <Img backgroundColor="#e6e6e6" :row="i" col="0" :src="player.picture" stretch="aspectFill"
                horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></Img>
@@ -43,11 +43,11 @@
         </GridLayout>
       </ScrollView>
 
-      <GridLayout row="4" colSpan="2" columns="*, *" v-if="!keyboardShowing">
-        <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-if="!showExplanation"></Button>
-        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore" v-if="!showExplanation"></Button>
+      <GridLayout row="4" colSpan="2" columns="*, *" v-show="!keyboardShowing">
+        <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-show="!showExplanation"></Button>
+        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore" v-show="!showExplanation"></Button>
         <Button col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
-                @tap="toggleShowExplanation" v-if="showExplanation"></Button>
+                @tap="toggleShowExplanation()" v-show="showExplanation"></Button>
       </GridLayout>
     </GridLayout>
   </Page>
