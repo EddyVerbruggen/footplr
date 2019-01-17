@@ -10,7 +10,7 @@
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
         <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation()"
                 horizontalAlignment="right" v-show="!showExplanation"></Button>
-        <Label row="1" :text="(isTeam ? 'Huidig teamgemiddelde: ' : 'Vorige score: ') + previousScore"
+        <Label row="1" :text="(isTeam ? 'Team gemiddelde: ' : 'Vorige meting: ') + previousMeasurement"
                class="previous-score bold" verticalAlignment="bottom" v-show="!showExplanation && previousScore"></Label>
         <Label row="1" class="c-white m-30 p-t-70"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
@@ -95,7 +95,7 @@
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
-    props: ['exercise', 'exerciseTranslated', 'previousScore', 'editingUser'],
+    props: ['exercise', 'exerciseTranslated', 'previousScore', 'previousMeasurement', 'editingUser'],
 
     async mounted() {
       this.scoreClass = (Math.ceil(this.score / 10)) * 10;

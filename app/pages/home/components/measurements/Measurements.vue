@@ -131,6 +131,7 @@
             exercise: item.exercise,
             exerciseTranslated: item.exerciseTranslated,
             previousScore: item.score,
+            previousMeasurement: item.latestMeasurement,
             editingUser: this.player
           }
         }).then(added => {
@@ -183,6 +184,7 @@
           const latestMeasurement = this.getLatestMeasurementForExercise(latestMeasurements, excercisesKey);
           ex.push({
             hasMeasurement: latestMeasurement !== undefined,
+            latestMeasurement: latestMeasurement ? latestMeasurement.measurement : undefined,
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
             exercise: excercisesKey,
             exerciseTranslated: translateExerciseType(excercisesKey),
