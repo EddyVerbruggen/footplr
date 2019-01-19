@@ -145,7 +145,7 @@
 
       saveScore(event) {
         console.log("save, size: " + this.playerMeasurements.size);
-        if (this.playerMeasurements.size === 0) {
+        if (this.playerMeasurements.size === 0 || !player || !player.ref || !player.ref.collection) {
           return;
         }
 
