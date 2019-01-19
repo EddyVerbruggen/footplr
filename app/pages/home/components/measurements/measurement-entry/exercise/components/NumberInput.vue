@@ -1,7 +1,6 @@
 <template>
-  <NumericKeyboard @focus="onFocus" @blur="onBlur" @textChange="textChange" hint="Aantal" locale="nl_NL"
-                   :noDecimals="!decimals" returnKeyTitle="OK" horizontalAlignment="center"
-                   class="numeric-input"></NumericKeyboard>
+  <NumericKeyboard @focus="onFocus" @textChange="textChange" hint="Aantal" locale="nl_NL" :noDecimals="!decimals"
+                   returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
 </template>
 
 <script>
@@ -18,17 +17,10 @@
       },
 
       onFocus(event) {
-        console.log(">> onFocus");
         if (isAndroid) {
-          EventBus.$emit("keyboard-showing", true);
-          setCurrentlyActiveElement(event.object);
+          // setCurrentlyActiveElement(event.object);
         }
       },
-
-      onBlur(event) {
-        console.log(">> onBlur");
-        // EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
-      }
     }
   };
 </script>

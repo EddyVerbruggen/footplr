@@ -26,9 +26,7 @@
 
     methods: {
       onFocus(event) {
-        console.log(">> onFocus");
         if (isAndroid) {
-          EventBus.$emit("keyboard-showing", true);
           setCurrentlyActiveElement(event.object);
         }
       },

@@ -1,30 +1,28 @@
 <template>
   <Page @loaded="pageLoaded">
     <GridLayout id="addView" @loaded="onViewLoaded" rows="auto, auto, auto, *, auto" columns="*, *"
-                horizontalAlignment="center"
-                verticalAlignment="top" style="margin-bottom: 200" height="100%">
+                horizontalAlignment="center" verticalAlignment="top" style="margin-bottom: 200" height="100%">
 
-      <GridLayout id="header" colSpan="2" rows="2*, *" class="p-r-20 p-t-70"
+      <GridLayout id="header" colSpan="2" rows="2*, *" columns="auto, *" class="p-r-20 p-t-20"
                   :class="'background-color-score-' + scoreClass">
-        <Label row="0" :text="exerciseTranslated" class="bold exercise" width="65%" textWrap="true"
+        <Image :src="'~/assets/images/exercises/' + exercise + '.png'" height="70" class="m-l-12 m-t-12"
+               horizontalAlignment="left" verticalAlignment="top"></Image>
+        <Label col="1" :text="exerciseTranslated" class="bold exercise" width="70%" textWrap="true"
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
-        <Button row="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation()"
-                horizontalAlignment="right" v-show="!showExplanation"></Button>
         <Label row="1" :text="(isTeam ? 'Team gemiddelde: ' : 'Vorige meting: ') + previousMeasurement"
-               class="previous-score bold" verticalAlignment="bottom" v-show="!showExplanation && previousScore"></Label>
-        <Label row="1" class="c-white m-30 p-t-70"
+               class="previous-score bold" verticalAlignment="bottom" v-show="!showExplanation && previousMeasurement"></Label>
+        <Button row="1" col="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation()"
+                horizontalAlignment="right" v-show="!showExplanation"></Button>
+        <Label row="1" colSpan="2" class="c-white m-30 p-t-10" textWrap="true" verticalAlignment="top"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
-               textWrap="true" verticalAlignment="top" v-show="showExplanation"></Label>
+               v-show="showExplanation"></Label>
       </GridLayout>
-
-      <Image rowSpan="4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="150" class="m-l-12 m-t-4"
-             horizontalAlignment="left" verticalAlignment="top"></Image>
 
       <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
       <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
              v-show="showTimer"></Timer>
 
-      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-20"
+      <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-r-12"
                                  v-show="!showExplanation && !isTeam"></AddMeasurementForExercise>
 
       <ScrollView row="3" colSpan="2" v-show="!showExplanation && isTeam">
@@ -43,7 +41,7 @@
         </GridLayout>
       </ScrollView>
 
-      <GridLayout row="4" colSpan="2" columns="*, *" v-show="!keyboardShowing">
+      <GridLayout row="4" colSpan="2" columns="*, *">
         <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-show="!showExplanation"></Button>
         <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore" v-show="!showExplanation"></Button>
         <Button col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
@@ -88,10 +86,6 @@
           this.scoreClass = (Math.ceil(totalScore / this.playerMeasurements.size / 10)) * 10;
         }
       });
-
-      EventBus.$on("keyboard-showing", showing => {
-        this.keyboardShowing = showing;
-      });
     },
 
     // these have been passed to the modal and can be accessed as this.<property>
@@ -117,8 +111,7 @@
         score: this.previousScore || 50, // this is calculated based on the score
         scoreClass: this.scoreClass, // this is updated in mounted()
         showExplanation: false,
-        players: undefined,
-        keyboardShowing: false
+        players: undefined
       }
     },
 
@@ -198,11 +191,11 @@
     border-width: 2;
     border-color: #fff;
     color: #fff;
-    margin: 24 0 16 0;
+    margin: 16 0 16 0;
   }
 
   .player-row {
-    margin: 12;
+    margin: 6 12 0 12;
   }
 
   .card-photo {

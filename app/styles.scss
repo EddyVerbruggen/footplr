@@ -70,7 +70,7 @@ Button.btn-primary {
   font-family: "Core Sans D 55 Bold", CoreSansD55Bold, system, sans-serif;
   background-color: #63d4a5;
   color: #fff;
-  margin: 24 16 24 8;
+  margin: 16 16 16 8;
   height: 44;
 }
 
@@ -78,13 +78,13 @@ Button.btn-secondary {
   border-width: 2;
   border-color: #63d4a5;
   color: #63d4a5;
-  margin: 24 8 24 16;
+  margin: 16 8 16 16;
   height: 44;
 }
 
 Button.btn-secondary-colorless {
   border-width: 2;
-  margin: 24 8 24 16;
+  margin: 16 8 16 16;
   height: 44;
 }
 
@@ -209,10 +209,6 @@ Slider {
   background-color: #c9c9c9;
 }
 
-.p-t-70 {
-  padding-top: 70;
-}
-
 .icon-round {
   width: 34;
   height: 34;
@@ -227,6 +223,6 @@ Slider {
   border-bottom-color: red;
   border-bottom-width: 1px;
   width: 96;
-  height: 42;
-  padding: 10 2;
+  height: 40;
+  padding: 8 2;
 }

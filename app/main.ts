@@ -32,14 +32,14 @@ declare const TNS_ENV: any;
 v.prototype.$authService = authService;
 v.prototype.$editingUserService = editingUserService;
 
-setTimeout(() => {
-  onAndroidKeyboardShowingListener(showing => {
+// setTimeout(() => {
+  // onAndroidKeyboardShowingListener(showing => {
     // we only need to emit this in case of showing=false because on Android the 'blur' event doesn't fire
-    if (!showing) {
-      EventBus.$emit("keyboard-showing", showing);
-    }
-  });
-}, 2000);
+    // if (!showing) {
+    //   EventBus.$emit("keyboard-showing", showing);
+    // }
+  // });
+// }, 2000);
 
 firebase.init()
     .then(instance => {
