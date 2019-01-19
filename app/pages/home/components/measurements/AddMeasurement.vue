@@ -145,11 +145,15 @@
 
       saveScore(event) {
         console.log("save, size: " + this.playerMeasurements.size);
-        if (this.playerMeasurements.size === 0 || !player || !player.ref || !player.ref.collection) {
+        if (this.playerMeasurements.size === 0) {
           return;
         }
 
         this.playerMeasurements.forEach((value, player) => {
+          if (!player || !player.ref || !player.ref.collection) {
+            return;
+          }
+
           // round to 2 decimals
           const measurement = (Math.round(value * 100)) / 100;
 
