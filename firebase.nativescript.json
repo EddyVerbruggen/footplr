@@ -9,6 +9,7 @@
     "messaging": false,
     "crashlytics": true,
     "crash_reporting": false,
+    "performance_monitoring": true,
     "storage": true,
     "facebook_auth": false,
     "google_auth": false,
