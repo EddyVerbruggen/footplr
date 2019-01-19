@@ -25,6 +25,8 @@
       Stopwatch
     },
 
+    props: ['player'],
+
     created() {
       console.log("Dribble created");
     },

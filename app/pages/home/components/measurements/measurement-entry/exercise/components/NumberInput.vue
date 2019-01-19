@@ -13,6 +13,10 @@
 
     methods: {
       textChange(event) {
+        if (!this.player) {
+          console.log("Player not set - not saving!");
+          return;
+        }
         EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
       },
 
