@@ -24,7 +24,7 @@
               class="profile-field"
               hint="Voornaam"
               returnKeyType="next"
-              @blur="blurName"
+              @blur="saveName"
               @returnPress="focusLastName()"
               v-model="userWrapper.user.firstname"
               autocorrect="false"></TextField>
@@ -36,7 +36,8 @@
               class="profile-field"
               hint="Achternaam"
               returnKeyType="done"
-              @blur="blurName"
+              @blur="saveName"
+              @returnPress="saveName"
               v-model="userWrapper.user.lastname"
               autocorrect="false"></TextField>
 
@@ -128,9 +129,9 @@
         });
       },
 
-      blurName() {
-        if (this.userWrapper.user.firstname === "text" && this.userWrapper.user.lastname === "text") {
-          // prolly caused by folks using the project from GitHub.. perhaps change access rules
+      saveName() {
+        if (this.userWrapper.user.firstname === "text" || this.userWrapper.user.lastname === "text") {
+          // prolly caused by folks using the project from GitHub (or automated UI tests).. perhaps change access rules
           throw new Error(">> WTF, not saving first/last: " + JSON.stringify(this.userWrapper.user));
         }
 
