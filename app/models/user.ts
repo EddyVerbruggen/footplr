@@ -8,6 +8,7 @@ export default interface User extends SharedUser {
   playsin: firestore.DocumentReference; // Team
   trains: Array<firestore.DocumentReference>; // Array<Team>
   email: string;
+  appVersion: string;
   firstname?: string;
   lastname?: string;
   admin: boolean;

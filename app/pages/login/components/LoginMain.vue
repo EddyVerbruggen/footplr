@@ -144,6 +144,10 @@
               if (this.$authService.userWrapper.user.playsin) {
                 setUserPropertyUsertype("player");
               }
+              // set the current app version for this user - may come in handy when helping users
+              this.$editingUserService.updateUserDataInFirebase({
+                appVersion: this.appVersion
+              }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
             .catch(error => {
               this.isAuthenticating = false;

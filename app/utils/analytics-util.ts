@@ -17,14 +17,14 @@ export function setUserPropertyUsertype(value: "player" | "trainer"): void {
   firebaseAnalytics.setUserProperty({
     key,
     value
-  }).then(() => console.log(`User property "${key}" set to "${value}" set in Firebase`));
+  }).then(() => console.log(`User property "${key}" set to "${value}" in Firebase`));
 }
 
 export function setUserProperty(key: string, value: string): void {
   firebaseAnalytics.setUserProperty({
     key,
     value
-  }).then(() => console.log(`User property "${key}" to "${value}" set in Firebase`));
+  }).then(() => console.log(`User property "${key}" set to "${value}" in Firebase`));
 }
 
 export function logEvent(key: "measurement_added", parameters?: any): void {
