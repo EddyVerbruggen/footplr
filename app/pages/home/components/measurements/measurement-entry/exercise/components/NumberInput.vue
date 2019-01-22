@@ -14,7 +14,7 @@
     mounted() {
       // set a default for the input hint
       if (!this.hint) {
-        this.hint = "Aantal"
+        this.hint = "aantal"
       }
     },
 

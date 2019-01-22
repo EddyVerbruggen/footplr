@@ -1,6 +1,6 @@
 <template>
   <StackLayout>
-    <Stopwatch></Stopwatch>
+    <!--<Stopwatch></Stopwatch>-->
 
     <TextField width="50" height="50" keyboardType="number" v-model="score" hint="Score" horizontalAlignment="center"></TextField>
 
@@ -18,11 +18,11 @@
   import {authService, editingUserService} from "~/main";
   import {formatDate} from "~/utils/date-util";
   import {translateExerciseType} from "~/shared/exercises";
-  import Stopwatch from "../Stopwatch";
+  // import Stopwatch from "../Stopwatch";
 
   export default {
     components: {
-      Stopwatch
+      // Stopwatch
     },
 
     props: ['player'],

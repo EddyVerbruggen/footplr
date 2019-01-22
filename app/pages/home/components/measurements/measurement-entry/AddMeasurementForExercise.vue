@@ -6,6 +6,7 @@
     <SitUps :player="player" v-if="exercise === 'SIT_UPS'"></SitUps>
     <HeaderHeight :player="player" v-if="exercise === 'HEADER_HEIGHT'"></HeaderHeight>
     <ShotStrength :player="player" v-if="exercise === 'SHOT_STRENGTH'"></ShotStrength>
+    <Sprint :player="player" v-if="exercise === 'SPRINT'"></Sprint>
   </StackLayout>
 </template>
 
@@ -16,6 +17,7 @@
   import SitUps from "./exercise/SitUps";
   import HeaderHeight from "./exercise/HeaderHeight";
   import ShotStrength from "./exercise/ShotStrength";
+  import Sprint from "./exercise/Sprint";
 
   export default {
     components: {
@@ -25,6 +27,7 @@
       SitUps,
       HeaderHeight,
       ShotStrength,
+      Sprint,
     },
 
     props: ['exercise', 'player'],

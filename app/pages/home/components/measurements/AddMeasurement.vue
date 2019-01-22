@@ -18,7 +18,6 @@
                v-show="showExplanation"></Label>
       </GridLayout>
 
-      <!-- TODO conditionally add timer/stopwatch here, instead of in the component.. better for reuse -->
       <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
              v-show="showTimer"></Timer>
 
@@ -144,13 +143,13 @@
       },
 
       saveScore(event) {
-        console.log("save, size: " + this.playerMeasurements.size);
         if (this.playerMeasurements.size === 0) {
           return;
         }
 
         this.playerMeasurements.forEach((value, player) => {
           if (!player || !player.ref || !player.ref.collection) {
+            // may happen during livesync: fix = log out and in
             return;
           }
 
