@@ -7,6 +7,7 @@
     <HeaderHeight :player="player" v-if="exercise === 'HEADER_HEIGHT'"></HeaderHeight>
     <ShotStrength :player="player" v-if="exercise === 'SHOT_STRENGTH'"></ShotStrength>
     <Sprint :player="player" v-if="exercise === 'SPRINT'"></Sprint>
+    <Explosiveness :player="player" v-if="exercise === 'EXPLOSIVENESS'"></Explosiveness>
   </StackLayout>
 </template>
 
@@ -18,6 +19,7 @@
   import HeaderHeight from "./exercise/HeaderHeight";
   import ShotStrength from "./exercise/ShotStrength";
   import Sprint from "./exercise/Sprint";
+  import Explosiveness from "./exercise/Explosiveness";
 
   export default {
     components: {
@@ -28,6 +30,7 @@
       HeaderHeight,
       ShotStrength,
       Sprint,
+      Explosiveness,
     },
 
     props: ['exercise', 'player'],
