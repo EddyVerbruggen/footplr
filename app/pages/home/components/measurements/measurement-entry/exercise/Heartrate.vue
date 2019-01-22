@@ -10,7 +10,6 @@
 
 <script>
   import {EventBus} from "~/services/event-bus";
-  import {Excercises} from "~/shared/exercises";
   import {isAndroid, isIOS} from "tns-core-modules/platform";
   import {setCurrentlyActiveElement} from "~/utils/keyboard-util";
 

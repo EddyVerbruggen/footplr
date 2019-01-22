@@ -1,5 +1,5 @@
 <template>
-  <NumericKeyboard @focus="onFocus" @textChange="textChange" hint="Aantal" locale="nl_NL" :noDecimals="!decimals"
+  <NumericKeyboard @focus="onFocus" @textChange="textChange" :hint="hint" locale="nl_NL" :noDecimals="!decimals"
                    returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
 </template>
 
@@ -9,7 +9,14 @@
   import {setCurrentlyActiveElement} from "~/utils/keyboard-util";
 
   export default {
-    props: ['decimals', 'player'],
+    props: ['decimals', 'player', 'hint'],
+
+    mounted() {
+      // set a default for the input hint
+      if (!this.hint) {
+        this.hint = "Aantal"
+      }
+    },
 
     methods: {
       textChange(event) {

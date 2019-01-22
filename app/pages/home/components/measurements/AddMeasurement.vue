@@ -154,7 +154,7 @@
             return;
           }
 
-          // round to 2 decimals
+          // round to max 2 decimals
           const measurement = (Math.round(value * 100)) / 100;
 
           // round to 0 decimals

@@ -4,6 +4,8 @@
     <Heartrate :player="player" v-if="exercise === 'HEARTRATE'"></Heartrate>
     <PushUps :player="player" v-if="exercise === 'PUSH_UPS'"></PushUps>
     <SitUps :player="player" v-if="exercise === 'SIT_UPS'"></SitUps>
+    <HeaderHeight :player="player" v-if="exercise === 'HEADER_HEIGHT'"></HeaderHeight>
+    <ShotStrength :player="player" v-if="exercise === 'SHOT_STRENGTH'"></ShotStrength>
   </StackLayout>
 </template>
 
@@ -12,6 +14,8 @@
   import Heartrate from "./exercise/Heartrate";
   import PushUps from "./exercise/PushUps";
   import SitUps from "./exercise/SitUps";
+  import HeaderHeight from "./exercise/HeaderHeight";
+  import ShotStrength from "./exercise/ShotStrength";
 
   export default {
     components: {
@@ -19,6 +23,8 @@
       Heartrate,
       PushUps,
       SitUps,
+      HeaderHeight,
+      ShotStrength,
     },
 
     props: ['exercise', 'player'],
