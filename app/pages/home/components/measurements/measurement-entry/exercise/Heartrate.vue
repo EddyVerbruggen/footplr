@@ -19,8 +19,7 @@
 
     data() {
       return {
-        isIOS,
-        hasHeartrateDevice: false,
+        isIOS
       }
     },
 
@@ -32,8 +31,7 @@
       },
       blurNrOfBeats() {
         if (this.$refs.nrOfBeats1 && this.$refs.nrOfBeats1.nativeView.text && this.$refs.nrOfBeats2 && this.$refs.nrOfBeats2.nativeView.text) {
-          const factor = this.hasHeartrateDevice ? 1 : 4;
-          const measurement = (this.$refs.nrOfBeats1.nativeView.text * factor) - (this.$refs.nrOfBeats2.nativeView.text * factor);
+          const measurement = this.$refs.nrOfBeats1.nativeView.text - this.$refs.nrOfBeats2.nativeView.text;
           EventBus.$emit("score-entered", {measurement, player: this.player});
         }
       }
