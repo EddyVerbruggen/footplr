@@ -1,10 +1,7 @@
 <template>
   <GridLayout columns="*, 10, *" horizontalAlignment="center">
-    <NumericKeyboard col="0" ref="nrOfBeats1" @blur="blurNrOfBeats" hint="Meting 1" locale="nl_NL" noDecimals="true" returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input" v-if="isIOS"></NumericKeyboard>
-    <TextField col="0" ref="nrOfBeats1" keyboardType="number" @focus="onFocus" @blur="blurNrOfBeats" hint="Meting 1" horizontalAlignment="center" class="numeric-input" v-if="!isIOS"></TextField>
-
-    <NumericKeyboard col="2" ref="nrOfBeats2" @blur="blurNrOfBeats" hint="Meting 2" locale="nl_NL" noDecimals="true" returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input" v-if="isIOS"></NumericKeyboard>
-    <TextField col="2" ref="nrOfBeats2" keyboardType="number" @focus="onFocus" @blur="blurNrOfBeats" hint="Meting 2" horizontalAlignment="center" class="numeric-input" v-if="!isIOS"></TextField>
+    <NumericKeyboard col="0" ref="nrOfBeats1" @textChange="textChange" hint="Meting 1" locale="nl_NL" noDecimals="true" returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
+    <NumericKeyboard col="2" ref="nrOfBeats2" @textChange="textChange" hint="Meting 2" locale="nl_NL" noDecimals="true" returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
   </GridLayout>
 </template>
 
@@ -28,7 +25,7 @@
           setCurrentlyActiveElement(event.object);
         }
       },
-      blurNrOfBeats() {
+      textChange() {
         if (this.$refs.nrOfBeats1 && this.$refs.nrOfBeats1.nativeView.text && this.$refs.nrOfBeats2 && this.$refs.nrOfBeats2.nativeView.text) {
           const measurement = this.$refs.nrOfBeats1.nativeView.text - this.$refs.nrOfBeats2.nativeView.text;
           EventBus.$emit("score-entered", {measurement, player: this.player});
