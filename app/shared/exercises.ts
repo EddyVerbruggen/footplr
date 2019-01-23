@@ -61,7 +61,7 @@ export class Exercise {
               public scoreCalculationType: ScoreCalculationType,
               public lowbound: number = 0,
               public highbound: number = 0,
-              public advanced: boolean = false) {
+              public minumumAgeGroup?: number) {
     // TODO consider adding lowbound and LOW_HIGH (as seen in the table in the doc), and use it for entry validation
     // TODO Factor does not seem to be relevant now, also factor might be different per category the exercise is in.
   }
@@ -79,25 +79,32 @@ export class Exercise {
 
     return 0;
   }
+
+  isAvailableForAgeGroup(ageGroup?: number): boolean {
+    if (!ageGroup || !this.minumumAgeGroup) {
+      return true;
+    }
+    return ageGroup >= this.minumumAgeGroup;
+  }
 }
 
 // Note that the order here determines what the order is on-screen
 export const Excercises: { [t in ExerciseType]: Exercise } = {
-  PUSH_UPS: new Exercise("PUSH", ["PHY"], "COUNT","LOW_HIGH", 0,61),
-  SIT_UPS: new Exercise("SITU", ["PHY"], "COUNT", "LOW_HIGH",0,55),
-  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 130),
+  PUSH_UPS: new Exercise("PUSH", ["PHY"], "COUNT","LOW_HIGH", 0,61, 16),
+  SIT_UPS: new Exercise("SITU", ["PHY"], "COUNT", "LOW_HIGH",0,55, 16),
+  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 130, 12),
   EXPLOSIVENESS: new Exercise("EXPL", ["PAC", "PHY"], "TIME", "HIGH_LOW", 7 ,13),
   SPRINT: new Exercise("SPRI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.32, 8.0),
-  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0,45),
-  PASSING_MOVEMENTS: new Exercise("TRIC", ["TEC"], "COUNT", "LOW_HIGH",0,20),
+  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0,45, 16),
+  PASSING_MOVEMENTS: new Exercise("TRIC", ["TEC"], "COUNT", "LOW_HIGH",0,20, 12),
   DRIBBLE: new Exercise("DRTE", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
-  AGILITY: new Exercise("TTES", ["PAC"], "TIME", "HIGH_LOW",8, 14),
-  STAMINA: new Exercise("ISRT", ["PAC", "PHY"], "COUNT", "LOW_HIGH",0, 125),
-  SHOT_STRENGTH: new Exercise("SCHI", ["SHO"], "SPEED", "LOW_HIGH",0,150, true),
-  JUMP_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT","LOW_HIGH", 0, 70),
-  CROSSPASS: new Exercise("CRPS", ["PAS"], "DISTANCE", "LOW_HIGH",0, 90),
-  AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH",0,100, true),
-  SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS","LOW_HIGH",0,  100),
+  AGILITY: new Exercise("TTES", ["PAC"], "TIME", "HIGH_LOW",8, 14, 12),
+  STAMINA: new Exercise("ISRT", ["PAC", "PHY"], "COUNT", "LOW_HIGH",0, 125, 12),
+  SHOT_STRENGTH: new Exercise("SCHI", ["SHO"], "SPEED", "LOW_HIGH",0,150),
+  JUMP_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT","LOW_HIGH", 0, 70, 16),
+  CROSSPASS: new Exercise("CRPS", ["PAS"], "DISTANCE", "LOW_HIGH",0, 90, 12),
+  AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH",0,100),
+  SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS","LOW_HIGH",0,  100, 12),
   HEADER_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT", "LOW_HIGH", 0,300),
-  CONTROL_LOW_BALL: new Exercise("AALO", ["TEC"], "DISTANCE", "HIGH_LOW", 0 ,1200),
+  CONTROL_LOW_BALL: new Exercise("AALO", ["TEC"], "DISTANCE", "HIGH_LOW", 0 ,1200, 12),
 };

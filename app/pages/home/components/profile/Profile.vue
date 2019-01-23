@@ -1,9 +1,10 @@
 <template>
   <ScrollView>
     <StackLayout>
-      <GridLayout rows="auto" columns="*">
+      <GridLayout rows="auto, auto" columns="*">
         <PlayerSelection v-if="isTrainer"></PlayerSelection>
         <Label text="Jouw spelersprofiel" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
+        <Label row="1" :text="teamName" class="team-name" horizontalAlignment="center" v-if="!isTrainer"></Label>
         <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
       </GridLayout>
 
@@ -102,6 +103,10 @@
           return "Wat is je geboortedatum?";
         }
         return formatDate(this.userWrapper.user.birthdate);
+      },
+      teamName: function () {
+        console.log("this.userWrapper.user.playsinTeam: " + this.$authService.userWrapper.user.playsinTeam);
+        return this.$authService.userWrapper.user.playsinTeam ? this.$authService.userWrapper.user.playsinTeam.name : undefined;
       }
     },
 
@@ -118,7 +123,6 @@
         editingBirthDate: false,
         userWrapper: editingUserService.userWrapper,
         isTrainer: authService.userWrapper.user.trains !== undefined,
-        playerName: () => this.userWrapper.user ? this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname : "unset..",
       };
     },
 
@@ -204,6 +208,7 @@
               if (isAuthUserWithoutBirthDate) {
                 showInfo("Bedankt voor het invullen", "Je kunt nu onderin een andere pagina kiezen. Veel plezier met de app!", "profile");
                 this.$authService.userWrapper.user.birthdate = birthdate;
+                // "reload" home, so we can show the other tabs (which were hidden because of the missing birthdate)
                 this.$navigateTo(routes.home, {clearHistory: true, animated: false, props: { loadProfileTab: true}});
               }
             });
@@ -273,5 +278,11 @@
 
   .card-photo {
     border-radius: 55;
+  }
+
+  .team-name {
+    margin-top: 10;
+    font-size: 13;
+    opacity: 0.8;
   }
 </style>

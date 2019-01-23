@@ -180,7 +180,16 @@
       fillExerciseScoresWithMeasurements(latestMeasurements) {
         const ex = [];
 
+        // TODO this should be editinguser!
+        const ageGroup = authService.userWrapper.user.playsinTeam ? authService.userWrapper.user.playsinTeam.agegroup : undefined;
+
+        console.log({ageGroup});
+
         for (let excercisesKey in Excercises) {
+          if (!Excercises[excercisesKey].isAvailableForAgeGroup(ageGroup)) {
+            continue;
+          }
+
           const latestMeasurement = this.getLatestMeasurementForExercise(latestMeasurements, excercisesKey);
           ex.push({
             hasMeasurement: latestMeasurement !== undefined,

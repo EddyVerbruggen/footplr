@@ -3,6 +3,7 @@ import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
 import { getString } from "tns-core-modules/application-settings";
+import { getTeam } from "~/services/TeamService"
 
 // this class concerns the logged in user, not the actual user being edited
 export default class AuthService extends BackendService {
@@ -56,7 +57,6 @@ export default class AuthService extends BackendService {
     user.admin = userData.admin;
     user.birthdate = userData.birthdate;
     user.club = userData.club;
-    user.playsin = userData.playsin;
     user.trains = userData.trains;
     user.firstname = userData.firstname;
     user.lastname = userData.lastname;
@@ -65,6 +65,15 @@ export default class AuthService extends BackendService {
     user.picture = userData.picture;
     user.position = userData.position;
     user.scores = userData.scores;
+    user.playsin = userData.playsin;
+
+    if (userData.playsin) {
+      const playsInTeam  = await getTeam(user.playsin);
+      userData.playsinTeam = playsInTeam;
+      // this.userWrapper.user.playsinTeam = playsInTeam;
+      console.log(">> fetched team: " + userData.playsinTeam);
+    }
+
     this.userWrapper.user = <User>userData;
     this.user = user;
     return null;
