@@ -70,8 +70,6 @@ export default class AuthService extends BackendService {
     if (userData.playsin) {
       const playsInTeam  = await getTeam(user.playsin);
       userData.playsinTeam = playsInTeam;
-      // this.userWrapper.user.playsinTeam = playsInTeam;
-      console.log(">> fetched team: " + userData.playsinTeam);
     }
 
     this.userWrapper.user = <User>userData;

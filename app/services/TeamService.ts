@@ -17,11 +17,15 @@ export async function getPlayersInTeam(teamRef: firestore.DocumentReference): Pr
       .where("playsin", "==", teamRef)
       .get();
 
+  // also fetching team, so we can set that in the user objects (need that to filter the list of measurements by age group)
+  const team = await getTeam(teamRef);
+
   const users: Array<User> = [];
   querySnapshot.docSnapshots.forEach(userDoc => {
     const user = <User>userDoc.data();
     user.id = userDoc.id;
     user.ref = userDoc.ref;
+    user.playsinTeam = team;
     users.push(user);
   });
   return users;

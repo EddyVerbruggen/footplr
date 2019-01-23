@@ -15,7 +15,8 @@
         <GridLayout rows="auto, auto">
           <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row"
                       v-bind:class="'background-color-score-' + item.scoreClass">
-            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass" class="score icon-round bold"
+            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass"
+                   class="score icon-round bold"
                    horizontalAlignment="center" verticalAlignment="center"
                    v-show="item.hasMeasurement"></Label>
             <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
@@ -28,7 +29,8 @@
             <Button col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
-          <Label row="1" :text="item.hasMeasurement ? 'Laatste test ' + item.latestMeasurementDate : ' '" class="latest-measurement-date" horizontalAlignment="right"></Label>
+          <Label row="1" :text="item.hasMeasurement ? 'Laatste test ' + item.latestMeasurementDate : ' '"
+                 class="latest-measurement-date" horizontalAlignment="right"></Label>
         </GridLayout>
       </v-template>
     </ListView>
@@ -57,7 +59,7 @@
       // TODO we need to clean this up upon logout, or when entering/leaving the tab
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
-      editingUserService.anyPageCallback = user => {
+      editingUserService.anyPageCallback = () => {
         console.log(">> measurements, anyPageCallback");
         this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       };
@@ -65,7 +67,7 @@
       // if (authService.userWrapper.user.trains !== undefined) {
       //   this.fetchTeamMeasurements();
       // } else {
-        this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
+      this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       // }
 
       // for quick dev of the 'add' or 'details' page
@@ -180,10 +182,12 @@
       fillExerciseScoresWithMeasurements(latestMeasurements) {
         const ex = [];
 
-        // TODO this should be editinguser!
-        const ageGroup = authService.userWrapper.user.playsinTeam ? authService.userWrapper.user.playsinTeam.agegroup : undefined;
-
-        console.log({ageGroup});
+        // determine the age group, so we can filter the measurement list
+        const ageGroup = editingUserService.userWrapper.team ?
+            editingUserService.userWrapper.team.agegroup :
+            editingUserService.userWrapper.user.playsinTeam ?
+                editingUserService.userWrapper.user.playsinTeam.agegroup :
+                undefined;
 
         for (let excercisesKey in Excercises) {
           if (!Excercises[excercisesKey].isAvailableForAgeGroup(ageGroup)) {

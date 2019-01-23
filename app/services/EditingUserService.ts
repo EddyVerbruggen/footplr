@@ -26,10 +26,7 @@ export default class EditingUserService {
     this.userListenerUnsubscribe = this.userRef.onSnapshot(doc => {
       if (doc.exists) {
         this.syncUserData(doc);
-
-        if (this.anyPageCallback) {
-          this.anyPageCallback(doc.data());
-        }
+        this.anyPageCallback && this.anyPageCallback();
       } else {
         console.log("No such document!");
       }
@@ -40,7 +37,11 @@ export default class EditingUserService {
   private syncUserData(doc: firestore.DocumentSnapshot): void {
     const userData = <User>doc.data();
     userData.id = doc.id;
+
+    // remember the team (no need to re-fetch)
+    const team = this.userWrapper.user.playsinTeam;
     this.userWrapper.user = <User>userData;
+    this.userWrapper.user.playsinTeam = team;
   }
 
   async updateUserDataInFirebase(userData): Promise<void> {
