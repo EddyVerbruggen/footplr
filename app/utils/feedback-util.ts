@@ -10,6 +10,14 @@ export function showInfo(title: string, message: string, icon?: string): void {
   });
 }
 
+export function showError(title: string, message: string, icon?: string): void {
+  showFeedback({
+    title,
+    message,
+    type: FeedbackType.Error,
+  });
+}
+
 function showFeedback(options: FeedbackShowOptions): void {
   options.icon = options.icon || "profile";
   options.duration = options.duration || 5000;

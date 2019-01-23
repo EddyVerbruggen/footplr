@@ -7,8 +7,8 @@ import { SharedUser } from "~/shared/shared-user";
 export default interface User extends SharedUser {
   ref: firestore.DocumentReference; // self
   club: firestore.DocumentReference; // Club
-  playsin: firestore.DocumentReference; // Team
-  trains: Array<firestore.DocumentReference>; // Array<Team>
+  playsin?: firestore.DocumentReference; // Team
+  trains?: Array<firestore.DocumentReference>; // Array<Team>
   email: string;
   appinfo: AppInfo;
   firstname?: string;

@@ -189,13 +189,14 @@
             });
       },
 
+      // TODO perhaps it's better for now to not allow users registering
       signUp() {
         if (getConnectionType() === connectionType.none) {
           alert("Om te kunnen registreren is een Internetverbinding vereist")
           return;
         }
         this.$authService
-            .register(this.user)
+            .register(this.user.email, this.user.password)
             .then(() => {
               alert("Je account is succesvol aangemaakt. Welkom!");
               this.login();

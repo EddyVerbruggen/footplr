@@ -4,6 +4,7 @@ import { firestore } from "nativescript-plugin-firebase";
 import User from "../models/User";
 import { getString } from "tns-core-modules/application-settings";
 import { getTeam } from "~/services/TeamService"
+import DocumentReference = firestore.DocumentReference;
 
 // this class concerns the logged in user, not the actual user being edited
 export default class AuthService extends BackendService {
@@ -13,15 +14,27 @@ export default class AuthService extends BackendService {
     return !!getString(this.userKey);
   }
 
-  async register(user) {
+  async register(email: string, password: string, playsin?: DocumentReference, returnCreatedUser = false) {
     const createdUser = await firebase.createUser({
-      email: user.email,
-      password: user.password
+      email,
+      password
     });
 
-    return await firebase.firestore.set("users", createdUser.uid, {
-      admin: false
+    await firebase.firestore.set("users", createdUser.uid, <User>{
+      admin: false,
+      email,
+      playsin
     });
+
+    if (returnCreatedUser) {
+      const userDoc = await firebase.firestore.getDocument("users", createdUser.uid);
+      const user = <User>userDoc.data();
+      user.ref = userDoc.ref;
+      user.id = createdUser.uid;
+      return user;
+    } else {
+      return null;
+    }
   }
 
   async login(fUser) {
@@ -38,7 +51,6 @@ export default class AuthService extends BackendService {
     const user = <User>userDoc.data();
     user.ref = userDoc.ref;
     user.id = firebaseUser.uid;
-    user.email = firebaseUser.email;
     this.user = user;
 
     await this.syncUserData(userDoc);
@@ -57,6 +69,7 @@ export default class AuthService extends BackendService {
     user.admin = userData.admin;
     user.birthdate = userData.birthdate;
     user.club = userData.club;
+    user.email = userData.email;
     user.trains = userData.trains;
     user.firstname = userData.firstname;
     user.lastname = userData.lastname;

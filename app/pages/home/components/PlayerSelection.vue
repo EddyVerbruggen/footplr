@@ -44,7 +44,11 @@
     computed: {
       selectedPlayerName: function () {
         if (this.selectedPlayer) {
-          return this.selectedPlayer.firstname + " " + (this.selectedPlayer.lastname ? this.selectedPlayer.lastname : "");
+          if (!this.selectedPlayer.firstname && !this.selectedPlayer.lastname) {
+            return "Speler zonder naam"
+          } else {
+            return this.selectedPlayer.firstname + " " + (this.selectedPlayer.lastname ? this.selectedPlayer.lastname : "");
+          }
         } else if (this.$editingUserService.userWrapper.team) {
           return this.$editingUserService.userWrapper.team.name
         }

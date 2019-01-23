@@ -5,12 +5,16 @@
         <PlayerSelection v-if="isTrainer"></PlayerSelection>
         <Label text="Jouw spelersprofiel" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
         <Label row="1" :text="teamName" class="team-name" horizontalAlignment="center" v-if="!isTrainer"></Label>
+        <Label row="1" :text="userWrapper.user.email" class="team-name" horizontalAlignment="center" v-if="isTrainer && !userWrapper.team"></Label>
         <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
       </GridLayout>
 
-      <Label v-if="userWrapper.team" text="Kies hierboven een speler.." horizontalAlignment="center" class="m-30"></Label>
+      <Label text="Kies hierboven een speler, of.." horizontalAlignment="center" class="m-x-30 m-t-30" v-if="userWrapper.team"></Label>
+      <Button @tap="onTapAddPlayer" text="VOEG EEN SPELER TOE" class="btn btn-secondary" width="160" v-if="userWrapper.team"></Button>
 
-      <StackLayout v-else>
+      <ActivityIndicator :busy="isRegistering" rowSpan="2" width="30" height="30" class="m-t-30"></ActivityIndicator>
+
+      <StackLayout v-if="!userWrapper.team">
         <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
           <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
           <Img :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
@@ -65,11 +69,11 @@
   import routes from "~/router";
   import {authService, editingUserService} from "~/main";
   import {takeOrPickPhoto} from "~/utils/photo-util";
-  import {showInfo} from "~/utils/feedback-util";
+  import {showInfo, showError} from "~/utils/feedback-util";
   import {formatDate} from "~/utils/date-util";
   import {getAllPlayerPositionDescriptions, getPlayerPositionKeyForValue, getPlayerPositionValueForKey} from "~/shared/player-position";
   import {ImageSource} from "tns-core-modules/image-source";
-  import {action} from "tns-core-modules/ui/dialogs";
+  import {action, prompt} from "tns-core-modules/ui/dialogs";
   import * as fs from "tns-core-modules/file-system";
   import PlayerSelection from "../PlayerSelection";
   import UpdateBirthDate from "./UpdateBirthDate.vue"
@@ -123,6 +127,7 @@
         editingBirthDate: false,
         userWrapper: editingUserService.userWrapper,
         isTrainer: authService.userWrapper.user.trains !== undefined,
+        isRegistering: false,
       };
     },
 
@@ -143,6 +148,44 @@
         });
       },
 
+      onTapAddPlayer() {
+        prompt({
+          title: "Wat is het emailadres?",
+          message: "De speler ontvangt een mailtje met verdere instructies op dit adres",
+          defaultText: "",
+          okButtonText: "Registreren",
+          cancelButtonText: "Annuleren"
+        }).then(data => {
+          if (data.result) {
+            this.isRegistering = true;
+            this.$authService
+                .register(data.text.trim(), this.generatePassword(), this.userWrapper.team.ref, true)
+                .then(user => {
+                  this.isRegistering = false;
+                  showInfo("De speler is aangemaakt", "Vul hieronder het profiel zoveel mogelijk aan");
+                  setTimeout(() => {
+                    this.userWrapper.user = user;
+                    this.$editingUserService.userWrapper.user = user;
+                    this.$editingUserService.userWrapper.team = undefined;
+                    this.$editingUserService.watchUser();
+                    EventBus.$emit("player-selected", {player: user});
+                    EventBus.$emit("update-players");
+                  }, 500);
+                })
+                .catch(error => {
+                  this.isRegistering = false;
+                  console.log("Failed to register player: " + error);
+                  showError("Fout bij het registreren ☹️", error);
+                })
+          }
+        });
+      },
+
+      generatePassword() {
+        // TODO
+        return "fpr123"; // + (Math.random() * 10000);
+      },
+
       saveName() {
         if (this.userWrapper.user.firstname === "text" || this.userWrapper.user.lastname === "text") {
           // prolly caused by folks using the project from GitHub (or automated UI tests).. perhaps change access rules
@@ -153,7 +196,7 @@
           firstname: this.userWrapper.user.firstname,
           lastname: this.userWrapper.user.lastname,
         }).then(() => {
-          EventBus.$emit("player-selected", {player: this.userWrapper.user}); // TODO
+          EventBus.$emit("player-selected", {player: this.userWrapper.user});
           EventBus.$emit("update-players");
         });
       },
