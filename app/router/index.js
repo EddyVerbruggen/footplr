@@ -6,6 +6,6 @@ const routes = {
   onboarding: Onboarding,
   login: Login,
   home: Home
-}
+};
 
 export default routes

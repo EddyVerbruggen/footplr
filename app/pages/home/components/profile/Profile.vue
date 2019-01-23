@@ -64,6 +64,7 @@
   import routes from "~/router";
   import {authService, editingUserService} from "~/main";
   import {takeOrPickPhoto} from "~/utils/photo-util";
+  import {showInfo} from "~/utils/feedback-util";
   import {formatDate} from "~/utils/date-util";
   import {getAllPlayerPositionDescriptions, getPlayerPositionKeyForValue, getPlayerPositionValueForKey} from "~/shared/player-position";
   import {ImageSource} from "tns-core-modules/image-source";
@@ -78,6 +79,14 @@
   export default {
     components: {
       PlayerSelection
+    },
+
+    mounted() {
+      if (!this.userWrapper.user.birthdate) {
+        setTimeout(() => {
+          showInfo("Vul even je geboortedatum in 🙏", "De app is handiger in gebruik als we weten hoe oud je bent.. dankjewel!", "profile");
+        }, 800);
+      }
     },
 
     computed: {
@@ -112,6 +121,7 @@
         playerName: () => this.userWrapper.user ? this.userWrapper.user.firstname + " " + this.userWrapper.user.lastname : "unset..",
       };
     },
+
     methods: {
       focusLastName() {
         this.$refs.lastname.nativeView.focus();
@@ -185,11 +195,18 @@
             birthdate: this.userWrapper.user.birthdate
           }
         }).then(birthdate => {
-          console.log({birthdate});
+          const isAuthUserWithoutBirthDate = this.$editingUserService.userWrapper.user.id === this.$authService.userWrapper.user.id &&
+              !this.$authService.userWrapper.user.birthdate;
           if (birthdate) {
             this.$editingUserService.updateUserDataInFirebase({
               birthdate
-            }).then(() => console.log("Updated birthdate"));
+            }).then(() => {
+              if (isAuthUserWithoutBirthDate) {
+                showInfo("Bedankt voor het invullen", "Je kunt nu onderin een andere pagina kiezen. Veel plezier met de app!", "profile");
+                this.$authService.userWrapper.user.birthdate = birthdate;
+                this.$navigateTo(routes.home, {clearHistory: true, animated: false, props: { loadProfileTab: true}});
+              }
+            });
           }
         });
       },

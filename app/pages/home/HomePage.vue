@@ -8,6 +8,7 @@
              iosIconRenderingMode="alwaysTemplate"
              tabBackgroundColor="#20284d"
              :selectedIndex="tabIndex"
+             v-if="hasBirthDate"
              @selectedIndexChanged="onSelectedTabIndexChanged">
 
       <TabViewItem textTransform="none" iconSource="res://badge">
@@ -23,6 +24,7 @@
         <Profile ref="profile" :visible="tabIndex === 3"></Profile>
       </TabViewItem>
     </TabView>
+    <Profile v-if="!hasBirthDate" ref="profile"></Profile>
   </Page>
 </template>
 
@@ -40,6 +42,9 @@
       Profile,
       ScoreCard
     },
+
+    props: ['loadProfileTab'],
+
     computed: {
       pageClasses: function () {
         return {
@@ -49,13 +54,16 @@
         }
       }
     },
+
     data() {
       return {
-        tabIndex: 1, // setting this initially makes dev a little easier
+        tabIndex: this.loadProfileTab ? 2 : 1, // the initial tab
         tabView: undefined, // set below
-        logoSrc: "~/assets/images/fpr-logo-128.png"
+        // logoSrc: "~/assets/images/fpr-logo-128.png",
+        hasBirthDate: this.$authService.userWrapper.user.birthdate,
       };
     },
+
     methods: {
       onSelectedTabIndexChanged(event) {
         this.tabIndex = event.newIndex;
