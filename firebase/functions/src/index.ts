@@ -25,7 +25,6 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
     });
 
     if (!measurement) {
-      console.log(">> all deleted");
       allDeleted = true;
       measurement = removedMeasurement;
       // there was no older measurement, so all measurements of this exercise have been deleted
@@ -36,7 +35,6 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
   }
 
   const measurementData = <Measurement>measurement.data();
-  console.log({measurementData});
 
   // find our user
   const userRef: firebase.firestore.DocumentReference = snap.after.ref.parent.parent;
@@ -72,13 +70,10 @@ exports.onMeasurementWrite = functions.firestore.document("users/{userId}/measur
     // now update the scores, based on latestMeasurements
     if (measurementData.official) {
       user.scores.official = calculateScores(latestMeasurements);
-      // console.log("Scores official: " + JSON.stringify(user.scores.official));
     } else {
       user.scores.unofficial = calculateScores(latestMeasurements);
-      // console.log("Scores unofficial: " + JSON.stringify(user.scores.official));
     }
     user.scores.combined = calculateScores(getLatestMeasurementsCombined(user.latestmeasurements));
-    // console.log("Scores combined: " + JSON.stringify(user.scores.combined));
 
     await userRef.update({
       latestmeasurements: user.latestmeasurements,
@@ -167,5 +162,5 @@ function calculateScores(measurements: LatestMeasurements): Scores {
 }
 
 function calculateScore(measurement: Measurement, exercise: Exercise): number {
-  return measurement ? exercise.calculateScore(measurement.score) : 0;
+  return measurement ? exercise.calculateScore(measurement.measurement) : 0;
 }

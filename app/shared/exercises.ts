@@ -56,14 +56,12 @@ export type ScoreCalculationType = "LOW_HIGH" | "HIGH_LOW";
 
 export class Exercise {
   constructor(public abbrev: string,
-              public categories: Array<Category>,
+              public categories: Array<Category>, // TODO can be removed; only relevant for firebase function (which uses its own category mapping)
               public scoretype: ScoreType,
               public scoreCalculationType: ScoreCalculationType,
               public lowbound: number = 0,
               public highbound: number = 0,
               public minumumAgeGroup?: number) {
-    // TODO consider adding lowbound and LOW_HIGH (as seen in the table in the doc), and use it for entry validation
-    // TODO Factor does not seem to be relevant now, also factor might be different per category the exercise is in.
   }
 
   calculateScore(measurement?: number): number {
