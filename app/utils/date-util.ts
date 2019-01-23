@@ -1,22 +1,19 @@
 const MONTHNAMES = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
 
-export function getYearsSince(date: Date): number {
-  const diffMs = Date.now() - date.getTime();
-  const d = new Date(diffMs);
-  return Math.abs(d.getUTCFullYear() - 1970);
+export function getAgeYears(birthdate: Date): number {
+  return Math.ceil((new Date().getTime() - new Date(birthdate).getTime()) / 3.15576e+10);
 }
 
-export function getMonthsSince(date: Date): number {
-  if (!date) {
-    return 0;
-  }
-  const dayCompensation = new Date().getDate() > date.getDate() ? 0 : 1;
+export function getAgeMonths(birthdate: Date): number {
+  const dayCompensation = new Date().getDate() > birthdate.getDate() ? 0 : 1;
   const monthsElapsedThisYear = new Date().getMonth();
-  if (monthsElapsedThisYear > date.getMonth()) {
-    return monthsElapsedThisYear - date.getMonth() - dayCompensation;
+  let result;
+  if (monthsElapsedThisYear > birthdate.getMonth()) {
+    result = monthsElapsedThisYear - birthdate.getMonth() - dayCompensation;
   } else {
-    return monthsElapsedThisYear + (13 - date.getMonth()) - dayCompensation;
+    result = monthsElapsedThisYear + (13 - birthdate.getMonth()) - dayCompensation;
   }
+  return result === 12 ? 0 : result;
 }
 
 export function formatDate(date: Date): string {

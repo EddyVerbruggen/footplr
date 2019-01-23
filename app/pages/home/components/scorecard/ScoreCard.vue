@@ -52,7 +52,7 @@
 
 <script>
   import {authService, editingUserService, applicationSettingsService} from "~/main";
-  import {getYearsSince, getMonthsSince} from "~/utils/date-util";
+  import {getAgeYears, getAgeMonths} from "~/utils/date-util";
   import PlayerSelection from "../PlayerSelection";
   import {EventBus} from "~/services/event-bus";
   import {GlobalStore} from "~/services/global-store";
@@ -82,8 +82,12 @@
         if (!this.userWrapper.user.birthdate) {
           return "";
         }
-        const months = getMonthsSince(new Date(this.userWrapper.user.birthdate));
-        return `${getYearsSince(new Date(this.userWrapper.user.birthdate))} jaar en ${months} ${months === 1 ? "maand" : "maanden"}`;
+        let result = `${getAgeYears(new Date(this.userWrapper.user.birthdate))} jaar`;
+        const months = getAgeMonths(new Date(this.userWrapper.user.birthdate));
+        if (months > 0) {
+          result += ` en ${months} ${months === 1 ? "maand" : "maanden"}`;
+        }
+        return result;
       }
     },
 
