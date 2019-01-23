@@ -101,7 +101,8 @@
         userWrapper: editingUserService.userWrapper,
         score: type => {
           if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
-            return this.$editingUserService.userWrapper.user.scores[this.showOwnMeasurements ? "combined" : "official"][type];
+            const score = this.$editingUserService.userWrapper.user.scores[this.showOwnMeasurements ? "combined" : "official"][type];
+            return score === 0 ? "-" : score;
           }
         },
       };
