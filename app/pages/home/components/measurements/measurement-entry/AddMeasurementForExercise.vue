@@ -8,6 +8,7 @@
     <ShotStrength :player="player" v-if="exercise === 'SHOT_STRENGTH'"></ShotStrength>
     <Sprint :player="player" v-if="exercise === 'SPRINT'"></Sprint>
     <Explosiveness :player="player" v-if="exercise === 'EXPLOSIVENESS'"></Explosiveness>
+    <Aim :player="player" v-if="exercise === 'AIM'"></Aim>
   </StackLayout>
 </template>
 
@@ -20,6 +21,7 @@
   import ShotStrength from "./exercise/ShotStrength";
   import Sprint from "./exercise/Sprint";
   import Explosiveness from "./exercise/Explosiveness";
+  import Aim from "./exercise/Aim";
 
   export default {
     components: {
@@ -31,6 +33,7 @@
       ShotStrength,
       Sprint,
       Explosiveness,
+      Aim,
     },
 
     props: ['exercise', 'player'],
