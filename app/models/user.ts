@@ -1,4 +1,5 @@
 import { firestore } from "nativescript-plugin-firebase";
+import AppInfo from "~/models/app-info";
 import Team from "~/models/team";
 import { PlayerPosition } from "~/shared/player-position";
 import { SharedUser } from "~/shared/shared-user";
@@ -9,7 +10,7 @@ export default interface User extends SharedUser {
   playsin: firestore.DocumentReference; // Team
   trains: Array<firestore.DocumentReference>; // Array<Team>
   email: string;
-  appversion: string;
+  appinfo: AppInfo;
   firstname?: string;
   lastname?: string;
   admin: boolean;

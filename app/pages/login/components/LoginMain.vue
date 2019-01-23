@@ -45,6 +45,7 @@
 
 <script>
   import {action, prompt} from "tns-core-modules/ui/dialogs"
+  import { device } from "tns-core-modules/platform";
   import * as AppVersion from "nativescript-appversion";
   import {setScreenName, setUserId, setUserPropertyUsertype} from "~/utils/analytics-util";
   import {applicationSettingsService} from "~/main";
@@ -146,7 +147,11 @@
               }
               // set the current app version for this user - may come in handy when helping users
               this.$editingUserService.updateUserDataInFirebase({
-                appversion: this.appVersion
+                appinfo: {
+                  appversion: this.appVersion,
+                  os: device.os.toLowerCase(),
+                  osversion: device.osVersion
+                }
               }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
             .catch(error => {
