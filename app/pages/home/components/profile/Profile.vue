@@ -54,7 +54,7 @@
 
           <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
 
-          <StackLayout row="3" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="editBirthDate()">
+          <StackLayout row="3" col="1" orientation="horizontal" class="profile-field profile-field-last" verticalAlignment="center" @tap="editBirthDate()">
             <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
             <Label :text="iconDropDown" class="icon"></Label>
           </StackLayout>
@@ -298,6 +298,10 @@
     placeholder-color: #9598a9;
   }
 
+  .profile-field.profile-field-last {
+    border-bottom-width: 0;
+  }
+
   .icon-green {
     color: #67d4a5;
   }
@@ -314,7 +318,7 @@
 
   .card-photo-wrapper {
     background-color: #9093a6;
-    margin-top: 60;
+    margin-top: 40;
     width: 110;
     height: 110;
     border-radius: 55;

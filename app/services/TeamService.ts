@@ -13,20 +13,29 @@ export async function getTeam(teamRef: firestore.DocumentReference): Promise<Tea
 
 export async function getPlayersInTeam(teamRef: firestore.DocumentReference): Promise<Array<User>> {
   // note that this fails during livesync 😔
-  const querySnapshot: firestore.QuerySnapshot = await firebase.firestore.collection("users")
-      .where("playsin", "==", teamRef)
-      .get();
+  try {
 
-  // also fetching team, so we can set that in the user objects (need that to filter the list of measurements by age group)
-  const team = await getTeam(teamRef);
+    const querySnapshot: firestore.QuerySnapshot = await firebase.firestore.collection("users")
+        .where("playsin", "==", teamRef)
+        .orderBy("firstname", "asc")
+        .orderBy("lastname", "asc")
+        .get();
 
-  const users: Array<User> = [];
-  querySnapshot.docSnapshots.forEach(userDoc => {
-    const user = <User>userDoc.data();
-    user.id = userDoc.id;
-    user.ref = userDoc.ref;
-    user.playsinTeam = team;
-    users.push(user);
-  });
-  return users;
+    // also fetching team, so we can set that in the user objects (need that to filter the list of measurements by age group)
+    const team = await getTeam(teamRef);
+
+    const users: Array<User> = [];
+    querySnapshot.docSnapshots.forEach(userDoc => {
+      const user = <User>userDoc.data();
+      user.id = userDoc.id;
+      user.ref = userDoc.ref;
+      user.playsinTeam = team;
+      users.push(user);
+    });
+    return users;
+
+  } catch (err) {
+    console.log("Error in getPlayersInTeam: " + err);
+    return null;
+  }
 }
