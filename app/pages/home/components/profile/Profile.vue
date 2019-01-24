@@ -159,7 +159,7 @@
           if (data.result) {
             this.isRegistering = true;
             this.$authService
-                .register(data.text.trim(), this.generatePassword(), this.userWrapper.team.ref, true)
+                .register(data.text.trim().toLowerCase(), this.generatePassword(), this.userWrapper.team.ref, true)
                 .then(user => {
                   this.isRegistering = false;
                   showInfo("De speler is aangemaakt", "Vul hieronder het profiel zoveel mogelijk aan");
