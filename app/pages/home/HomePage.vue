@@ -35,6 +35,7 @@
   import Profile from "./components/profile/Profile.vue"
   import ScoreCard from "./components/scorecard/ScoreCard.vue"
   import {setScreenName} from "~/utils/analytics-util";
+  import {tapticSelection} from "~/utils/taptic-util";
 
   export default {
     components: {
@@ -74,6 +75,7 @@
         } else if (this.tabIndex === 2) {
           setScreenName("profile");
         }
+        tapticSelection();
       },
       onTapShare() {
         console.log("TODO: share.. but we're logging out for now.");
