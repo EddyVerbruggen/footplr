@@ -97,10 +97,10 @@
               this.user.email = "fennemrdejong@gmail.com";
               this.user.password = "fpr123";
             } else if (picked === "Nick (speler Victoria H2)") {
-              this.user.email = "eddyverbruggen+nickwagenaar@gmail.com";
+              this.user.email = "nickwagenaar9@gmail.com";
               this.user.password = "fpr123";
             } else if (picked === "Daniel (speler Victoria H2)") {
-              this.user.email = "eddyverbruggen+danielhindriks@gmail.com";
+              this.user.email = "danielhindriks@gmail.com";
               this.user.password = "fpr123";
             } else if (picked === "Annette (trainer Hoogland JO9-7)") {
               this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
@@ -150,7 +150,8 @@
                 appinfo: {
                   appversion: this.appVersion,
                   os: device.os.toLowerCase(),
-                  osversion: device.osVersion
+                  osversion: device.osVersion,
+                  logins: (this.$authService.userWrapper.user.appinfo.logins || 0) + 1
                 }
               }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
