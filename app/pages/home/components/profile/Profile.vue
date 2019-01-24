@@ -12,7 +12,7 @@
       <Label text="Kies hierboven een speler, of.." horizontalAlignment="center" class="m-x-30 m-t-30" v-if="userWrapper.team"></Label>
       <Button @tap="onTapAddPlayer" text="VOEG EEN SPELER TOE" class="btn btn-secondary" width="160" v-if="userWrapper.team"></Button>
 
-      <ActivityIndicator :busy="isRegistering" rowSpan="2" width="30" height="30" class="m-t-30"></ActivityIndicator>
+      <ActivityIndicator :busy="isRegistering" rowSpan="2" width="30" height="30" class="m-t-30" v-if="userWrapper.team"></ActivityIndicator>
 
       <StackLayout v-if="!userWrapper.team">
         <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
