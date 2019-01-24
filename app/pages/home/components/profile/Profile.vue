@@ -189,7 +189,8 @@
       saveName() {
         if (this.userWrapper.user.firstname === "text" || this.userWrapper.user.lastname === "text") {
           // prolly caused by folks using the project from GitHub (or automated UI tests).. perhaps change access rules
-          throw new Error(">> WTF, not saving first/last: " + JSON.stringify(this.userWrapper.user));
+          console.log(">> WTF, not saving first/last: " + JSON.stringify(this.userWrapper.user));
+          return;
         }
 
         editingUserService.updateUserDataInFirebase({
