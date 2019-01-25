@@ -140,15 +140,7 @@ function calculateScores(measurements: LatestMeasurements): Scores {
       (calculateScore(measurements.SHOT_STRENGTH, Excercises.SHOT_STRENGTH) +
           calculateScore(measurements.AIM, Excercises.AIM)) / 2);
 
-  const divideBy =
-      (PAC === 0 ? 0 : 1) +
-      (TEC === 0 ? 0 : 1) +
-      (DRI === 0 ? 0 : 1) +
-      (PAS === 0 ? 0 : 1) +
-      (PHY === 0 ? 0 : 1) +
-      (SHO === 0 ? 0 : 1);
-
-  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / Math.max(divideBy, 1));
+  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / 6);
 
   return <Scores>{
     PAC,
