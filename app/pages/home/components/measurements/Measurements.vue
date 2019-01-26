@@ -13,20 +13,25 @@
               @itemLoading="onListViewLoading">
       <v-template>
         <GridLayout rows="auto, auto">
-          <GridLayout rows="70" columns="2*, 2*, 7*, 2*, 2*" class="row"
+          <GridLayout rows="2*, *" columns="54, 44, *, 54, 54" class="row" height="60"
                       v-bind:class="'background-color-score-' + item.scoreClass">
-            <Label col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass"
+            <Label rowSpan="2" col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass"
                    class="score icon-round bold"
                    horizontalAlignment="center" verticalAlignment="center"
                    v-show="item.hasMeasurement"></Label>
-            <Img col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
-            <Label col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
+            <Img rowSpan="2" col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
+            <Label row="0" col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
                    verticalAlignment="center"></Label>
-            <Label col="3" class="icon-round" src="~/assets/images/stats.png" horizontalAlignment="center"
+            <StackLayout row="1" col="2" orientation="horizontal">
+              <Label row="1" col="2" :text="cat" class="exercise-category" textWrap="true"
+                     v-bind:class="'color-score-' + item.scoreClass"
+                     verticalAlignment="top" v-for="cat in item.categories"></Label>
+            </StackLayout>
+            <Label rowSpan="2" col="3" class="icon-round" src="~/assets/images/stats.png" horizontalAlignment="center"
                    @tap="showDetails(item)" v-show="item.hasMeasurement"></Label>
-            <Img col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
+            <Img rowSpan="2" col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
                  horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement"></Img>
-            <Button col="4" text="+" class="add-measurement" horizontalAlignment="center"
+            <Button rowSpan="2" col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
           <Label row="1" :text="item.hasMeasurement ? 'Laatste test ' + item.latestMeasurementDate : ' '"
@@ -190,7 +195,8 @@
                 undefined;
 
         for (let excercisesKey in Excercises) {
-          if (!Excercises[excercisesKey].isAvailableForAgeGroup(ageGroup)) {
+          const exercise = Excercises[excercisesKey];
+          if (!exercise.isAvailableForAgeGroup(ageGroup)) {
             continue;
           }
 
@@ -201,6 +207,7 @@
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
             exercise: excercisesKey,
             exerciseTranslated: translateExerciseType(excercisesKey),
+            categories: exercise.categories,
             score: latestMeasurement ? latestMeasurement.score : undefined,
             scoreClass: latestMeasurement ? (Math.ceil(latestMeasurement.score / 10)) * 10 : undefined
           });
@@ -243,10 +250,18 @@
   }
 
   .table .exercise {
-    font-size: 14;
+    font-size: 13;
     text-transform: uppercase;
     color: #fff;
-    margin: 0 10;
+    margin: 0 4 0 10;
+  }
+
+  .table .exercise-category {
+    font-size: 11;
+    margin-left: 10;
+    padding: 3 6;
+    background-color: #ffffff;
+    border-radius: 3;
   }
 
   .table .add-measurement {
