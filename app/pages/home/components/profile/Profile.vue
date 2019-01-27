@@ -23,31 +23,12 @@
 
         <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
           <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
-          <TextField
-              row="0"
-              col="1"
-              class="profile-field"
-              hint="Voornaam"
-              returnKeyType="next"
-              @blur="saveName"
-              @returnPress="focusLastName()"
-              v-model="userWrapper.user.firstname"
-              autocorrect="false"></TextField>
+          <Label row="0" col="1" :text="userWrapper.user.firstname || 'Achternaam'" class="profile-field" v-bind:class="userWrapper.user.firstname ? '' : 'not-filled'" verticalAlignment="center" @tap="enterFirstname"></Label>
 
-          <TextField
-              ref="lastname"
-              row="1"
-              col="1"
-              class="profile-field"
-              hint="Achternaam"
-              returnKeyType="done"
-              @blur="saveName"
-              @returnPress="saveName"
-              v-model="userWrapper.user.lastname"
-              autocorrect="false"></TextField>
+          <Label row="1" col="1" :text="userWrapper.user.lastname || 'Achternaam'" class="profile-field" v-bind:class="userWrapper.user.lastname ? '' : 'not-filled'" verticalAlignment="center" @tap="enterLastname"></Label>
 
-          <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center" v-if="!editingBirthDate"></Label>
-          <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition" v-if="!editingBirthDate">
+          <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
+          <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition">
             <Label :text="playerPosition" verticalAlignment="center"></Label>
             <Label :text="iconDropDown" class="icon"></Label>
           </StackLayout>
@@ -99,7 +80,7 @@
         if (this.userWrapper.user.position) {
           return getPlayerPositionValueForKey(this.userWrapper.user.position);
         } else {
-          return 'Op welke positie speel je?';
+          return "Op welke positie speel je?";
         }
       },
       birthDateFormatted: function () {
@@ -124,7 +105,6 @@
         iconExit: String.fromCharCode(0xe879),
         iconDropDown: String.fromCharCode(0xe5c5),
         savingPicture: false,
-        editingBirthDate: false,
         userWrapper: editingUserService.userWrapper,
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isRegistering: false,
@@ -132,10 +112,6 @@
     },
 
     methods: {
-      focusLastName() {
-        this.$refs.lastname.nativeView.focus();
-      },
-
       onTapLogout() {
         authService.logout().then(() => {
           editingUserService.clearListener();
@@ -184,22 +160,6 @@
       generatePassword() {
         // TODO
         return "fpr123"; // + (Math.random() * 10000);
-      },
-
-      saveName() {
-        if (this.userWrapper.user.firstname === "text" || this.userWrapper.user.lastname === "text") {
-          // prolly caused by folks using the project from GitHub (or automated UI tests).. perhaps change access rules
-          console.log(">> WTF, not saving first/last: " + JSON.stringify(this.userWrapper.user));
-          return;
-        }
-
-        editingUserService.updateUserDataInFirebase({
-          firstname: this.userWrapper.user.firstname || "",
-          lastname: this.userWrapper.user.lastname || "",
-        }).then(() => {
-          EventBus.$emit("player-selected", {player: this.userWrapper.user});
-          EventBus.$emit("update-players");
-        });
       },
 
       selectImage() {
@@ -253,7 +213,7 @@
                 showInfo("Bedankt voor het invullen", "Je kunt nu onderin een andere pagina kiezen. Veel plezier met de app!", "profile");
                 this.$authService.userWrapper.user.birthdate = birthdate;
                 // "reload" home, so we can show the other tabs (which were hidden because of the missing birthdate)
-                this.$navigateTo(routes.home, {clearHistory: true, animated: false, props: { loadProfileTab: true}});
+                this.$navigateTo(routes.home, {clearHistory: true, animated: false, props: {loadProfileTab: true}});
               }
             });
           }
@@ -277,6 +237,42 @@
             this.$editingUserService.updateUserDataInFirebase({
               position: picked
             }).then(() => console.log("Updated!"));
+          }
+        });
+      },
+
+      enterFirstname() {
+        prompt({
+          message: "Wat is de voornaam van deze speler?",
+          defaultText: this.userWrapper.user.firstname,
+          okButtonText: "Opslaan",
+          cancelButtonText: "Annuleren"
+        }).then(data => {
+          if (data.result) {
+            editingUserService.updateUserDataInFirebase({
+              firstname: data.text || ""
+            }).then(() => {
+              EventBus.$emit("player-selected", {player: this.userWrapper.user});
+              EventBus.$emit("update-players");
+            });
+          }
+        });
+      },
+
+      enterLastname() {
+        prompt({
+          message: "Wat is de achternaam van deze speler?",
+          defaultText: this.userWrapper.user.lastname,
+          okButtonText: "Opslaan",
+          cancelButtonText: "Annuleren"
+        }).then(data => {
+          if (data.result) {
+            editingUserService.updateUserDataInFirebase({
+              lastname: data.text || ""
+            }).then(() => {
+              EventBus.$emit("player-selected", {player: this.userWrapper.user});
+              EventBus.$emit("update-players");
+            });
           }
         });
       }
@@ -332,5 +328,9 @@
     margin-top: 10;
     font-size: 13;
     opacity: 0.8;
+  }
+
+  Label.not-filled {
+    color: #9598a9;
   }
 </style>

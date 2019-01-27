@@ -23,7 +23,10 @@ export default class AuthService extends BackendService {
     await firebase.firestore.set("users", createdUser.uid, <User>{
       admin: false,
       email,
-      playsin
+      playsin,
+      // fill these so the orderBy filter of the player dropdown works (it doesn't like undefined values)
+      firstname: "",
+      lastname: ""
     });
 
     if (returnCreatedUser) {
