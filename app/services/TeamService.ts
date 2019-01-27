@@ -4,6 +4,9 @@ import Team from "~/models/team";
 import User from "~/models/user";
 
 export async function getTeam(teamRef: firestore.DocumentReference): Promise<Team> {
+  if (!teamRef || !teamRef.get) {
+    return null;
+  }
   const teamDoc = await teamRef.get();
   const team = <Team>teamDoc.data();
   team.id = teamDoc.id;

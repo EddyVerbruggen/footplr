@@ -84,8 +84,6 @@
       },
 
       async selectPlayer() {
-        console.log("selectPlayer tapped, this.teams: " + this.teams);
-
         // just to be on the safe side
         if (!this.teams || !this.players) {
           await this.fillPlayersAndTeams();

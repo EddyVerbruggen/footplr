@@ -194,8 +194,8 @@
         }
 
         editingUserService.updateUserDataInFirebase({
-          firstname: this.userWrapper.user.firstname,
-          lastname: this.userWrapper.user.lastname,
+          firstname: this.userWrapper.user.firstname || "",
+          lastname: this.userWrapper.user.lastname || "",
         }).then(() => {
           EventBus.$emit("player-selected", {player: this.userWrapper.user});
           EventBus.$emit("update-players");
