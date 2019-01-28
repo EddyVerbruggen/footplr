@@ -2,11 +2,12 @@ import * as functions from "firebase-functions";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import { removeBackgroundFromImageUrl } from "remove.bg";
+import { removeBackgroundFromImageFile } from "remove.bg";
+import { apiKey } from "./remove-bg-apikey.json";
 
-const gcs = require('@google-cloud/storage')();
+const gcs = require('@google-cloud/storage');
 
-exports.removeBg = functions.storage.object().onFinalize(async (object) => {
+export const removeBg = functions.storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket;
   console.log({fileBucket});
 
@@ -16,21 +17,23 @@ exports.removeBg = functions.storage.object().onFinalize(async (object) => {
   const fileName = path.basename(filePath);
   console.log({fileName});
 
-  const apiKeyFile = require("./remove-bg-apikey.json");
-  if (!apiKeyFile || !apiKeyFile.apiKey) {
-    console.log("No apikey found");
-    return;
-  }
+  console.log({apiKey});
+
+  const bucket = gcs().bucket(fileBucket);
 
   const outputFile = path.join(os.tmpdir(), fileName);
-  await removeBackgroundFromImageUrl({
-    url: filePath,
+
+  await bucket.file(filePath).download({
+    destination: outputFile
+  });
+
+  await removeBackgroundFromImageFile({
+    path: outputFile,
     size: "regular",
-    apiKey: apiKeyFile.apiKey,
+    apiKey,
     outputFile
   });
 
-  const bucket = gcs.bucket(fileBucket);
   await bucket.upload(outputFile, {
     destination: filePath
   });
