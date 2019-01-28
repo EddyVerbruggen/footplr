@@ -116,7 +116,8 @@ function calc(measurements: LatestMeasurements): Scores {
           calculateScore(measurements.PASSING_MOVEMENTS, Excercises.PASSING_MOVEMENTS) +
           calculateScore(measurements.AIM, Excercises.AIM) +
           calculateScore(measurements.CONTROL_LOW_BALL, Excercises.CONTROL_LOW_BALL) +
-          calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL)) / 5);
+          calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL) +
+          calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE)) / 6);
 
   const DRI = Math.round(
       calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
