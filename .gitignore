@@ -17,6 +17,7 @@ app/**/*.js
 firebase/functions/lib
 firebase/functions/src/shared
 firebase/functions/src/**/*.js
+firebase/functions/src/remove-bg-apikey.json
 
 # Android app signing keystore
 keystore-footplr.jks
@@ -24,3 +25,4 @@ keystore-footplr.jks
 # Firebase config files (download 'em from console.firebase.com)
 app/App_Resources/Android/google-services.json
 app/App_Resources/iOS/GoogleService-Info.plist
+

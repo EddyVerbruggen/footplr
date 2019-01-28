@@ -18,7 +18,7 @@ export default interface User extends SharedUser {
   height?: number;
   weight?: number;
   position?: PlayerPosition;
-  picture?: string; // URL to Firebase Storage @ 'clublogos'
+  picture?: string; // URL to Firebase Storage @ 'profilepics'
 
   // these are fetched in the app, not stored (TODO could extend this class and move this property to it, and use that to make it more clear..)
   playsinTeam?: Team;
