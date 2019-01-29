@@ -8,9 +8,16 @@ import { removeBackgroundFromImageFile } from "remove.bg";
 import { apiKey } from "./remove-bg-apikey.json";
 import { SharedUser } from "./shared/shared-user";
 
+/** Respond to the successful creation of an object in Storage. */
 export const removeBg = functions.storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket;
   const filePath = object.name;
+
+  // this only concerns profile pictures
+  if (!filePath.startsWith("/profilepics")) {
+    return;
+  }
+
   const fileName = path.basename(filePath);
 
   // the app saves the file as '<user.id>.jpg', and this script saves it as '<user.id>.png', so if it's a png: skip!
@@ -20,7 +27,6 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
   }
 
   const userId = fileName.substring(0, indexOfJpgExt);
-  console.log({userId});
 
   const bucket = new Storage({
     projectId: "foorball-player-ratings"
@@ -60,8 +66,12 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
         lastupdate: firebase.firestore.FieldValue.serverTimestamp() // this makes sure the player is updated, so listeners (in the app) get updated
       });
 
+      // delete the old file from storage
+      const file = bucket.file(filePath);
+      await file.delete();
+
     } catch (e) {
-      console.log(e);
+      console.log("Error caught: " + e);
       return null;
     }
   }
