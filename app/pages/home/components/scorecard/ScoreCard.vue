@@ -133,10 +133,8 @@
   }
 
   .card-photo {
-    width: 110;
-    height: 110;
-    border-radius: 55;
-    background-color: rgba(255, 255, 255, 0.3);
+    width: 120;
+    height: 120;
   }
 
   .card-name {

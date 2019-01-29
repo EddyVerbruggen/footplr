@@ -313,7 +313,8 @@
   }
 
   .card-photo-wrapper {
-    background-color: #9093a6;
+    border-color: #67d4a5;
+    border-width: 2;
     margin-top: 40;
     width: 110;
     height: 110;
