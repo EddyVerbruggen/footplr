@@ -6,7 +6,6 @@ import * as os from "os";
 import * as path from "path";
 import { removeBackgroundFromImageFile } from "remove.bg";
 import { apiKey } from "./remove-bg-apikey.json";
-import { SharedUser } from "./shared/shared-user";
 
 /** Respond to the successful creation of an object in Storage. */
 export const removeBg = functions.storage.object().onFinalize(async (object) => {
@@ -14,7 +13,7 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
   const filePath = object.name;
 
   // this only concerns profile pictures
-  if (!filePath.startsWith("/profilepics")) {
+  if (!filePath.startsWith("profilepics/")) {
     return;
   }
 
@@ -38,42 +37,40 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
     destination: outputFile
   });
 
-  // we're currently out of credits, so let's wait a little
-  const removeBgEnabled = false;
+  try {
+    await removeBackgroundFromImageFile({
+      path: outputFile,
+      size: "regular",
+      apiKey,
+      outputFile
+    });
 
-  if (removeBgEnabled) {
-    try {
-      await removeBackgroundFromImageFile({
-        path: outputFile,
-        size: "regular",
-        apiKey,
-        outputFile
-      });
+    // removing the background worked, and it's now a .png file
+    const newFile = filePath.replace(".jpg", ".png");
+    await bucket.upload(outputFile, {
+      destination: newFile,
+      contentType: "image/png",
+      predefinedAcl: "publicRead"
+    });
 
-      // removing the background worked, and it's now a .png file
-      await bucket.upload(outputFile, {
-        destination: outputFile.replace(".jpg", ".png"),
-        contentType: "image/png"
-      });
+    // now that we've updated the image (and its name), update the related user as well
+    firebase.initializeApp();
+    firebase.firestore().settings({ timestampsInSnapshots: true });
+    const userRef = await firebase.firestore().doc(`users/${userId}`);
 
-      // now that we've updated the image (and its name), update the related user as well
-      firebase.initializeApp();
-      const userRef = await firebase.firestore().doc(`users/${userId}`);
-      const user = <SharedUser>(await userRef.get()).data();
+    const bucketName = "foorball-player-ratings.appspot.com";
+    await userRef.update({
+      picture: `https://storage.googleapis.com/${bucketName}/${newFile}?updateTs=${new Date().getTime()}`,
+      lastupdate: firebase.firestore.FieldValue.serverTimestamp() // this makes sure the player is updated, so listeners (in the app) get updated
+    });
 
-      await userRef.update({
-        picture: user.picture.replace(".jpg", ".png"),
-        lastupdate: firebase.firestore.FieldValue.serverTimestamp() // this makes sure the player is updated, so listeners (in the app) get updated
-      });
+    // delete the old file from storage
+    const file = bucket.file(filePath);
+    await file.delete();
 
-      // delete the old file from storage
-      const file = bucket.file(filePath);
-      await file.delete();
-
-    } catch (e) {
-      console.log("Error caught: " + e);
-      return null;
-    }
+  } catch (e) {
+    console.log("Error caught: " + e);
+    return null;
   }
 
   fs.unlinkSync(outputFile);
