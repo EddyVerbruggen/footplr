@@ -17,6 +17,7 @@ export interface ScoresWrapper {
 
 export interface SharedUser {
   id: string;
+  picture?: string; // URL to Firebase Storage @ 'profilepics'
   scores?: ScoresWrapper;
   latestmeasurements?: LatestMeasurementsWrapper;
 }
