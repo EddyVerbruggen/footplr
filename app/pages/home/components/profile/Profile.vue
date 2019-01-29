@@ -168,7 +168,7 @@
 
           const storeImage = imageSource => {
             let path = fs.path.join(fs.knownFolders.documents().path, "ProfilePicToUpload.jpeg");
-            if (imageSource.saveToFile(path, "jpeg", 75)) {
+            if (imageSource.saveToFile(path, "jpeg", 80)) {
 
               const childRef = firebaseWebApi.storage().ref().child(`profilepics/${editingUserService.userWrapper.user.id}.jpg`);
 
