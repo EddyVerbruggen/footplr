@@ -7,6 +7,8 @@ import * as path from "path";
 import { removeBackgroundFromImageFile } from "remove.bg";
 import { apiKey } from "./remove-bg-apikey.json";
 
+let _initDone = false;
+
 /** Respond to the successful creation of an object in Storage. */
 export const removeBg = functions.storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket;
@@ -53,8 +55,12 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
       predefinedAcl: "publicRead"
     });
 
+    if (!_initDone) {
+      firebase.initializeApp();
+      _initDone = true;
+    }
+
     // now that we've updated the image (and its name), update the related user as well
-    firebase.initializeApp();
     firebase.firestore().settings({ timestampsInSnapshots: true });
     const userRef = await firebase.firestore().doc(`users/${userId}`);
 
