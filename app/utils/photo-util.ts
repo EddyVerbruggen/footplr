@@ -7,6 +7,12 @@ import { create as createImagePicker, ImagePickerMediaType } from "nativescript-
 
 export function takeOrPickPhoto(): Promise<ImageAsset | ImageSource> {
   return new Promise<ImageAsset | ImageSource>((resolve, reject) => {
+
+    if (!isIOS) {
+      // async on Android, so do it here
+      camera.requestPermissions();
+    }
+
     let currentOptions: Array<string> = [
         "Camera album",
         "Camera"
