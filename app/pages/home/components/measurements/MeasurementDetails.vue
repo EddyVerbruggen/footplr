@@ -10,7 +10,7 @@
 
       <!--<StackLayout row="2" class="c-bg-white"></StackLayout>-->
 
-      <GridLayout row="2" colSpan="2" columns="50, 80, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
+      <GridLayout row="2" colSpan="2" columns="50, 76, *, 100" class="table xm-t-20" style="background-color: #011627; color: #fff">
         <Label col="0" text="Score" class="m-l-10 p-y-10 bold" horizontalAlignment="center"></Label>
         <Label col="1" text="Meting" class="p-y-10 p-x-10 bold" horizontalAlignment="right"></Label>
         <Label col="2" text="Datum" class="p-y-10 p-x-5 bold"></Label>
@@ -18,7 +18,7 @@
 
       <ListView row="3" colSpan="2" for="(item, index) in measurements" @itemTap="onItemTap" separatorColor="transparent" class="table c-bg-white">
         <v-template>
-          <GridLayout columns="50, 80, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
+          <GridLayout columns="50, 76, *, 100" class="row" v-bind:class="index % 2 === 0 ? 'row-odd' : 'row-even'">
             <Label col="0" :text="item.score" :class="'background-color-score-' + item.scoreClass" class="m-l-10 m-y-4 p-y-5 p-x-5 score bold" horizontalAlignment="center"></Label>
             <Label col="1" color="#011627" :text="item.measurement" class="p-y-10 p-x-10" horizontalAlignment="right"></Label>
             <Label col="2" color="#011627" :text="item.date" class="p-y-10 p-x-5"></Label>
@@ -150,7 +150,7 @@
 
   .table .score {
     color: #fff;
-    width: 26;
+    width: 30;
     text-align: center;
     border-radius: 3;
   }

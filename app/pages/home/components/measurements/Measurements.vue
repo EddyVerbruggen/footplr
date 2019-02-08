@@ -13,7 +13,7 @@
               @itemLoading="onListViewLoading">
       <v-template>
         <GridLayout rows="auto, auto">
-          <GridLayout rows="2*, *" columns="54, 44, *, 54, 54" class="row" height="60"
+          <GridLayout rows="2*, *" columns="54, 40, *, 48, 48" class="row" height="68"
                       v-bind:class="'background-color-score-' + item.scoreClass">
             <Label rowSpan="2" col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass"
                    class="score icon-round bold"
