@@ -37,6 +37,7 @@ export default class EditingUserService {
   private syncUserData(doc: firestore.DocumentSnapshot): void {
     const userData = <User>doc.data();
     userData.id = doc.id;
+    userData.ref = doc.ref;
 
     // remember the team (no need to re-fetch)
     const team = this.userWrapper.user.playsinTeam;
