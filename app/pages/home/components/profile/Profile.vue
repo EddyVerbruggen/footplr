@@ -5,37 +5,52 @@
         <PlayerSelection v-if="isTrainer"></PlayerSelection>
         <Label text="Jouw spelersprofiel" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
         <Label row="1" :text="teamName" class="team-name" horizontalAlignment="center" v-if="!isTrainer"></Label>
-        <Label row="1" :text="userWrapper.user.email" class="team-name" horizontalAlignment="center" v-if="isTrainer && !userWrapper.team"></Label>
+        <Label row="1" :text="userWrapper.user.email" class="team-name" horizontalAlignment="center"
+               v-if="isTrainer && !userWrapper.team"></Label>
         <Button @tap="onTapLogout" :text="iconExit" class="icon icon-green logout" horizontalAlignment="right"></Button>
       </GridLayout>
 
-      <Label text="Kies hierboven een speler, of.." horizontalAlignment="center" class="m-x-30 m-t-30" v-if="userWrapper.team"></Label>
-      <Button @tap="onTapAddPlayer" text="VOEG EEN SPELER TOE" class="btn btn-secondary" width="160" v-if="userWrapper.team"></Button>
+      <Label text="Kies hierboven een speler, of.." horizontalAlignment="center" class="m-x-30 m-t-30"
+             v-if="userWrapper.team"></Label>
+      <Button @tap="onTapAddPlayer" text="VOEG EEN SPELER TOE" class="btn btn-secondary" width="160"
+              v-if="userWrapper.team"></Button>
 
-      <ActivityIndicator :busy="isRegistering" rowSpan="2" width="30" height="30" class="m-t-30" v-if="userWrapper.team"></ActivityIndicator>
+      <ActivityIndicator :busy="isRegistering" rowSpan="2" width="30" height="30" class="m-t-30"
+                         v-if="userWrapper.team"></ActivityIndicator>
 
       <StackLayout v-if="!userWrapper.team">
         <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
-          <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center" class="icon" v-if="!userWrapper.user.picture"></Label>
-          <Img :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill" v-if="!savingPicture && userWrapper.user.picture"></Img>
+          <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center"
+                 class="icon" v-if="!userWrapper.user.picture"></Label>
+          <Img :src="userWrapper.user.picture" class="card-photo" stretch="aspectFill"
+               v-if="!savingPicture && userWrapper.user.picture"></Img>
           <ActivityIndicator busy="true" style="margin-top: 45" v-if="savingPicture"></ActivityIndicator>
         </StackLayout>
 
         <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
-          <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center" horizontalAlignment="center"></Label>
-          <Label row="0" col="1" :text="userWrapper.user.firstname || 'Achternaam'" class="profile-field" v-bind:class="userWrapper.user.firstname ? '' : 'not-filled'" verticalAlignment="center" @tap="enterFirstname"></Label>
+          <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center"
+                 horizontalAlignment="center"></Label>
+          <Label row="0" col="1" :text="userWrapper.user.firstname || 'Achternaam'" class="profile-field"
+                 v-bind:class="userWrapper.user.firstname ? '' : 'not-filled'" verticalAlignment="center"
+                 @tap="enterFirstname"></Label>
 
-          <Label row="1" col="1" :text="userWrapper.user.lastname || 'Achternaam'" class="profile-field" v-bind:class="userWrapper.user.lastname ? '' : 'not-filled'" verticalAlignment="center" @tap="enterLastname"></Label>
+          <Label row="1" col="1" :text="userWrapper.user.lastname || 'Achternaam'" class="profile-field"
+                 v-bind:class="userWrapper.user.lastname ? '' : 'not-filled'" verticalAlignment="center"
+                 @tap="enterLastname"></Label>
 
-          <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
-          <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center" @tap="selectPosition">
+          <Label row="2" col="0" :text="iconLocation" class="icon icon-green" horizontalAlignment="center"
+                 verticalAlignment="center"></Label>
+          <StackLayout row="2" col="1" orientation="horizontal" class="profile-field" verticalAlignment="center"
+                       @tap="selectPosition">
             <Label :text="playerPosition" verticalAlignment="center"></Label>
             <Label :text="iconDropDown" class="icon"></Label>
           </StackLayout>
 
-          <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center" verticalAlignment="center"></Label>
+          <Label row="3" col="0" :text="iconDate" class="icon icon-green" horizontalAlignment="center"
+                 verticalAlignment="center"></Label>
 
-          <StackLayout row="3" col="1" orientation="horizontal" class="profile-field profile-field-last" verticalAlignment="center" @tap="editBirthDate()">
+          <StackLayout row="3" col="1" orientation="horizontal" class="profile-field profile-field-last"
+                       verticalAlignment="center" @tap="editBirthDate()">
             <Label :text="birthDateFormatted" verticalAlignment="center"></Label>
             <Label :text="iconDropDown" class="icon"></Label>
           </StackLayout>
@@ -46,21 +61,24 @@
   </ScrollView>
 </template>
 
-<script>
-  import routes from "~/router";
-  import {authService, editingUserService} from "~/main";
-  import {takeOrPickPhoto} from "~/utils/photo-util";
-  import {showInfo, showError} from "~/utils/feedback-util";
-  import {formatDate} from "~/utils/date-util";
-  import {getAllPlayerPositionDescriptions, getPlayerPositionKeyForValue, getPlayerPositionValueForKey} from "~/shared/player-position";
-  import {ImageSource} from "tns-core-modules/image-source";
-  import {action, prompt} from "tns-core-modules/ui/dialogs";
+<script lang="ts">
+  import * as firebaseWebApi from "nativescript-plugin-firebase/app";
   import * as fs from "tns-core-modules/file-system";
+  import { ImageSource } from "tns-core-modules/image-source";
+  import { action, prompt } from "tns-core-modules/ui/dialogs";
+  import { authService, editingUserService } from "~/main";
+  import routes from "~/router";
+  import { EventBus } from "~/services/event-bus";
+  import {
+    getAllPlayerPositionDescriptions,
+    getPlayerPositionKeyForValue,
+    getPlayerPositionValueForKey
+  } from "~/shared/player-position";
+  import { formatDate } from "~/utils/date-util";
+  import { showError, showInfo } from "~/utils/feedback-util";
+  import { takeOrPickPhoto } from "~/utils/photo-util";
   import PlayerSelection from "../PlayerSelection";
   import UpdateBirthDate from "./UpdateBirthDate.vue"
-  import {EventBus} from "~/services/event-bus";
-
-  const firebaseWebApi = require("nativescript-plugin-firebase/app");
 
   export default {
     components: {
@@ -229,10 +247,8 @@
           cancelable: true,
           cancelButtonText: cancelButtonLabel
         }).then(picked => {
-          console.log("Picked option: " + picked);
           if (picked && picked !== cancelButtonLabel) {
             picked = getPlayerPositionKeyForValue(picked); //  picked.substring(0, picked.indexOf(" ("));
-            console.log("Picked option2: " + picked);
             this.userWrapper.user.position = picked;
             this.$editingUserService.updateUserDataInFirebase({
               position: picked
@@ -243,7 +259,7 @@
 
       enterFirstname() {
         prompt({
-          message: "Wat is de voornaam van deze speler?",
+          message: "Voornaam",
           defaultText: this.userWrapper.user.firstname,
           okButtonText: "Opslaan",
           cancelButtonText: "Annuleren"
@@ -261,7 +277,7 @@
 
       enterLastname() {
         prompt({
-          message: "Wat is de achternaam van deze speler?",
+          message: "Achternaam",
           defaultText: this.userWrapper.user.lastname,
           okButtonText: "Opslaan",
           cancelButtonText: "Annuleren"

@@ -10,15 +10,17 @@
         <Label col="1" :text="exerciseTranslated" class="bold exercise" width="70%" textWrap="true"
                style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
         <Label row="1" :text="(isTeam ? 'Team gemiddelde: ' : 'Vorige meting: ') + previousMeasurement"
-               class="previous-score bold" verticalAlignment="bottom" v-show="!showExplanation && previousMeasurement"></Label>
-        <Button row="1" col="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation()"
+               class="previous-score bold" verticalAlignment="bottom"
+               v-show="!showExplanation && previousMeasurement"></Label>
+        <Button row="1" col="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140"
+                @tap="toggleShowExplanation()"
                 horizontalAlignment="right" v-show="!showExplanation"></Button>
         <Label row="1" colSpan="2" class="c-white m-30 p-t-10" textWrap="true" verticalAlignment="top"
                text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
                v-show="showExplanation"></Label>
       </GridLayout>
 
-      <Timer row="2" colSpan="2" duration="15" label="Start meting" :hint="timerHint" class="m-t-10"
+      <Timer row="2" colSpan="2" :duration="timerDuration()" label="Start meting" :hint="timerHint()" class="m-t-10"
              v-show="showTimer"></Timer>
 
       <AddMeasurementForExercise :exercise="exercise" :player="editingUser" row="3" colSpan="2" class="m-r-12"
@@ -50,14 +52,13 @@
   </Page>
 </template>
 
-<script>
-  import {authService, editingUserService} from "~/main";
-  import {formatDate} from "~/utils/date-util";
-  import {setScreenName, logEvent} from "~/utils/analytics-util";
-  import {dismissKeyboard} from "~/utils/keyboard-util";
-  import {Excercises, translateExerciseType} from "~/shared/exercises";
-  import {EventBus} from "~/services/event-bus";
-  import {getPlayersInTeam} from "~/services/TeamService"
+<script lang="ts">
+  import { authService, editingUserService } from "~/main";
+  import { EventBus } from "~/services/event-bus";
+  import { getPlayersInTeam } from "~/services/TeamService"
+  import { Excercises } from "~/shared/exercises";
+  import { logEvent, setScreenName } from "~/utils/analytics-util";
+  import { dismissKeyboard } from "~/utils/keyboard-util";
   import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
   import Timer from "./measurement-entry/Timer";
 
@@ -103,7 +104,16 @@
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: !editingUserService.userWrapper.team && editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         isTeam: !!editingUserService.userWrapper.team,
-        timerHint: this.exercise === "HEARTRATE" ? "Tel het aantal slagen.." : "",
+        timerHint: () => {
+          if (this.exercise === "HEARTRATE") return "Tel het aantal slagen..";
+          else if (this.exercise === "SPEED_OF_ACTION") return "Tel de scores op..";
+          else return "";
+        },
+        timerDuration: () => {
+          if (this.exercise === "HEARTRATE") return 15;
+          else if (this.exercise === "SPEED_OF_ACTION") return 20;
+          else return 10;
+        },
         date: new Date(),
         maxDate: new Date(),
         playerMeasurements: new Map(),
@@ -117,7 +127,7 @@
     computed: {
       showTimer: function () {
         return !this.showExplanation &&
-            this.exercise === "HEARTRATE"
+            (this.exercise === "HEARTRATE" || this.exercise === "SPEED_OF_ACTION")
       },
 
       nrOfPlayers: function () {

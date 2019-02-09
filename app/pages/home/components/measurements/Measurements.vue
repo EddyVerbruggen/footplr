@@ -42,16 +42,15 @@
   </GridLayout>
 </template>
 
-<script>
+<script lang="ts">
+  import { authService, editingUserService } from "~/main";
+  import { EventBus } from "~/services/event-bus";
+  import { getPlayersInTeam } from "~/services/TeamService"
+  import { Excercises, translateExerciseType } from "~/shared/exercises";
+  import { formatDate } from "~/utils/date-util";
+  import PlayerSelection from "../PlayerSelection";
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
-  import {getPlayersInTeam} from "~/services/TeamService"
-  import {authService, editingUserService} from "~/main";
-  import {formatDate} from "~/utils/date-util";
-  import {Excercises, Exercise, ExerciseType, translateExerciseType} from "~/shared/exercises";
-  import PlayerSelection from "../PlayerSelection";
-  import {EventBus} from "~/services/event-bus";
-  import {GlobalStore} from "~/services/global-store";
 
   export default {
     components: {
@@ -152,10 +151,11 @@
             .then(users => {
               this.players = users;
 
-              const sumMeasurements = {}; // Array<{ [t in ExerciseType]: Measurement }>
               const meas = {};
               // (un)official doesn't matter as this gets combined anyway
-              sumMeasurements.unofficial = meas;
+              const sumMeasurements = {
+                unofficial: meas
+              };
 
               for (let excercisesKey in Excercises) {
                 let totalScore = 0;
@@ -194,7 +194,7 @@
                 editingUserService.userWrapper.user.playsinTeam.agegroup :
                 undefined;
 
-        for (let excercisesKey in Excercises) {
+        for (const excercisesKey in Excercises) {
           const exercise = Excercises[excercisesKey];
           if (!exercise.isAvailableForAgeGroup(ageGroup)) {
             continue;

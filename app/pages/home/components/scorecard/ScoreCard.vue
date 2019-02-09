@@ -11,7 +11,8 @@
       </GridLayout>
     </StackLayout>
 
-    <Image row="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="90%" horizontalAlignment="center" verticalAlignment="center"></Image>
+    <Image row="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="90%"
+           horizontalAlignment="center" verticalAlignment="center"></Image>
     <!-- club logo (for participating clubs), or our logo (for non-participating clubs) -->
     <!--<Image src="~/assets/images/botafogo.png" height="10%" style="margin-bottom: 15.5%; opacity: 0.2" verticalAlignment="bottom"/>-->
 
@@ -19,16 +20,20 @@
                 horizontalAlignment="center" verticalAlignment="center">
 
       <StackLayout row="1" colSpan="2" verticalAlignment="center">
-        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
+        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center"
+               verticalAlignment="center"></Label>
         <Label :text="userWrapper.user.position || 'positie?'" class="card-role" horizontalAlignment="center"></Label>
       </StackLayout>
 
       <!--<WebImage row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></WebImage>-->
-      <Img row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></Img>
+      <Img row="1" col="2" colSpan="2" :src="userWrapper.user.picture" stretch="aspectFill" horizontalAlignment="left"
+           verticalAlignment="top" class="card-photo"></Img>
 
-      <Label :text="playerName" class="card-name bold" row="2" colSpan="4" horizontalAlignment="center" verticalAlignment="center"></Label>
+      <Label :text="playerName" class="card-name bold" row="2" colSpan="4" horizontalAlignment="center"
+             verticalAlignment="center"></Label>
 
-      <Label :text="playerAge" class="card-age bold" row="3" colSpan="4" horizontalAlignment="center" verticalAlignment="top"></Label>
+      <Label :text="playerAge" class="card-age bold" row="3" colSpan="4" horizontalAlignment="center"
+             verticalAlignment="top"></Label>
 
       <GridLayout row="4" colSpan="4" rows="*, *, *" columns="2*, 2*, *, 2*" width="100%" horizontalAlignment="center">
         <Label row="0" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
@@ -50,12 +55,11 @@
   </GridLayout>
 </template>
 
-<script>
-  import {authService, editingUserService, applicationSettingsService} from "~/main";
-  import {getAgeYears, getAgeMonths} from "~/utils/date-util";
+<script lang="ts">
+  import { applicationSettingsService, authService, editingUserService } from "~/main";
+  import { EventBus } from "~/services/event-bus";
+  import { getAgeMonths, getAgeYears } from "~/utils/date-util";
   import PlayerSelection from "../PlayerSelection";
-  import {EventBus} from "~/services/event-bus";
-  import {GlobalStore} from "~/services/global-store";
 
   export default {
     components: {

@@ -21,7 +21,7 @@ export enum ExerciseType {
 }
 
 // we don't require proper i18n for the time being, so doing this the poor mans way for now
-export function translateExerciseType(input: ExerciseType): string {
+export function translateExerciseType(input: any): string {
   if (input === ExerciseType.CONTROL_HIGH_BALL) return "Balcontrole: Hooghouden";
   else if (input === ExerciseType.CONTROL_LOW_BALL) return "Balcontrole: Aanname";
   else if (input === ExerciseType.AGILITY) return "Wendbaarheid";
