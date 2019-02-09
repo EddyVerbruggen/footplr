@@ -64,7 +64,6 @@
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
       editingUserService.anyPageCallback = () => {
-        console.log(">> measurements, anyPageCallback");
         this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
       };
 

@@ -12,6 +12,8 @@
     <Stamina :player="player" v-if="exercise === 'STAMINA'"></Stamina>
     <SpeedOfAction :player="player" v-if="exercise === 'SPEED_OF_ACTION'"></SpeedOfAction>
     <PassingMovements :player="player" v-if="exercise === 'PASSING_MOVEMENTS'"></PassingMovements>
+    <ControlLowBall :player="player" v-if="exercise === 'CONTROL_LOW_BALL'"></ControlLowBall>
+    <ControlHighBall :player="player" v-if="exercise === 'CONTROL_HIGH_BALL'"></ControlHighBall>
   </StackLayout>
 </template>
 
@@ -28,6 +30,8 @@
   import Stamina from "./exercise/Stamina";
   import SpeedOfAction from "./exercise/SpeedOfAction";
   import PassingMovements from "./exercise/PassingMovements";
+  import ControlLowBall from "./exercise/ControlLowBall";
+  import ControlHighBall from "./exercise/ControlHighBall";
 
   export default {
     components: {
@@ -42,7 +46,9 @@
       ShotStrength,
       Sprint,
       Explosiveness,
-      Aim
+      Aim,
+      ControlLowBall,
+      ControlHighBall
     },
 
     props: ['exercise', 'player'],

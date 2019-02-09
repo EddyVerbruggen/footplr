@@ -104,5 +104,5 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH",0,100),
   SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS","LOW_HIGH",0,  100, 12),
   HEADER_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT", "LOW_HIGH", 0,300),
-  CONTROL_LOW_BALL: new Exercise("AALO", ["TEC"], "DISTANCE", "HIGH_LOW", 0 ,1200, 12),
+  CONTROL_LOW_BALL: new Exercise("AALA", ["TEC"], "DISTANCE", "HIGH_LOW", 0 ,1200, 12),
 };

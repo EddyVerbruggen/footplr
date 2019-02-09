@@ -107,12 +107,14 @@
         timerHint: () => {
           if (this.exercise === "HEARTRATE") return "Tel het aantal slagen..";
           else if (this.exercise === "SPEED_OF_ACTION") return "Tel de scores op..";
+          else if (this.exercise === "CONTROL_HIGH_BALL") return "Tel de scores op..";
           else return "";
         },
         timerDuration: () => {
           if (this.exercise === "HEARTRATE") return 15;
           else if (this.exercise === "SPEED_OF_ACTION") return 20;
-          else return 10;
+          else if (this.exercise === "CONTROL_HIGH_BALL") return 30;
+          else return 0;
         },
         date: new Date(),
         maxDate: new Date(),
@@ -127,7 +129,7 @@
     computed: {
       showTimer: function () {
         return !this.showExplanation &&
-            (this.exercise === "HEARTRATE" || this.exercise === "SPEED_OF_ACTION")
+            (this.exercise === "HEARTRATE" || this.exercise === "SPEED_OF_ACTION" || this.exercise === "CONTROL_HIGH_BALL")
       },
 
       nrOfPlayers: function () {
