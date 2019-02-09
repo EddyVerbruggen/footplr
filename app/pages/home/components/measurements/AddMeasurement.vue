@@ -111,7 +111,7 @@
           else return "";
         },
         timerDuration: () => {
-          if (this.exercise === "HEARTRATE") return 15;
+          if (this.exercise === "HEARTRATE") return 60;
           else if (this.exercise === "SPEED_OF_ACTION") return 20;
           else if (this.exercise === "CONTROL_HIGH_BALL") return 30;
           else return 0;
