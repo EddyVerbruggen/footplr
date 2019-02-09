@@ -14,6 +14,9 @@
     <PassingMovements :player="player" v-if="exercise === 'PASSING_MOVEMENTS'"></PassingMovements>
     <ControlLowBall :player="player" v-if="exercise === 'CONTROL_LOW_BALL'"></ControlLowBall>
     <ControlHighBall :player="player" v-if="exercise === 'CONTROL_HIGH_BALL'"></ControlHighBall>
+    <Crosspass :player="player" v-if="exercise === 'CROSSPASS'"></Crosspass>
+    <JumpHeight :player="player" v-if="exercise === 'JUMP_HEIGHT'"></JumpHeight>
+    <Agility :player="player" v-if="exercise === 'AGILITY'"></Agility>
   </StackLayout>
 </template>
 
@@ -32,6 +35,9 @@
   import PassingMovements from "./exercise/PassingMovements";
   import ControlLowBall from "./exercise/ControlLowBall";
   import ControlHighBall from "./exercise/ControlHighBall";
+  import Crosspass from "./exercise/Crosspass";
+  import JumpHeight from "./exercise/JumpHeight";
+  import Agility from "./exercise/Agility";
 
   export default {
     components: {
@@ -48,7 +54,10 @@
       Explosiveness,
       Aim,
       ControlLowBall,
-      ControlHighBall
+      ControlHighBall,
+      Crosspass,
+      JumpHeight,
+      Agility
     },
 
     props: ['exercise', 'player'],

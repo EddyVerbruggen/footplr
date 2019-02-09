@@ -72,7 +72,6 @@
         // TODO better to do this somewhere globally and grab that, because we have 3 instances of this component
         this.players = [];
         this.teams = [];
-        console.log("authService.userWrapper.user.trains: " + authService.userWrapper.user.trains.length);
         for (let i = 0; i < authService.userWrapper.user.trains.length; i++) {
           this.players = this.players.concat(await getPlayersInTeam(authService.userWrapper.user.trains[i]));
           this.teams = this.teams.concat(await getTeam(authService.userWrapper.user.trains[i]));
