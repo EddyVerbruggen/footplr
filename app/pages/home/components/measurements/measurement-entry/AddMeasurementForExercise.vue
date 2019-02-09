@@ -11,6 +11,7 @@
     <Aim :player="player" v-if="exercise === 'AIM'"></Aim>
     <Stamina :player="player" v-if="exercise === 'STAMINA'"></Stamina>
     <SpeedOfAction :player="player" v-if="exercise === 'SPEED_OF_ACTION'"></SpeedOfAction>
+    <PassingMovements :player="player" v-if="exercise === 'PASSING_MOVEMENTS'"></PassingMovements>
   </StackLayout>
 </template>
 
@@ -26,11 +27,13 @@
   import Aim from "./exercise/Aim";
   import Stamina from "./exercise/Stamina";
   import SpeedOfAction from "./exercise/SpeedOfAction";
+  import PassingMovements from "./exercise/PassingMovements";
 
   export default {
     components: {
       SpeedOfAction,
       Stamina,
+      PassingMovements,
       Dribble,
       Heartrate,
       PushUps,

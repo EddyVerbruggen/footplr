@@ -24,7 +24,7 @@
           console.log("Player not set - not saving!");
           return;
         }
-        EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
+        EventBus.$emit("score-entered", {measurement: event.object.text.replace(",", "."), player: this.player});
       },
 
       onFocus(event) {
