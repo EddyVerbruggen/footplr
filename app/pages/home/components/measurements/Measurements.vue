@@ -18,7 +18,8 @@
             <Label rowSpan="2" col="0" :text="item.score" v-bind:class="'color-score-' + item.scoreClass"
                    class="score icon-round bold"
                    horizontalAlignment="center" verticalAlignment="center"
-                   v-show="item.hasMeasurement"></Label>
+                   v-show="!item.saving && item.hasMeasurement"></Label>
+            <ActivityIndicator busy="true" rowSpan="2" col="0" width="24" v-show="item.saving"></ActivityIndicator>
             <Img rowSpan="2" col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label row="0" col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
                    verticalAlignment="center"></Label>
@@ -140,8 +141,12 @@
             editingUser: this.player
           }
         }).then(added => {
-          console.log(`Returned from modal, added? ${added}`);
+          console.log(`Returned from modal, added? ${added} for exercise ${item.exercise}`);
           this.isModalOpen = false;
+          if (added) {
+            item.saving = true;
+            item.hasMeasurement = false;
+          }
         });
       },
 
