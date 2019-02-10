@@ -19,7 +19,7 @@ export const calculateScores = functions.firestore.document("users/{userId}/meas
     const querySnapshot = await allMeasurementsRef.where("exercise", "==", exercise).get();
     querySnapshot.forEach(doc => {
       const olderMeasurement = <Measurement>doc.data();
-      if (!measurement || (<any>measurement.data().date).toDate().getTime() < (<any>olderMeasurement.date).toDate().getTime()) {
+      if (!measurement || measurement.data().date.getTime() < olderMeasurement.date.getTime()) {
         measurement = doc;
       }
     });
@@ -60,7 +60,7 @@ export const calculateScores = functions.firestore.document("users/{userId}/meas
   const latestMeasurements = measurementData.official ? user.latestmeasurements.official : user.latestmeasurements.unofficial;
 
   // only update if this one is newer than what we have (hardening against edits/migration)
-  if (isDeleted || !latestMeasurements[measurementData.exercise] || (<any>latestMeasurements[measurementData.exercise].date).toDate().getTime() <= (<any>measurementData.date).toDate().getTime()) {
+  if (isDeleted || !latestMeasurements[measurementData.exercise] || (<any>latestMeasurements[measurementData.exercise].date).getTime() <= (<any>measurementData.date).getTime()) {
     if (allDeleted) {
       delete latestMeasurements[measurementData.exercise];
     } else {
@@ -94,7 +94,7 @@ function getLatestMeasurementsCombined(measurements: LatestMeasurementsWrapper):
 
   for (const k in measurements.unofficial) {
     const val = measurements.unofficial[k];
-    if (!result[k] || result[k].date.toDate().getTime() < val.date.toDate().getTime()) {
+    if (!result[k] || result[k].date.getTime() < val.date.getTime()) {
       result[k] = val;
     }
   }
