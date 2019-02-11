@@ -1,6 +1,7 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>
+    <!--Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image-->
+    <Image src="~/assets/images/fpr-logo-full.png" width="200"></Image>
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
       <TextField
@@ -43,7 +44,7 @@
   </StackLayout>
 </template>
 
-<script>
+<script lang="ts">
   import {action, prompt} from "tns-core-modules/ui/dialogs"
   import { device } from "tns-core-modules/platform";
   import * as AppVersion from "nativescript-appversion";
@@ -151,7 +152,7 @@
                   appversion: this.appVersion,
                   os: device.os.toLowerCase(),
                   osversion: device.osVersion,
-                  logins: (this.$authService.userWrapper.user.appinfo.logins || 0) + 1
+                  logins: this.$authService.userWrapper.user.appinfo !== undefined && this.$authService.userWrapper.user.appinfo.logins !== undefined ? this.$authService.userWrapper.user.appinfo.logins + 1 : 0
                 }
               }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
