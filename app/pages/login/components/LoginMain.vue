@@ -152,7 +152,7 @@
                   appversion: this.appVersion,
                   os: device.os.toLowerCase(),
                   osversion: device.osVersion,
-                  logins: this.$authService.userWrapper.user.appinfo !== undefined && this.$authService.userWrapper.user.appinfo.logins !== undefined ? this.$authService.userWrapper.user.appinfo.logins + 1 : 0
+                  logins: this.$authService.userWrapper.user.appinfo !== undefined && this.$authService.userWrapper.user.appinfo.logins !== undefined ? this.$authService.userWrapper.user.appinfo.logins + 1 : 1
                 }
               }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
