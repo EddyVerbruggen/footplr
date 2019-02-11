@@ -3,10 +3,9 @@
                    returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
 </template>
 
-<script>
-  import {EventBus} from "~/services/event-bus";
-  import {isAndroid} from "tns-core-modules/platform";
-  import {setCurrentlyActiveElement} from "~/utils/keyboard-util";
+<script lang="ts">
+  import { isAndroid } from "tns-core-modules/platform";
+  import { EventBus } from "~/services/event-bus";
 
   export default {
     props: ['decimals', 'player', 'hint'],

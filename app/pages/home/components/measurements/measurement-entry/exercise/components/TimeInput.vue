@@ -7,10 +7,9 @@
   </StackLayout>
 </template>
 
-<script>
+<script lang="ts">
   import {EventBus} from "~/services/event-bus";
   import {isAndroid} from "tns-core-modules/platform";
-  import {setCurrentlyActiveElement} from "~/utils/keyboard-util";
 
   export default {
     props: ['player'],

@@ -6,10 +6,10 @@
   </Page>
 </template>
 
-<script>
+<script lang="ts">
   import * as platformModule from "tns-core-modules/platform"
+  import { setScreenName } from "~/utils/analytics-util";
   import LoginMain from "./components/LoginMain.vue"
-  import {setScreenName} from "~/utils/analytics-util";
   // import * as enums from "tns-core-modules/ui/enums";
 
   export default {

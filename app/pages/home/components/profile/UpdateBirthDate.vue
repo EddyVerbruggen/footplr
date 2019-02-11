@@ -11,10 +11,7 @@
   </Page>
 </template>
 
-<script>
-  import {authService} from "~/main";
-  import {formatDate} from "~/utils/date-util";
-  import {translateExerciseType} from "~/shared/exercises";
+<script lang="ts">
 
   export default {
     created() {
@@ -37,9 +34,3 @@
     }
   };
 </script>
-
-<style scoped>
-  Page {
-    /*margin: 30 0 0 0;*/
-  }
-</style>

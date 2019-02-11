@@ -22,11 +22,11 @@
   </Page>
 </template>
 
-<script>
-  import LoginPage from "../login/LoginPage.vue"
-  import {setScreenName} from "~/utils/analytics-util";
-  import Vue from "nativescript-vue"
+<script lang="ts">
   import Pager from "nativescript-pager/vue"
+  import Vue from "nativescript-vue"
+  import { setScreenName } from "~/utils/analytics-util";
+  import LoginPage from "../login/LoginPage.vue"
 
   Vue.use(Pager);
 

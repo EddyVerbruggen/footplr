@@ -19,7 +19,7 @@
                    class="score icon-round bold"
                    horizontalAlignment="center" verticalAlignment="center"
                    v-show="!item.saving && item.hasMeasurement"></Label>
-            <ActivityIndicator busy="true" rowSpan="2" col="0" width="24" v-show="item.saving"></ActivityIndicator>
+            <ActivityIndicator :busy="item.saving" rowSpan="2" col="0" width="24" v-show="item.saving"></ActivityIndicator>
             <Img rowSpan="2" col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label row="0" col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
                    verticalAlignment="center"></Label>

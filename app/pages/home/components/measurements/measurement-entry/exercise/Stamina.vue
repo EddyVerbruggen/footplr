@@ -2,7 +2,7 @@
   <NumberInput :player="player" hint="trappen"></NumberInput>
 </template>
 
-<script>
+<script lang="ts">
   import NumberInput from "./components/NumberInput";
 
   export default {

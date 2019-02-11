@@ -5,10 +5,10 @@
   </GridLayout>
 </template>
 
-<script>
-  import {EventBus} from "~/services/event-bus";
-  import {isAndroid, isIOS} from "tns-core-modules/platform";
-  import {setCurrentlyActiveElement} from "~/utils/keyboard-util";
+<script lang="ts">
+  import { isAndroid, isIOS } from "tns-core-modules/platform";
+  import { EventBus } from "~/services/event-bus";
+  import { setCurrentlyActiveElement } from "~/utils/keyboard-util";
 
   export default {
     props: ['player'],

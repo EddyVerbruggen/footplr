@@ -20,11 +20,11 @@
   </StackLayout>
 </template>
 
-<script>
-  import {action} from "tns-core-modules/ui/dialogs";
-  import {authService} from "~/main";
-  import {getPlayersInTeam, getTeam} from "~/services/TeamService"
-  import {EventBus} from "~/services/event-bus";
+<script lang="ts">
+  import { action } from "tns-core-modules/ui/dialogs";
+  import { authService } from "~/main";
+  import { EventBus } from "~/services/event-bus";
+  import { getPlayersInTeam, getTeam } from "~/services/TeamService"
 
   export default {
     name: "PlayerSelection",

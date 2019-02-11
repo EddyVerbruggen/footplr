@@ -20,24 +20,24 @@
   </StackLayout>
 </template>
 
-<script>
-  import Dribble from "./exercise/Dribble";
-  import Heartrate from "./exercise/Heartrate";
-  import PushUps from "./exercise/PushUps";
-  import SitUps from "./exercise/SitUps";
-  import HeaderHeight from "./exercise/HeaderHeight";
-  import ShotStrength from "./exercise/ShotStrength";
-  import Sprint from "./exercise/Sprint";
-  import Explosiveness from "./exercise/Explosiveness";
-  import Aim from "./exercise/Aim";
-  import Stamina from "./exercise/Stamina";
-  import SpeedOfAction from "./exercise/SpeedOfAction";
-  import PassingMovements from "./exercise/PassingMovements";
-  import ControlLowBall from "./exercise/ControlLowBall";
-  import ControlHighBall from "./exercise/ControlHighBall";
-  import Crosspass from "./exercise/Crosspass";
-  import JumpHeight from "./exercise/JumpHeight";
+<script lang="ts">
   import Agility from "./exercise/Agility";
+  import Aim from "./exercise/Aim";
+  import ControlHighBall from "./exercise/ControlHighBall";
+  import ControlLowBall from "./exercise/ControlLowBall";
+  import Crosspass from "./exercise/Crosspass";
+  import Dribble from "./exercise/Dribble";
+  import Explosiveness from "./exercise/Explosiveness";
+  import HeaderHeight from "./exercise/HeaderHeight";
+  import Heartrate from "./exercise/Heartrate";
+  import JumpHeight from "./exercise/JumpHeight";
+  import PassingMovements from "./exercise/PassingMovements";
+  import PushUps from "./exercise/PushUps";
+  import ShotStrength from "./exercise/ShotStrength";
+  import SitUps from "./exercise/SitUps";
+  import SpeedOfAction from "./exercise/SpeedOfAction";
+  import Sprint from "./exercise/Sprint";
+  import Stamina from "./exercise/Stamina";
 
   export default {
     components: {

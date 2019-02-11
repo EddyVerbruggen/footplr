@@ -36,11 +36,11 @@
   </Page>
 </template>
 
-<script>
-  import {authService, editingUserService} from "~/main";
-  import {setScreenName} from "~/utils/analytics-util";
-  import {formatDate} from "~/utils/date-util";
-  import {Excercises, translateExerciseType} from "~/shared/exercises";
+<script lang="ts">
+  import { authService, editingUserService } from "~/main";
+  import { Excercises } from "~/shared/exercises";
+  import { setScreenName } from "~/utils/analytics-util";
+  import { formatDate } from "~/utils/date-util";
 
   const measurements = [];
 

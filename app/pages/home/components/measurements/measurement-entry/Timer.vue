@@ -5,7 +5,7 @@
   </StackLayout>
 </template>
 
-<script>
+<script lang="ts">
   export default {
     // these have been passed to the modal and can be accessed as this.<property>
     props: ['label', 'hint', 'duration'],
