@@ -264,7 +264,7 @@
           okButtonText: "Opslaan",
           cancelButtonText: "Annuleren"
         }).then(data => {
-          if (data.result) {
+          if (data.result && data.text !== "text") {
             editingUserService.updateUserDataInFirebase({
               firstname: data.text || ""
             }).then(() => {
@@ -282,7 +282,7 @@
           okButtonText: "Opslaan",
           cancelButtonText: "Annuleren"
         }).then(data => {
-          if (data.result) {
+          if (data.result && data.text !== "text") {
             editingUserService.updateUserDataInFirebase({
               lastname: data.text || ""
             }).then(() => {
