@@ -63,14 +63,25 @@ firebase.init()
 // Prints Vue logs when --env.production is *NOT* set while building
 v.config.silent = true; // (TNS_ENV === 'production');
 
-const loggedIn = authService.isLoggedIn();
-
-if (loggedIn) {
+if (authService.isLoggedIn()) {
   authService.userWrapper.user = authService.user;
   editingUserService.userWrapper.user = authService.userWrapper.user;
-  editingUserService.watchUser();
 }
 
+application.on(application.suspendEvent, () => {
+  if (authService.isLoggedIn()) {
+    editingUserService.clearListener();
+  }
+});
+
+application.on(application.resumeEvent, () => {
+  if (authService.isLoggedIn()) {
+    authService.userWrapper.user = authService.user;
+    editingUserService.userWrapper.user = authService.userWrapper.user;
+    editingUserService.watchUser();
+  }
+});
+
 new v({
-  render: h => h("frame", [h(loggedIn ? routes.home : (applicationSettingsService.getUsername() ? routes.login : routes.onboarding))])
+  render: h => h("frame", [h(authService.isLoggedIn() ? routes.home : (applicationSettingsService.getUsername() ? routes.login : routes.onboarding))])
 }).$start();
