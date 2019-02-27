@@ -75,7 +75,7 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
     await file.delete();
 
   } catch (e) {
-    console.log("Error caught: " + e);
+    console.log("Error caught: " + JSON.stringify(e));
     return null;
   }
 
