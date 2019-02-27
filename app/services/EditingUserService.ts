@@ -11,7 +11,7 @@ export default class EditingUserService {
   // note that this has not been tested with more than one page, so an Array may be required, etc
   public anyPageCallback: Function = null;
 
-  private userRef: firestore.DocumentReference;
+  public userRef: firestore.DocumentReference;
   private userListenerUnsubscribe;
 
   watchUser(): void {

@@ -1,12 +1,12 @@
 <template>
   <Page>
-    <GridLayout rows="auto, 210, auto, 2*, *" columns="auto, *" :class="'background-color-score-' + scoreClass" verticalAlignment="top" height="100%">
+    <GridLayout rows="auto, 230, auto, 2*, *" columns="auto, *" :class="'background-color-score-' + scoreClass" verticalAlignment="top" height="100%">
       <!-- TODO add option to compare to others -->
 
       <Image row="0" col="0" class="m-l-12 m-t-4" :src="'~/assets/images/exercises/' + exercise + '.png'" height="30" horizontalAlignment="left" verticalAlignment="top"></Image>
       <Label row="0" col="1" class="bold p-12 c-white" horizontalAlignment="right" :text="exerciseTranslated"></Label>
 
-      <WebView row="1" colSpan="2" height="100%" :src="webViewSRC"></WebView>
+      <WebView row="1" colSpan="2" height="100%" :src="webViewSRC" @loaded="webViewLoaded"></WebView>
 
       <!--<StackLayout row="2" class="c-bg-white"></StackLayout>-->
 
@@ -101,7 +101,7 @@
           q = q.where("official", "==", true);
         }
 
-        q = q.orderBy("date", "desc")
+        q.orderBy("date", "desc")
             .limit(200) // we need to limit it somewhere, right?
             .get()
             .then(m => {
@@ -122,25 +122,40 @@
 
               // now render the graph, see http://www.chartjs.org/docs/latest/charts/line.html
               const datasets = [{
-                  label: editingUserService.userWrapper.user.firstname,
-                  data: data,
-                  fill: true,
-                  backgroundColor: [
-                    'rgba(32, 40, 77, .1)'
-                  ],
-                  borderColor: [
-                    'rgba(32, 40, 77, 1)'
-                  ],
-                  borderWidth: 2
-                }];
+                label: editingUserService.userWrapper.user.firstname,
+                data: data,
+                fill: true,
+                backgroundColor: [
+                  'rgba(32, 40, 77, .1)'
+                ],
+                borderColor: [
+                  'rgba(32, 40, 77, 1)'
+                ],
+                borderWidth: 2
+              }];
 
               const exercise = Excercises[this.exercise];
-              this.webViewSRC = `~/assets/graph-chartjs.html?${JSON.stringify({datasets, labels, bounds: { min: exercise.lowbound, max: exercise.highbound }})}`;
+              this.webViewSRC = `~/assets/graph-chartjs.html?${JSON.stringify({
+                datasets,
+                labels,
+                bounds: {min: exercise.lowbound, max: exercise.highbound}
+              })}`;
             })
             .catch(err => console.log(err));
+      },
+
+      webViewLoaded(args) {
+        const webView = args.object;
+        if (webView.android) {
+          webView.android.getSettings().setDisplayZoomControls(false);
+          webView.android.getSettings().setBuiltInZoomControls(false);
+        } else {
+          webView.ios.scrollView.scrollEnabled = false;
+          webView.ios.scrollView.bounces = false;
+        }
       }
     }
-  };
+  }
 </script>
 
 <style scoped>
