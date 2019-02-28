@@ -11,7 +11,7 @@
       </GridLayout>
     </StackLayout>
 
-    <GridLayout row="2" rows="35*, 7*, 4*, 16*, 16*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
+    <GridLayout row="2" rows="65*, 13*, 9*, 32*, 32*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
       <Image rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Image>
 
       <!-- uncomment these for a few "debugging lines" -->
@@ -21,13 +21,15 @@
 <!--      <StackLayout row="3" colSpan="2" backgroundColor="rgba(150, 150, 0, 0.2)"></StackLayout>-->
 <!--      <StackLayout row="4" colSpan="2" backgroundColor="rgba(50, 50, 50, 0.2)"></StackLayout>-->
 
+<!--      <Img row="0" col="1" :src="player.picture" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-if="player.picture"></Img>-->
+      <Img row="0" col="1" src="~/assets/images/placeholder_player.png" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" opacity="0.7"></Img>
+
+      <Image rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official_overlay.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Image>
+
       <StackLayout row="0" col="0" verticalAlignment="bottom">
         <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
         <Label :text="player.position || 'positie?'" class="card-role" horizontalAlignment="center"></Label>
       </StackLayout>
-
-      <!--<WebImage row="1" col="2" colSpan="2" :src="player.picture" stretch="aspectFill" horizontalAlignment="left" verticalAlignment="top" class="card-photo"></WebImage>-->
-      <Img row="0" col="1" :src="player.picture" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo"></Img>
 
       <Img row="1" rowSpan="2" col="0" :src="club.logo" verticalAlignment="center" class="m-8" v-if="club.logo"></Img>
 
@@ -52,15 +54,11 @@
         <Label row="2" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
       </GridLayout>
 
-      <!-- TODO -->
       <Label row="4" colSpan="2" :text="showOwnMeasurements ? 'practice' : 'official'" horizontalAlignment="center" verticalAlignment="center" class="m-b-30"></Label>
 
     </GridLayout>
 
-<!--    <GridLayout row="2" rows="4*, 4*, *, *, 4*, 4*" columns="2*, 2*, *, 2*" width="90%" horizontalAlignment="center" verticalAlignment="center">-->
-
-    </GridLayout>
-<!--  </GridLayout>-->
+  </GridLayout>
 </template>
 
 <script lang="ts">
@@ -154,8 +152,8 @@
   }
 
   .card-photo {
-    width: 160;
-    height: 160;
+    width: 150;
+    height: 150;
   }
 
   .card-name {
