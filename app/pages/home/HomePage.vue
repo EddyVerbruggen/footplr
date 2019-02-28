@@ -58,7 +58,9 @@
 
     data() {
       return {
-        tabIndex: this.loadProfileTab ? 2 : 1, // the initial tab
+        // TODO revert me
+        // tabIndex: this.loadProfileTab ? 2 : 1, // the initial tab
+        tabIndex: 0,
         tabView: undefined, // set below
         // logoSrc: "~/assets/images/fpr-logo-128.png",
         hasBirthDate: this.$authService.userWrapper.user.birthdate,
