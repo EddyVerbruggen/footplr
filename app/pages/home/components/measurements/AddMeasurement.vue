@@ -29,16 +29,16 @@
       <ScrollView row="3" colSpan="2" v-show="!showExplanation && isTeam">
         <GridLayout class="player-row" :rows="nrOfPlayers" columns="auto, auto, *">
           <Img backgroundColor="#e6e6e6" :row="i" col="0" :src="player.picture" stretch="aspectFill"
-               horizontalAlignment="left" class="card-photo" v-for="(player, i) in players"></Img>
+               horizontalAlignment="left" class="card-photo" v-for="(player, i) in players" :key="player.id"></Img>
 
-          <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players">
+          <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players" :key="player.id">
             <Label :text="player.firstname" class="bold firstname"></Label>
             <Label :text="player.lastname"></Label>
           </StackLayout>
 
           <AddMeasurementForExercise :exercise="exercise" :player="player" :row="i" col="2"
                                      verticalAlignment="center" horizontalAlignment="right"
-                                     v-for="(player, i) in players"></AddMeasurementForExercise>
+                                     v-for="(player, i) in players" :key="player.id"></AddMeasurementForExercise>
         </GridLayout>
       </ScrollView>
 

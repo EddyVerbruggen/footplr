@@ -4,15 +4,15 @@
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
     <StackLayout row="1" verticalAlignment="top" v-if="isSelf">
-      <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer"></Label>
-      <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center">
+      <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer || players.length"></Label>
+      <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center" v-if="!players.length">
         <Switch v-model="showOwnMeasurements"></Switch>
         <Label col="1" text="toon ook eigen metingen" class="p-10" @tap="toggleShowOwnMeasurements"></Label>
       </GridLayout>
     </StackLayout>
 
     <GridLayout row="2" rows="65*, 13*, 9*, 32*, 32*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
-      <Image rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Image>
+      <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <!-- uncomment these for a few "debugging lines" -->
 <!--      <StackLayout row="0" colSpan="2" backgroundColor="rgba(0, 0, 100, 0.2)"></StackLayout>-->
@@ -21,10 +21,23 @@
 <!--      <StackLayout row="3" colSpan="2" backgroundColor="rgba(150, 150, 0, 0.2)"></StackLayout>-->
 <!--      <StackLayout row="4" colSpan="2" backgroundColor="rgba(50, 50, 50, 0.2)"></StackLayout>-->
 
-<!--      <Img row="0" col="1" :src="player.picture" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-if="player.picture"></Img>-->
-      <Img row="0" col="1" src="~/assets/images/placeholder_player.png" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" opacity="0.7"></Img>
+<!--      <WrapLayout row="0" col="1" horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-show="players.length">-->
+<!--        <Img :src="player.picture || '~/assets/images/placeholder_player.png'" verticalAlignment="bottom" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="player in players"></Img>-->
+<!--      </WrapLayout>-->
 
-      <Image rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official_overlay.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Image>
+<!--      <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()" horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-if="players.length">-->
+<!--        <Img :row="Math.floor((players.length - i - 1) / nrOfPlayerImageCols())" :col="Math.ceil((players.length - i - 1) % nrOfPlayerImageCols())" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players" :key="player.id"></Img>-->
+<!--      </GridLayout>-->
+
+      <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()" horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-if="players.length">
+<!--        <Label :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())" :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())" :text="i" class="card-photo-team" v-for="(player, i) in players" :key="player.id"></Label>-->
+        <Img :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())" :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players" :key="player.id"></Img>
+      </GridLayout>
+
+      <Img row="0" col="1" :src="player.picture" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length > 0 && player.picture"></Img>
+      <Img row="0" col="1" src="~/assets/images/placeholder_player.png" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" opacity="0.7" v-show="!players.length && !player.picture"></Img>
+
+      <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official_overlay.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <StackLayout row="0" col="0" verticalAlignment="bottom">
         <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
@@ -54,7 +67,7 @@
         <Label row="2" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
       </GridLayout>
 
-      <Label row="4" colSpan="2" :text="showOwnMeasurements ? 'practice' : 'official'" horizontalAlignment="center" verticalAlignment="center" class="m-b-30"></Label>
+      <Label row="4" colSpan="2" :text="showOwnMeasurements ? 'practice' : 'official'" horizontalAlignment="center" verticalAlignment="center" class="m-b-30" v-if="!players.length"></Label>
 
     </GridLayout>
 
@@ -64,6 +77,7 @@
 <script lang="ts">
   import { applicationSettingsService, authService, editingUserService } from "~/main";
   import { EventBus } from "~/services/event-bus";
+  import { getPlayersInTeam } from "~/services/TeamService";
   import { getAgeMonths, getAgeYears } from "~/utils/date-util";
   import PlayerSelection from "../PlayerSelection";
 
@@ -74,42 +88,64 @@
 
     created() {
       EventBus.$on("player-selected", result => {
-        this.player = undefined;
         if (!result.player) {
           this.fetchTeamMeasurements();
         } else {
+          this.players = [];
           this.player = result.player;
-          this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
         }
       });
     },
 
     computed: {
       playerName: function () {
-        return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname
+        if (editingUserService.userWrapper.team) {
+          return this.club.name; // TODO club name
+        } else {
+          return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname
+        }
       },
-      teamName: function () {
-        return this.userWrapper.user.teamName
-      },
+
       playerAge: function () {
-        if (!this.userWrapper.user.birthdate) {
-          return "";
+        if (editingUserService.userWrapper.team) {
+          return editingUserService.userWrapper.team.name;
+        } else {
+          if (!this.userWrapper.user.birthdate) {
+            return "";
+          }
+          let result = `${getAgeYears(new Date(this.userWrapper.user.birthdate))} jaar`;
+          const months = getAgeMonths(new Date(this.userWrapper.user.birthdate));
+          if (months > 0) {
+            result += ` en ${months} ${months === 1 ? "maand" : "maanden"}`;
+          }
+          return result;
         }
-        let result = `${getAgeYears(new Date(this.userWrapper.user.birthdate))} jaar`;
-        const months = getAgeMonths(new Date(this.userWrapper.user.birthdate));
-        if (months > 0) {
-          result += ` en ${months} ${months === 1 ? "maand" : "maanden"}`;
-        }
-        return result;
       }
     },
 
     data() {
       return {
         player: editingUserService.userWrapper.user,
-        // TODO editingUserService.userWrapper.user.playsinTeam.,
+        players: [],
+        getPlayerImageRows: string => {
+          return Array.from({length: this.nrOfPlayerImageRows()}, (v, k) => "auto").join(",");
+        },
+        getPlayerImageColumns: string => {
+          return Array.from({length: this.nrOfPlayerImageCols()}, (v, k) => "auto").join(",");
+        },
+        nrOfPlayerImageRows: number => {
+          return Math.ceil(this.players.length / this.nrOfPlayerImageCols());
+        },
+        nrOfPlayerImageCols: number => {
+          return Math.min(6, Math.ceil(this.players.length / (this.players.length > 10 ? 4 : 5)));
+        },
+        getPlayerImageOffset: number => {
+          return this.nrOfPlayerImageCols() - (this.players.length % this.nrOfPlayerImageCols());
+        },
+        // TODO dynamic..(hardcoded Victoria '28 for now)
         club: {
-          logo: "https://firebasestorage.googleapis.com/v0/b/foorball-player-ratings.appspot.com/o/clublogos%2FORbHDMRQTSY4gHz9FMDr.png?alt=media&token=ca747a28-6252-43b8-bcae-950f43c05086"
+          logo: "https://firebasestorage.googleapis.com/v0/b/foorball-player-ratings.appspot.com/o/clublogos%2FORbHDMRQTSY4gHz9FMDr.png?alt=media&token=ca747a28-6252-43b8-bcae-950f43c05086",
+          name: "Victoria '28"
         },
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
@@ -118,11 +154,15 @@
         selectedPlayer: "Team gemiddelde", // TODO cleanup
         userWrapper: editingUserService.userWrapper,
         score: type => {
-          if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
+          if (this.players.length && this.$editingUserService.userWrapper.team) {
+            let score = 0;
+            this.players.forEach(p => score += p.scores[this.showOwnMeasurements ? "combined" : "official"][type]);
+            return score === 0 ? "-" : Math.round(score / this.players.length);
+          } else if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
             const score = this.$editingUserService.userWrapper.user.scores[this.showOwnMeasurements ? "combined" : "official"][type];
             return score === 0 ? "-" : score;
           }
-        },
+        }
       };
     },
 
@@ -136,6 +176,11 @@
     methods: {
       toggleShowOwnMeasurements() {
         this.showOwnMeasurements = !this.showOwnMeasurements;
+      },
+
+      fetchTeamMeasurements() {
+        getPlayersInTeam(editingUserService.userWrapper.team.ref)
+            .then(users => this.players = users);
       }
     }
   };
@@ -154,6 +199,13 @@
   .card-photo {
     width: 150;
     height: 150;
+  }
+
+  .card-photo-team {
+    width: 34;
+    height: 34;
+    margin-top: 4;
+    margin-right: 4;
   }
 
   .card-name {
