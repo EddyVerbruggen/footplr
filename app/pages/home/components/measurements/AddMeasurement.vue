@@ -15,8 +15,8 @@
         <Button row="1" col="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140"
                 @tap="toggleShowExplanation()"
                 horizontalAlignment="right" v-show="!showExplanation"></Button>
-        <Label row="1" colSpan="2" class="c-white m-30 p-t-10" textWrap="true" verticalAlignment="top"
-               text="Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet. Uitleg hier, neem wat bier.. of doe maar niet, omdat je dan scheef schiet."
+        <Label row="1" colSpan="2" class="c-white m-20 p-t-10" textWrap="true" verticalAlignment="top"
+               :text="getExplanation()"
                v-show="showExplanation"></Label>
       </GridLayout>
 
@@ -56,7 +56,7 @@
   import { authService, editingUserService } from "~/main";
   import { EventBus } from "~/services/event-bus";
   import { getPlayersInTeam } from "~/services/TeamService"
-  import { Excercises } from "~/shared/exercises";
+  import { Excercises, translateExerciseExplanation } from "~/shared/exercises";
   import { logEvent, setScreenName } from "~/utils/analytics-util";
   import { dismissKeyboard } from "~/utils/keyboard-util";
   import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
@@ -147,6 +147,10 @@
 
       toggleShowExplanation() {
         this.showExplanation = !this.showExplanation;
+      },
+
+      getExplanation: function () {
+        return translateExerciseExplanation(this.exercise);
       },
 
       closeModal(event) {
