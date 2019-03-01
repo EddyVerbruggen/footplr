@@ -77,8 +77,9 @@ application.on(application.suspendEvent, () => {
 application.on(application.resumeEvent, () => {
   if (authService.isLoggedIn()) {
     authService.userWrapper.user = authService.user;
-    editingUserService.userWrapper.user = authService.userWrapper.user;
-    editingUserService.watchUser();
+    if (editingUserService.userWrapper && editingUserService.userWrapper.user) {
+      editingUserService.watchUser();
+    }
   }
 });
 
