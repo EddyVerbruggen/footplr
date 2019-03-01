@@ -94,9 +94,7 @@ export default class AuthService extends BackendService {
   }
 
   async resetPassword(email) {
-    const result = await firebase.resetPassword({
-      email: email
-    });
+    const result = await firebase.sendPasswordResetEmail(email);
     return JSON.stringify(result);
   }
 
