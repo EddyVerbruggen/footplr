@@ -60,10 +60,10 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Tel de afstand in cm van de rest van je ballen bij elkaar op en vul het in.";
   else if (input === ExerciseType.AGILITY) return "Zet de T-Test uit op het veld.\n\n" +
       "Volg de algemene richtlijnen van de T-Test en vul de score in.";
-  else if (input === ExerciseType.CROSSPASS) return "Pass 3 ballen zo ver en gericht mogelijk vanaf het midden van het veld richting het doel.\n\n" +
-      "Elke bal die meer dan 2,5 meter naar links of naar rechts is van het midden krijgt een foutmarge.\n\n" +
-      "De marge is dat elke meter verder dan de 2.5marge, ook in meters van de diepte gehaald wordt. \n" +
-      "Vul het gemiddelde aantal metervan de 3 ballen in.";
+  else if (input === ExerciseType.CROSSPASS) return "Dribbel met de bal richting middenstip, geef vervolgens een lange bal richting het midden van de goal.\n\n" +
+      "Markeer de plek waar de bal stuitert met een hoedje. Doe dit in totaal 3 keer.\n\n" +
+      "Meet nu bij elk hoedje hoeveel meter de bal diep is gespeeld. Trek elke meter die de bal breed uit het midden ligt er weer vanaf.\n\n" +
+      "Vul alleen de middelste waarde in.";
   else if (input === ExerciseType.DRIBBLE) return "Gebruik de linker- of rechterkant van het strafschopgebied en probeer het FPR-dribbelparcours zo snel mogelijk af te leggen.\n\n" +
       "Een afgesneden of foutief afgelegde route telt niet.\n\n" +
       "Bestudeer het parcours met behulp van onze instructiefilmpjes.";
