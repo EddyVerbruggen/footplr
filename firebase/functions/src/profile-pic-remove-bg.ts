@@ -56,12 +56,17 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
     });
 
     if (!_initDone) {
-      firebase.initializeApp();
-      _initDone = true;
+      try {
+        firebase.initializeApp();
+        firebase.firestore().settings({timestampsInSnapshots: true});
+        _initDone = true;
+      } catch (e) {
+        console.log("Error initializing firebase: " + JSON.stringify(e));
+        return null;
+      }
     }
 
     // now that we've updated the image (and its name), update the related user as well
-    firebase.firestore().settings({ timestampsInSnapshots: true });
     const userRef = await firebase.firestore().doc(`users/${userId}`);
 
     const bucketName = "foorball-player-ratings.appspot.com";
