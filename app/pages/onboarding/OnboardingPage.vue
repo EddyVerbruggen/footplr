@@ -4,14 +4,14 @@
 
       <Pager row="0" colSpan="2" height="100%" verticalAlignment="bottom" for="item in items" v-model="pagerIndex">
         <v-template>
-          <GridLayout class="pager-item" rows="auto, auto" columns="*" width="75%" verticalAlignment="center">
-            <Image row="0" :src="item.image" width="75%" class="m-t-30"></Image>
-            <Label row="1" class="pager-text m-t-20 m-b-24" :text="item.text" textWrap="true"></Label>
+          <GridLayout class="pager-item" rows="auto, *" columns="*" width="75%" verticalAlignment="bottom">
+            <Img row="0" :src="item.image" width="75%" class="m-t-30" verticalAlignment="center"></Img>
+            <Label row="1" class="pager-text m-y-20" :text="item.text" textWrap="true"></Label>
           </GridLayout>
         </v-template>
       </Pager>
 
-      <StackLayout row="1" colSpan="2" orientation="horizontal" class="m-b-30" horizontalAlignment="center">
+      <StackLayout row="1" colSpan="2" orientation="horizontal" class="m-b-30" horizontalAlignment="center" verticalAlignment="bottom">
         <Label class="pager-indicator" v-bind:class="{ 'pager-indicator-active' : index === pagerIndex }" v-for="(item, index) in items"></Label>
       </StackLayout>
 
@@ -43,16 +43,16 @@
         pagerIndex: 0,
         items: [
           {
-            image: "~/assets/images/fpr-logo-full.png",
-            text: "Ontwikkel je eigen voetbal kwaliteiten en word een echte profvoetballer"
+            image: "~/assets/images/onboarding/onboarding01.png",
+            text: "Maak nu je eigen FPR spelerskaart"
           },
           {
-            image: "~/assets/images/fpr-logo-full.png",
-            text: "Flubberdeflop en dibberdedab, samen staan we slapperdeflap!"
+            image: "~/assets/images/onboarding/onboarding02.png",
+            text: "Test je skills"
           },
           {
-            image: "~/assets/images/fpr-logo-full.png",
-            text: "Bas is gek, Tim is gek, Eddy is helemaal niet gek. Mark dan weer wel."
+            image: "~/assets/images/onboarding/onboarding03.png",
+            text: "Houd ze bij en check je vooruitgang"
           }
         ]
       };
@@ -62,10 +62,10 @@
 
 <style scoped>
   Label.pager-text {
-    vertical-align: center;
+    vertical-align: bottom;
     text-align: center;
     color: #011627;
-    line-height: 9;
+    font-size: 17;
   }
 
   Label.pager-indicator {
