@@ -27,6 +27,7 @@
   var datasets = settings.datasets;
   var labels = settings.labels;
   var bounds = settings.bounds;
+  var reverseBounds = settings.reverseBounds;
 
   var ctx = document.getElementById("myChart").getContext('2d');
 
@@ -64,6 +65,7 @@
         yAxes: [{
           type: 'linear',
           ticks: {
+            reverse: reverseBounds,
             min: bounds.min,
             max: bounds.max,
             callback: function(value, index, values) {
@@ -83,11 +85,7 @@
           ticks: {
             min: 0,
             max: 100,
-            stepSize: 20,
-            callback: function(value, index, values) {
-              // let's not render the '0' tick
-              return value === 0 ? '' : value;
-            }
+            stepSize: 20
           },
           position: 'right',
           gridLines: {

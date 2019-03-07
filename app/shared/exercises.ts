@@ -1,3 +1,4 @@
+import { ScoreType } from "../../firebase/functions/src/shared/exercises";
 import { Category } from "./category";
 
 export enum ExerciseType {
@@ -147,6 +148,25 @@ export class Exercise {
     }
 
     return 0;
+  }
+
+  getScoreUnit(): string {
+    if (this.scoretype === "SPEED") {
+      return "km/h";
+    } else if (this.scoretype === "POINTS") {
+      return "punten"
+    } else if (this.scoretype === "DISTANCE") {
+      return "meter"
+    } else if (this.scoretype === "COUNT") {
+      return "aantal"
+    } else if (this.scoretype === "TIME") {
+      return "sec"
+    } else if (this.scoretype === "HEIGHT") {
+      return "cm"
+    } else {
+      console.log("Unknown scoretype: " + this.scoretype);
+      return "";
+    }
   }
 
   isAvailableForAgeGroup(ageGroup?: number): boolean {
