@@ -37,7 +37,6 @@
       clearInput() {
         this.elapsed = 0.00;
         this.elapsedFormatted = "0.00";
-        EventBus.$emit("score-entered", {measurement: this.elapsed, player: this.player});
       },
 
       start() {
@@ -69,7 +68,8 @@
           // stopwatch is running, so ignore
           return;
         }
-        EventBus.$emit("score-entered", {measurement: event.object.text, player: this.player});
+        const measurement = event.object.text === "0.00" ? "" : event.object.text;
+        EventBus.$emit("score-entered", {measurement, player: this.player});
       },
 
       onFocus(event) {
