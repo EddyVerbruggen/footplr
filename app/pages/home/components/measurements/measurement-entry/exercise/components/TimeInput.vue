@@ -1,6 +1,8 @@
 <template>
   <StackLayout orientation="horizontal" horizontalAlignment="center">
     <Button :text="stopwatchLabel" @tap="stopwatchTapped" class="btn btn-stopwatch"
+            horizontalAlignment="center" verticalAlignment="center" v-show="elapsed === 0 || stopwatchLabel === 'STOP'"></Button>
+    <Button text="RESET" @tap="clearInput" class="btn btn-stopwatch btn-reset" v-show="elapsed > 0 && stopwatchLabel === 'START'"
             horizontalAlignment="center" verticalAlignment="center"></Button>
     <NumericKeyboard @focus="onFocus" @textChange="textChange" :text="elapsedFormatted" locale="nl_NL"
                      returnKeyTitle="OK" horizontalAlignment="center" class="numeric-input"></NumericKeyboard>
@@ -30,6 +32,12 @@
         } else {
           this.start();
         }
+      },
+
+      clearInput() {
+        this.elapsed = 0.00;
+        this.elapsedFormatted = "0.00";
+        EventBus.$emit("score-entered", {measurement: this.elapsed, player: this.player});
       },
 
       start() {
@@ -82,5 +90,10 @@
     background-color: #2699fb;
     color: #fff;
     min-width: 120;
+  }
+
+  Button.btn-stopwatch.btn-reset {
+    border-color: #b43e3e;
+    background-color: #f75454;
   }
 </style>
