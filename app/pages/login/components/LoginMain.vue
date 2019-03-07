@@ -81,10 +81,7 @@
       quickLogin() {
         const options = [
           "Annette (trainer Hoogland JO9-7)",
-          "Bas V (speler Hoogland JO9-7)",
-          "Mark (trainer & speler Victoria H2)",
-          "Nick (speler Victoria H2)",
-          "Daniel (speler Victoria H2)",
+          "Bas V (speler Hoogland JO9-7)"
         ];
         const cancelLabel = "Annuleren";
         action({

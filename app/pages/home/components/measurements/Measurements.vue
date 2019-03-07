@@ -29,9 +29,9 @@
                      verticalAlignment="top" v-for="cat in item.categories"></Label>
             </StackLayout>
             <Label rowSpan="2" col="3" class="icon-round" src="~/assets/images/stats.png" horizontalAlignment="center"
-                   @tap="showDetails(item)" v-show="item.hasMeasurement"></Label>
+                   @tap="showDetails(item)" v-show="item.hasMeasurement && player"></Label>
             <Img rowSpan="2" col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
-                 horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement"></Img>
+                 horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement && player"></Img>
             <Button rowSpan="2" col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
@@ -146,6 +146,12 @@
           if (added) {
             item.saving = true;
             item.hasMeasurement = false;
+            // there's no current trigger to detect changes, so let's be silly and update after a timeout
+            if (!this.player) {
+              setTimeout(() => {
+                this.fetchTeamMeasurements();
+              }, 2000);
+            }
           }
         });
       },
