@@ -2,11 +2,11 @@
   <Page actionBarHidden="true" backgroundSpanUnderStatusBar="false">
     <GridLayout rows="*, auto, auto" columns="*, *">
 
-      <Pager row="0" colSpan="2" height="100%" verticalAlignment="bottom" for="item in items" v-model="pagerIndex">
+      <Pager row="0" colSpan="2" width="100%" height="100%" horizontalAlignment="center" verticalAlignment="center" for="item in items" v-model="pagerIndex">
         <v-template>
-          <GridLayout class="pager-item" rows="auto, *" columns="*" width="75%" verticalAlignment="bottom">
-            <Img row="0" :src="item.image" width="75%" class="m-t-30" verticalAlignment="center"></Img>
-            <Label row="1" class="pager-text m-y-20" :text="item.text" textWrap="true"></Label>
+          <GridLayout class="pager-item" height="100%" rows="auto, *" columns="*" width="100%" verticalAlignment="center">
+            <Img row="0" :src="item.image" height="80%" width="70%" class="m-t-30" verticalAlignment="center"></Img>
+            <Label row="1" class="pager-text m-y-10" :text="item.text" textWrap="true" verticalAlignment="bottom"></Label>
           </GridLayout>
         </v-template>
       </Pager>
