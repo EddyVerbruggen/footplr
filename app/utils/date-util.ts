@@ -1,7 +1,8 @@
 const MONTHNAMES = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
 
 export function getAgeYears(birthdate: Date): number {
-  return Math.ceil((new Date().getTime() - new Date(birthdate).getTime()) / 3.15576e+10);
+  const timeDiff = Math.abs(Date.now() - birthdate.getTime());
+  return Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
 }
 
 export function getAgeMonths(birthdate: Date): number {
