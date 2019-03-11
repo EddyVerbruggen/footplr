@@ -32,7 +32,7 @@ export async function getPlayersInTeam(teamRef: firestore.DocumentReference): Pr
       const user = <User>userDoc.data();
       user.id = userDoc.id;
       user.ref = userDoc.ref;
-      user.playsinTeam = team;
+      user.playsInTeam = team;
       users.push(user);
     });
     return users;

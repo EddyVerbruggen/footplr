@@ -45,14 +45,14 @@
 </template>
 
 <script lang="ts">
-  import {action, prompt} from "tns-core-modules/ui/dialogs"
-  import { device } from "tns-core-modules/platform";
   import * as AppVersion from "nativescript-appversion";
-  import {setScreenName, setUserId, setUserPropertyUsertype} from "~/utils/analytics-util";
-  import {applicationSettingsService} from "~/main";
-  import {connectionType, getConnectionType} from "tns-core-modules/connectivity"
-  import alert from "~/utils/alert"
+  import { connectionType, getConnectionType } from "tns-core-modules/connectivity"
+  import { device } from "tns-core-modules/platform";
+  import { action, prompt } from "tns-core-modules/ui/dialogs"
+  import { applicationSettingsService } from "~/main";
   import routes from "~/router";
+  import alert from "~/utils/alert"
+  import { setUserId, setUserPropertyUsertype } from "~/utils/analytics-util";
 
   export default {
     name: 'login-main',

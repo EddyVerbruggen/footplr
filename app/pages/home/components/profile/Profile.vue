@@ -108,8 +108,7 @@
         return formatDate(this.userWrapper.user.birthdate);
       },
       teamName: function () {
-        console.log("this.userWrapper.user.playsinTeam: " + this.$authService.userWrapper.user.playsinTeam);
-        return this.$authService.userWrapper.user.playsinTeam ? this.$authService.userWrapper.user.playsinTeam.name : undefined;
+        return this.$authService.userWrapper.user.playsInTeam ? this.$authService.userWrapper.user.playsInTeam.name : undefined;
       }
     },
 

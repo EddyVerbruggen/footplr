@@ -200,8 +200,8 @@
         // determine the age group, so we can filter the measurement list
         const ageGroup = editingUserService.userWrapper.team ?
             editingUserService.userWrapper.team.agegroup :
-            editingUserService.userWrapper.user.playsinTeam ?
-                editingUserService.userWrapper.user.playsinTeam.agegroup :
+            editingUserService.userWrapper.user.playsInTeam ?
+                editingUserService.userWrapper.user.playsInTeam.agegroup :
                 undefined;
 
         for (const excercisesKey in Excercises) {

@@ -88,10 +88,17 @@
           await this.fillPlayersAndTeams();
         }
 
-        const teamPrefix = "TEAM: "; // TODO add the club name
-        let options = this.teams.map(team => `${teamPrefix}${team.name}`);
-        const players = this.players.map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
-        options = options.concat(players);
+        const teamPrefix = "TEAM: "; // TODO add the club name (unless it's all the same club)
+        let options = [];
+
+        this.teams.map(team => {
+          options.push(`${teamPrefix}${team.name}`);
+          const players = this.players
+              .filter(player => player.playsInTeam.id === team.id)
+              .map(player => player.firstname + " " + (player.lastname ? player.lastname : ""));
+          options = options.concat(players);
+        });
+
         const cancelLabel = "Annuleren";
         const myselfLabel = "ik";
         action({
@@ -101,7 +108,6 @@
           cancelButtonText: cancelLabel
         }).then(picked => {
           if (picked && picked !== cancelLabel) {
-            // this.selectedPlayer = picked;
             this.$editingUserService.clearListener();
 
             let player;
@@ -110,9 +116,9 @@
               this.$editingUserService.userWrapper.user = player;
               this.$editingUserService.userWrapper.team = undefined;
             } else if (picked.startsWith(teamPrefix)) {
-              this.$editingUserService.userWrapper.team = this.teams[options.indexOf(picked)];
+              this.$editingUserService.userWrapper.team = this.teams.filter(team => `${teamPrefix}${team.name}`)[0];
             } else {
-              player = this.players[options.indexOf(picked) - this.teams.length];
+              player = this.players.filter(player => player.firstname + " " + (player.lastname ? player.lastname : ""))[0];
               this.$editingUserService.userWrapper.user = player;
               this.$editingUserService.userWrapper.team = undefined;
             }
