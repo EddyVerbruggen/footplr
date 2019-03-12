@@ -11,7 +11,7 @@
       </GridLayout>
     </StackLayout>
 
-    <GridLayout row="2" rows="65*, 13*, 9*, 38*, 26*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
+    <GridLayout row="2" rows="65*, 13*, 9*, 42*, 22*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
       <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <!-- uncomment these for a few "debugging lines" -->
