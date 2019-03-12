@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import { removeBackgroundFromImageFile } from "remove.bg";
+import { removeBackgroundFromImageFile, RemoveBgResult, RemoveBgError } from "remove.bg";
 import { apiKey } from "./remove-bg-apikey.json";
 
 let _initDone = false;
@@ -42,9 +42,13 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
   try {
     await removeBackgroundFromImageFile({
       path: outputFile,
-      size: "regular",
+      size: "regular", // the smallest size, costs 1 credit
       apiKey,
       outputFile
+    }).then((result: RemoveBgResult) => {
+      console.log(`File of ${result.resultWidth} x ${result.resultHeight} pixels cost ${result.creditsCharged} credits`);
+    }).catch((errors: Array<RemoveBgError>) => {
+      console.log(JSON.stringify(errors));
     });
 
     // removing the background worked, and it's now a .png file
