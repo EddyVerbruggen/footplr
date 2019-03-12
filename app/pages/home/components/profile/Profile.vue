@@ -30,7 +30,7 @@
         <GridLayout class="profile-form" rows="auto, auto, auto, auto" columns="50, *">
           <Label row="0" col="0" :text="iconName" class="icon icon-green" verticalAlignment="center"
                  horizontalAlignment="center"></Label>
-          <Label row="0" col="1" :text="userWrapper.user.firstname || 'Achternaam'" class="profile-field"
+          <Label row="0" col="1" :text="userWrapper.user.firstname || 'Voornaam'" class="profile-field"
                  v-bind:class="userWrapper.user.firstname ? '' : 'not-filled'" verticalAlignment="center"
                  @tap="enterFirstname"></Label>
 
