@@ -1,4 +1,4 @@
-import { ScoreType } from "../../firebase/functions/src/shared/exercises";
+import { ScoreType } from "./exercises";
 import { Category } from "./category";
 
 export enum ExerciseType {
