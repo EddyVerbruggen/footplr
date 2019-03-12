@@ -11,7 +11,7 @@
       </GridLayout>
     </StackLayout>
 
-    <GridLayout row="2" rows="65*, 13*, 9*, 36*, 28*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
+    <GridLayout row="2" rows="65*, 13*, 9*, 38*, 26*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
       <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <!-- uncomment these for a few "debugging lines" -->
@@ -34,14 +34,14 @@
         <Img :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())" :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players" :key="player.id"></Img>
       </GridLayout>
 
-      <Img row="0" col="1" :src="player.picture" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length > 0 && player.picture"></Img>
-      <Img row="0" col="1" src="~/assets/images/placeholder_player.png" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" opacity="0.7" v-show="!players.length && !player.picture"></Img>
+      <Img row="0" col="1" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length"></Img>
 
       <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official_overlay.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <StackLayout row="0" col="0" verticalAlignment="bottom">
         <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
-        <Label :text="player.position || 'positie?'" class="card-role" horizontalAlignment="center"></Label>
+        <Label :text="player.position || 'positie?'" class="card-role" horizontalAlignment="center" v-if="!players.length"></Label>
+        <Img :src="self.picture || '~/assets/images/placeholder_player.png'" class="card-photo-trainer" horizontalAlignment="center" v-if="players.length && isTrainer"></Img>
       </StackLayout>
 
       <Img row="1" rowSpan="2" col="0" :src="club.logo" verticalAlignment="center" class="m-8" v-if="club.logo"></Img>
@@ -149,6 +149,7 @@
         },
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
+        self: authService.userWrapper.user,
         // trainers are always official, which also means they can't see non-official measurements by players
         showOwnMeasurements: editingUserService.userWrapper.user.id === authService.userWrapper.user.id && applicationSettingsService.isShowOwnMeasurements(),
         selectedPlayer: "Team gemiddelde", // TODO cleanup
@@ -206,6 +207,12 @@
     height: 34;
     margin-top: 4;
     margin-right: 4;
+  }
+
+  .card-photo-trainer {
+    width: 60;
+    height: 60;
+    margin-bottom: 5;
   }
 
   .card-name {
