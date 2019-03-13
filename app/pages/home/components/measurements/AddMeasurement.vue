@@ -28,7 +28,8 @@
 
       <ScrollView row="3" colSpan="2" v-show="!showExplanation && isTeam">
         <GridLayout class="player-row" :rows="nrOfPlayers" columns="auto, auto, *">
-          <Img backgroundColor="#e6e6e6" :row="i" col="0" :src="player.picture" stretch="aspectFill"
+          <Img backgroundColor="#e6e6e6" :row="i" col="0"
+               :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill"
                horizontalAlignment="left" class="card-photo" v-for="(player, i) in players" :key="player.id"></Img>
 
           <StackLayout :row="i" col="1" verticalAlignment="center" v-for="(player, i) in players" :key="player.id">
