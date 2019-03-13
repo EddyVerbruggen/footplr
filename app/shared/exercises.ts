@@ -109,8 +109,8 @@ export function translateExerciseExplanation(input: ExerciseType): string {
   else if (input === ExerciseType.JUMP_HEIGHT) return "Ga naast een muur of 'VJTester' staan met wat kalk op je vingertoppen.\n\n" +
       "Ga met beide voeten plat op de grond naast elkaar staan en reik nu met je hand zo hoog mogelijk. Tik op het hoogste punt het meetsysteem of de muur aan.\n\n" +
       "Maak nu een sprong recht omhoog en tik op het hoogste punt het meetsysteem of de muur aan.\n\n" +
-      "Meet het verschil tussen je eerst punt (in stand) en je tweede punt (met een sprong).\n" +
-      "Vul het grootste verschil van 3 metingen in.";
+      "Meet het verschil tussen je eerst punt (in stand) en je tweede punt (met een sprong).\n\n" +
+      "Meet 3 sprongen en vul het grootste verschil in.";
   else if (input === ExerciseType.STAMINA) return "Deze meting kun je als je wilt tegelijkertijd met de oefening 'Herstelvermogen' doen.\n\n" +
       "Download het geluidsbestand via de FPR website.\n" +
       "Zorg dat je het geluidsbestand goed kunt horen tijdens het lopen.\n\n" +
