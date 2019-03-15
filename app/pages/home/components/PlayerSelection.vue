@@ -116,7 +116,7 @@
               this.$editingUserService.userWrapper.user = player;
               this.$editingUserService.userWrapper.team = undefined;
             } else if (picked.startsWith(teamPrefix)) {
-              this.$editingUserService.userWrapper.team = this.teams.filter(team => `${teamPrefix}${team.name}`)[0];
+              this.$editingUserService.userWrapper.team = this.teams.filter(team => picked === `${teamPrefix}${team.name}`)[0];
             } else {
               player = this.players.filter(p => picked === (p.firstname + " " + (p.lastname ? p.lastname : "")))[0];
               this.$editingUserService.userWrapper.user = player;
