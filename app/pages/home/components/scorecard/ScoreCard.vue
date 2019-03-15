@@ -11,7 +11,7 @@
       </GridLayout>
     </StackLayout>
 
-    <GridLayout row="2" rows="65*, 13*, 9*, 42*, 22*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
+    <GridLayout row="2" rows="65*, 13*, 9*, 40*, 24*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="88%">
       <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()"
@@ -40,7 +40,7 @@
 
       <Label row="2" col="1" :text="playerAge" class="card-age bold" horizontalAlignment="center" verticalAlignment="top"></Label>
 
-      <GridLayout row="3" col="1" rows="*, *, *" columns="2*, 2*, *, 2*" class="m-t-10" horizontalAlignment="center">
+      <GridLayout row="3" col="1" rows="auto, auto, auto" columns="2*, 2*, *, 2*" class="m-t-5" horizontalAlignment="center">
         <Label row="0" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
         <Label row="0" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
         <Label row="0" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
@@ -220,6 +220,7 @@
     font-size: 26;
     padding-right: 5;
     vertical-align: center;
+    margin-bottom: 4;
   }
 
   .card-item-name {
