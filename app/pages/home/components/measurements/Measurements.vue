@@ -50,6 +50,7 @@
   import { Excercises, translateExerciseType } from "~/shared/exercises";
   import isOnline from "~/utils/connectivity.util";
   import { formatDate } from "~/utils/date-util";
+  import { showInfo } from "~/utils/feedback-util";
   import PlayerSelection from "../PlayerSelection";
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
@@ -155,6 +156,8 @@
                   this.fetchTeamMeasurements();
                 }, 2000);
               }
+            } else {
+              showInfo("Je bent offline", "Zodra je weer Internet hebt, zal de app de meting verwerken en je score berekenen.");
             }
           }
         });
