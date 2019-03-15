@@ -48,6 +48,7 @@
   import { EventBus } from "~/services/event-bus";
   import { getPlayersInTeam } from "~/services/TeamService"
   import { Excercises, translateExerciseType } from "~/shared/exercises";
+  import isOnline from "~/utils/connectivity.util";
   import { formatDate } from "~/utils/date-util";
   import PlayerSelection from "../PlayerSelection";
   import AddMeasurement from "./AddMeasurement.vue"
@@ -144,13 +145,16 @@
           console.log(`Returned from modal, added? ${added} for exercise ${item.exercise}`);
           this.isModalOpen = false;
           if (added) {
-            item.saving = true;
-            item.hasMeasurement = false;
-            // there's no current trigger to detect changes, so let's be silly and update after a timeout
-            if (!this.player) {
-              setTimeout(() => {
-                this.fetchTeamMeasurements();
-              }, 2000);
+            // Firestore should store data offline and sync when online, but let's not show the spinner in case he's offline
+            if (isOnline()) {
+              item.hasMeasurement = false;
+              item.saving = true;
+              // there's no current trigger to detect changes for teams, so let's be silly and update after a timeout
+              if (!this.player) {
+                setTimeout(() => {
+                  this.fetchTeamMeasurements();
+                }, 2000);
+              }
             }
           }
         });
