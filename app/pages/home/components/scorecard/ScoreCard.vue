@@ -14,24 +14,14 @@
     <GridLayout row="2" rows="65*, 13*, 9*, 42*, 22*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="90%">
       <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
-      <!-- uncomment these for a few "debugging lines" -->
-<!--      <StackLayout row="0" colSpan="2" backgroundColor="rgba(0, 0, 100, 0.2)"></StackLayout>-->
-<!--      <StackLayout row="1" colSpan="2" backgroundColor="rgba(200, 50, 50, 0.2)"></StackLayout>-->
-<!--      <StackLayout row="2" colSpan="2" backgroundColor="rgba(0, 100, 100, 0.2)"></StackLayout>-->
-<!--      <StackLayout row="3" colSpan="2" backgroundColor="rgba(150, 150, 0, 0.2)"></StackLayout>-->
-<!--      <StackLayout row="4" colSpan="2" backgroundColor="rgba(50, 50, 50, 0.2)"></StackLayout>-->
-
-<!--      <WrapLayout row="0" col="1" horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-show="players.length">-->
-<!--        <Img :src="player.picture || '~/assets/images/placeholder_player.png'" verticalAlignment="bottom" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="player in players"></Img>-->
-<!--      </WrapLayout>-->
-
-<!--      <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()" horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-if="players.length">-->
-<!--        <Img :row="Math.floor((players.length - i - 1) / nrOfPlayerImageCols())" :col="Math.ceil((players.length - i - 1) % nrOfPlayerImageCols())" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players" :key="player.id"></Img>-->
-<!--      </GridLayout>-->
-
-      <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()" horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-if="players.length">
-<!--        <Label :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())" :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())" :text="i" class="card-photo-team" v-for="(player, i) in players" :key="player.id"></Label>-->
-        <Img :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())" :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" class="card-photo-team" :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players" :key="player.id"></Img>
+      <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()"
+                  horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-if="players.length">
+        <Img :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())"
+             :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())"
+             :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill"
+             class="card-photo-team"
+             :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players"
+             :key="player.id"></Img>
       </GridLayout>
 
       <Img row="0" col="1" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length"></Img>
