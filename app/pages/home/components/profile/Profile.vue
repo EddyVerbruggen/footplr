@@ -18,7 +18,7 @@
       <ActivityIndicator :busy="isRegistering" rowSpan="2" width="30" height="30" class="m-t-30"
                          v-if="userWrapper.team"></ActivityIndicator>
 
-      <StackLayout v-if="!userWrapper.team">
+      <StackLayout v-show="!userWrapper.team">
         <StackLayout horizontalAlignment="center" class="card-photo-wrapper" @tap="selectImage">
           <Label :text="iconCamera" style="font-size: 55; padding-top: 28; color: #fff" horizontalAlignment="center"
                  class="icon" v-if="!userWrapper.user.picture"></Label>
@@ -86,7 +86,7 @@
     },
 
     mounted() {
-      if (!this.userWrapper.user.birthdate) {
+      if (this.userWrapper.user && !this.userWrapper.user.birthdate) {
         setTimeout(() => {
           showInfo("Vul even je geboortedatum in 🙏", "De app is handiger in gebruik als we weten hoe oud je bent.. dankjewel!", "profile");
         }, 800);
@@ -95,17 +95,17 @@
 
     computed: {
       playerPosition: function () {
-        if (this.userWrapper.user.position) {
+        if (this.userWrapper.user && this.userWrapper.user.position) {
           return getPlayerPositionValueForKey(this.userWrapper.user.position);
         } else {
           return "Op welke positie speel je?";
         }
       },
       birthDateFormatted: function () {
-        if (!this.userWrapper.user.birthdate) {
+        if (this.userWrapper.user && !this.userWrapper.user.birthdate) {
           return "Wat is je geboortedatum?";
         }
-        return formatDate(this.userWrapper.user.birthdate);
+        return this.userWrapper.user ? formatDate(this.userWrapper.user.birthdate) : "";
       },
       teamName: function () {
         return this.$authService.userWrapper.user.playsInTeam ? this.$authService.userWrapper.user.playsInTeam.name : undefined;
