@@ -59,6 +59,7 @@
   import { getPlayersInTeam } from "~/services/TeamService"
   import { Excercises, translateExerciseExplanation } from "~/shared/exercises";
   import { logEvent, setScreenName } from "~/utils/analytics-util";
+  import { showError } from "~/utils/feedback-util";
   import { dismissKeyboard } from "~/utils/keyboard-util";
   import AddMeasurementForExercise from "./measurement-entry/AddMeasurementForExercise";
   import Timer from "./measurement-entry/Timer";
@@ -172,9 +173,15 @@
 
           // round to max 2 decimals
           const measurement = (Math.round(value * 100)) / 100;
+          console.log(">> measurement: " + measurement);
+          console.log(">> this.exercise: " + this.exercise);
 
           // round to 0 decimals
+          console.log(">> Exercise: " + Excercises[this.exercise]);
           const score = Math.round(Excercises[this.exercise].calculateScore(measurement));
+          console.log(">> score: " + score);
+          console.log(">> official: " + (this.isTrainer || !this.isSelf));
+          console.log(">> authService.userWrapper.user.ref: " + authService.userWrapper.user.ref);
 
           player
               .ref
@@ -191,7 +198,10 @@
                 console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`);
                 logEvent("measurement_added");
               })
-              .catch(err => console.log(err));
+              .catch(err => {
+                console.log(err);
+                showError("Onverwachte fout, probeer nogmaals", "Tijdens opslaan van de meting ging het mis. Details: " + err);
+              });
         });
 
         // note that this closes the modal before player data has been saved (which is 🆗)

@@ -103,11 +103,12 @@
       },
 
       playerSelected(result) {
-        this.player = undefined;
+        // this.player = undefined;
         if (!result.player) {
           this.fetchTeamMeasurements();
         } else {
           this.player = result.player;
+          this.players = [];
           this.fillExerciseScoresWithMeasurements(this.player.latestmeasurements);
         }
       },
@@ -164,6 +165,7 @@
       },
 
       fetchTeamMeasurements() {
+        console.log("fetch for team: " + editingUserService.userWrapper.team.id);
         getPlayersInTeam(editingUserService.userWrapper.team.ref)
             .then(users => {
               this.players = users;

@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO add team selection here as well, but don't show in case the trainer only trains one team -->
   <StackLayout
       orientation="horizontal"
       horizontalAlignment="center"
@@ -30,10 +29,7 @@
     name: "PlayerSelection",
 
     created() {
-      EventBus.$on("player-selected", stuff => {
-        this.selectedPlayer = stuff.player;
-        this.date = new Date().getTime();
-      });
+      EventBus.$on("player-selected", stuff => this.selectedPlayer = stuff.player);
       EventBus.$on("update-players", () => this.players = undefined);
     },
 
@@ -57,7 +53,6 @@
 
     data() {
       return {
-        date: new Date().getTime(),
         iconPerson: String.fromCharCode(0xe7fd),
         iconPeople: String.fromCharCode(0xe7fc),
         iconDropDown: String.fromCharCode(0xe5c5),
