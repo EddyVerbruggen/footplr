@@ -147,7 +147,11 @@
         score: type => {
           if (this.players.length && this.$editingUserService.userWrapper.team) {
             let score = 0;
-            this.players.forEach(p => score += p.scores[this.showOwnMeasurements ? "combined" : "official"][type]);
+            this.players.forEach(p => {
+              if (p.scores) {
+                score += p.scores[this.showOwnMeasurements ? "combined" : "official"][type];
+              }
+            });
             return score === 0 ? "-" : Math.round(score / this.players.length);
           } else if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
             const score = this.$editingUserService.userWrapper.user.scores[this.showOwnMeasurements ? "combined" : "official"][type];
