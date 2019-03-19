@@ -128,12 +128,14 @@
         }
 
         this.isAuthenticating = true;
+
+        if (event) {
+          dismissKeyboard(event.object);
+        }
+
         return this.$authService
             .login(this.user)
             .then(() => {
-              if (event) {
-                dismissKeyboard(event.object);
-              }
               applicationSettingsService.setUsername(this.user.email);
               this.isAuthenticating = false;
               this.$editingUserService.userWrapper.team = undefined;
