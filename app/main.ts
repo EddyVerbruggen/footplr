@@ -1,6 +1,4 @@
-import * as firebase from "nativescript-plugin-firebase"
 import Vue from "nativescript-vue"
-import * as application from "tns-core-modules/application";
 import { isIOS } from "tns-core-modules/platform";
 import ApplicationSettingsService from "~/services/ApplicationSettingsService";
 import routes from "./router";
@@ -8,6 +6,8 @@ import AuthService from "./services/AuthService"
 import EditingUserService from "./services/EditingUserService"
 // To include the stylesheets, use this:
 import "./styles.scss";
+
+require ("nativescript-plugin-firebase");
 
 export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
@@ -30,36 +30,6 @@ declare const TNS_ENV: any;
 v.prototype.$authService = authService;
 v.prototype.$editingUserService = editingUserService;
 
-firebase.init()
-    .then(instance => {
-      /*
-      firebase.registerForPushNotifications(
-          {
-            showNotifications: true,
-            showNotificationsWhenInForeground: true,
-            onPushTokenReceivedCallback: token => console.log(`------------------- token received: ${token}`),
-            onMessageReceivedCallback: message => console.log(`------------------- message received`)
-          })
-          .then(instance => console.log("registerForPushNotifications done"))
-          .catch(error => console.log(`-------------- registerForPushNotifications error: ${error}`));
-      */
-
-      application.on(application.uncaughtErrorEvent, args => {
-        if (application.android) {
-          // For Android applications, args.android is an NativeScriptError.
-          console.log(" *** NativeScriptError *** : " + args.android);
-          console.log(" *** StackTrace *** : " + args.android.stackTrace);
-          console.log(" *** nativeException *** : " + args.android.nativeException);
-          firebase.crashlytics.sendCrashLog(args.android.nativeException);
-        } else if (application.ios) {
-          // For iOS applications, args.ios is NativeScriptError.
-          console.log(" *** NativeScriptError  *** : " + args.ios);
-          firebase.crashlytics.sendCrashLog(args.ios);
-        }
-      });
-    })
-    .catch(error => console.log(`firebase.init error: ${error}`));
-
 // Prints Vue logs when --env.production is *NOT* set while building
 v.config.silent = true; // (TNS_ENV === 'production');
 
@@ -68,21 +38,6 @@ if (authService.isLoggedIn()) {
   editingUserService.userWrapper.user = authService.userWrapper.user;
 }
 
-application.on(application.suspendEvent, () => {
-  if (authService.isLoggedIn()) {
-    editingUserService.clearListener();
-  }
-});
-
-application.on(application.resumeEvent, () => {
-  if (authService.isLoggedIn()) {
-    authService.userWrapper.user = authService.user;
-    if (editingUserService.userWrapper && editingUserService.userWrapper.user) {
-      editingUserService.watchUser();
-    }
-  }
-});
-
 new v({
-  render: h => h("frame", [h(authService.isLoggedIn() ? routes.home : (applicationSettingsService.getUsername() ? routes.login : routes.onboarding))])
+  render: h => h("frame", [h(routes.loading)])
 }).$start();
