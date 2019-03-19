@@ -29,7 +29,7 @@
         text="AANMELDEN"
         :isEnabled="!isAuthenticating"
         class="btn btn-secondary"
-        @tap="login()"></Button>
+        @tap="login"></Button>
 
     <Label
         class="forgot-password"
@@ -53,6 +53,7 @@
   import routes from "~/router";
   import alert from "~/utils/alert"
   import { setUserId, setUserPropertyUsertype } from "~/utils/analytics-util";
+  import { dismissKeyboard } from "~/utils/keyboard-util";
 
   export default {
     name: 'login-main',
@@ -120,15 +121,19 @@
         this.$refs.password.nativeView.focus();
       },
 
-      login() {
+      login(event) {
         if (getConnectionType() === connectionType.none) {
-          alert("Om in te kunnen loggen is een internetverbinding vereist")
+          alert("Om in te kunnen loggen is een internetverbinding vereist");
           return;
         }
+
         this.isAuthenticating = true;
         return this.$authService
             .login(this.user)
             .then(() => {
+              if (event) {
+                dismissKeyboard(event.object);
+              }
               applicationSettingsService.setUsername(this.user.email);
               this.isAuthenticating = false;
               this.$editingUserService.userWrapper.team = undefined;
