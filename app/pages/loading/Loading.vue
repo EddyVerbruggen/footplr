@@ -1,7 +1,8 @@
 <template>
   <Page actionBarHidden="true" backgroundSpanUnderStatusBar="false" @loaded="pageLoaded">
     <GridLayout rows="*" columns="*">
-      <Img src="~/assets/images/ball.png" class="m-t-24" width="64" height="64" horizontalAlignment="center" verticalAlignment="center"></Img>
+      <Img src="~/assets/images/ball.png" class="m-t-24 spin" width="64" height="64"
+           horizontalAlignment="center" verticalAlignment="center"></Img>
     </GridLayout>
   </Page>
 </template>
@@ -11,6 +12,7 @@
   import * as application from "tns-core-modules/application";
   import { applicationSettingsService } from "~/main";
   import routes from "~/router";
+  import { EventBus } from "~/services/event-bus";
 
   export default {
     data() {
@@ -21,9 +23,12 @@
 
     methods: {
       goToNexPage() {
-        // const route = this.$authService.isLoggedIn() ? routes.home : (applicationSettingsService.getUsername() ? routes.login : routes.onboarding);
-        const route = applicationSettingsService.getUsername() ? routes.login : routes.onboarding;
-        this.$navigateTo(route, {clearHistory: true});
+        // show the spinning ball a little ;)
+        setTimeout(() => {
+          // const route = this.$authService.isLoggedIn() ? routes.home : (applicationSettingsService.getUsername() ? routes.login : routes.onboarding);
+          const route = applicationSettingsService.getUsername() ? routes.login : routes.onboarding;
+          this.$navigateTo(route, {clearHistory: true});
+        }, 500);
       },
 
       pageLoaded() {
@@ -46,9 +51,11 @@
 
               application.on(application.resumeEvent, () => {
                 if (this.$authService.isLoggedIn()) {
-                  this.$authService.userWrapper.user = this.$authService.user;
+                  this.$authService.refresh();
                   if (this.$editingUserService.userWrapper && this.$editingUserService.userWrapper.user) {
                     this.$editingUserService.watchUser();
+                    const player = this.$editingUserService.userWrapper.team ? undefined : this.$editingUserService.userWrapper.user;
+                    EventBus.$emit('player-selected', {picked: "dummy", player});
                   }
                 }
               });
@@ -88,4 +95,17 @@
 </script>
 
 <style scoped>
+  .spin {
+    animation-name: spin;
+    animation-duration: 4;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>
