@@ -173,15 +173,9 @@
 
           // round to max 2 decimals
           const measurement = (Math.round(value * 100)) / 100;
-          console.log(">> measurement: " + measurement);
-          console.log(">> this.exercise: " + this.exercise);
 
           // round to 0 decimals
-          console.log(">> Exercise: " + Excercises[this.exercise]);
           const score = Math.round(Excercises[this.exercise].calculateScore(measurement));
-          console.log(">> score: " + score);
-          console.log(">> official: " + (this.isTrainer || !this.isSelf));
-          console.log(">> authService.userWrapper.user.ref: " + authService.userWrapper.user.ref);
 
           player
               .ref

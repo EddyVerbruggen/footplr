@@ -62,6 +62,16 @@ export default class AuthService extends BackendService {
     return user;
   }
 
+  async refresh() {
+    const id = this.user.id;
+    const userDoc = await firebase.firestore.getDocument("users", id);
+    const user = <User>userDoc.data();
+    user.ref = userDoc.ref;
+    user.id = id;
+    this.user = user;
+    await this.syncUserData(userDoc);
+  }
+
   private async syncUserData(doc: firestore.DocumentSnapshot): Promise<void> {
     const userData = <User>doc.data();
     const user = this.user;

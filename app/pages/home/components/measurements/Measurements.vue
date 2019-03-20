@@ -152,7 +152,7 @@
               item.hasMeasurement = false;
               item.saving = true;
               // there's no current trigger to detect changes for teams, so let's be silly and update after a timeout
-              if (!this.player) {
+              if (editingUserService.userWrapper.team) {
                 setTimeout(() => {
                   this.fetchTeamMeasurements();
                 }, 2000);
@@ -165,7 +165,6 @@
       },
 
       fetchTeamMeasurements() {
-        console.log("fetch for team: " + editingUserService.userWrapper.team.id);
         getPlayersInTeam(editingUserService.userWrapper.team.ref)
             .then(users => {
               this.players = users;
