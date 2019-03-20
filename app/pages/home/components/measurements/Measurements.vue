@@ -29,9 +29,9 @@
                      verticalAlignment="top" v-for="cat in item.categories"></Label>
             </StackLayout>
             <Label rowSpan="2" col="3" class="icon-round" src="~/assets/images/stats.png" horizontalAlignment="center"
-                   @tap="showDetails(item)" v-show="item.hasMeasurement && player"></Label>
+                   @tap="showDetails(item)" v-show="item.hasMeasurement && !isTeamSelected"></Label>
             <Img rowSpan="2" col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
-                 horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement && player"></Img>
+                 horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement && !isTeamSelected"></Img>
             <Button rowSpan="2" col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
@@ -91,7 +91,8 @@
         player: editingUserService.userWrapper.user,
         players: [],
         exercises: [],
-        isModalOpen: false
+        isModalOpen: false,
+        isTeamSelected: false
       }
     },
 
@@ -104,6 +105,7 @@
 
       playerSelected(result) {
         // this.player = undefined;
+        this.isTeamSelected = !result.player;
         if (!result.player) {
           this.fetchTeamMeasurements();
         } else {
