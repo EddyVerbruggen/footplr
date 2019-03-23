@@ -14,7 +14,7 @@ export function getAgeMonths(birthdate: Date): number {
   } else {
     result = monthsElapsedThisYear + (13 - birthdate.getMonth()) - dayCompensation;
   }
-  return result === 12 ? 0 : result;
+  return result >= 12 ? 0 : result;
 }
 
 export function formatDate(date: Date): string {
