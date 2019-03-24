@@ -124,16 +124,21 @@
               let index = 0;
               m.forEach(s => {
                 const measurementData = s.data();
+                const date = formatDate(measurementData.date);
                 measurementList.push({
                   id: index++,
                   ref: s.ref,
-                  date: formatDate(measurementData.date),
+                  date,
                   measurement: measurementData.measurement,
                   score: measurementData.score,
                   scoreClass: (Math.ceil(measurementData.score / 10)) * 10
                 });
-                data.push(measurementData.measurement);
-                labels.push(measurementData.date.getTime());
+
+                // only show this measurement in the graph if the previous measurement is not on the same date
+                if (measurementList.length === 1 || date !== measurementList[measurementList.length - 2].date) {
+                  data.push(measurementData.measurement);
+                  labels.push(measurementData.date.getTime());
+                }
               });
 
               // now render the graph, see http://www.chartjs.org/docs/latest/charts/line.html
