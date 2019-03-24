@@ -90,7 +90,7 @@
     computed: {
       playerName: function () {
         if (editingUserService.userWrapper.team) {
-          return this.club.name; // TODO club name
+          return this.club.name;
         } else {
           return editingUserService.userWrapper.user.firstname + " " + editingUserService.userWrapper.user.lastname
         }
@@ -132,11 +132,7 @@
         getPlayerImageOffset: number => {
           return this.nrOfPlayerImageCols() - (this.players.length % this.nrOfPlayerImageCols());
         },
-        // TODO dynamic..(hardcoded Victoria '28 for now)
-        club: {
-          logo: "https://firebasestorage.googleapis.com/v0/b/foorball-player-ratings.appspot.com/o/clublogos%2FORbHDMRQTSY4gHz9FMDr.png?alt=media&token=ca747a28-6252-43b8-bcae-950f43c05086",
-          name: "Victoria '28"
-        },
+        club: editingUserService.userWrapper.user.playsInTeam ? editingUserService.userWrapper.user.playsInTeam.club : (editingUserService.userWrapper.user.trainsTeams ? editingUserService.userWrapper.user.trainsTeams[0].club : undefined),
         isTrainer: authService.userWrapper.user.trains !== undefined,
         isSelf: editingUserService.userWrapper.user.id === authService.userWrapper.user.id,
         self: authService.userWrapper.user,

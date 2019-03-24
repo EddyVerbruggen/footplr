@@ -1,9 +1,10 @@
-import BackendService from "./BackendService";
 import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
-import User from "../models/User";
 import { getString } from "tns-core-modules/application-settings";
+import { getClub } from "~/services/ClubService";
 import { getTeam } from "~/services/TeamService"
+import User from "../models/User";
+import BackendService from "./BackendService";
 import DocumentReference = firestore.DocumentReference;
 
 // this class concerns the logged in user, not the actual user being edited
@@ -95,6 +96,16 @@ export default class AuthService extends BackendService {
 
     if (userData.playsin) {
       userData.playsInTeam = await getTeam(user.playsin);
+      userData.playsInTeam.club = await getClub(user.playsin);
+    }
+
+    if (userData.trains) {
+      userData.trainsTeams = [];
+      for (let trains of userData.trains) {
+        const team = await getTeam(trains);
+        team.club = await getClub(trains);
+        userData.trainsTeams.push(team);
+      }
     }
 
     this.userWrapper.user = <User>userData;

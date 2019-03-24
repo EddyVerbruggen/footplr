@@ -1,7 +1,7 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-<!--    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>-->
-    <Image src="~/assets/images/fpr-logo-full.png" width="200"></Image>
+    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>
+<!--    <Image src="~/assets/images/fpr-logo-full.png" width="200"></Image>-->
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
       <TextField

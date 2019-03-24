@@ -39,10 +39,13 @@ export default class EditingUserService {
     userData.id = doc.id;
     userData.ref = doc.ref;
 
-    // remember the team (no need to re-fetch)
-    const team = this.userWrapper.user.playsInTeam;
+    // remember these team (no need to re-fetch)
+    const playsInTeam = this.userWrapper.user.playsInTeam;
+    const trainsTeams = this.userWrapper.user.trainsTeams;
+
     this.userWrapper.user = <User>userData;
-    this.userWrapper.user.playsInTeam = team;
+    this.userWrapper.user.playsInTeam = playsInTeam;
+    this.userWrapper.user.trainsTeams = trainsTeams;
   }
 
   async updateUserDataInFirebase(userData): Promise<void> {
