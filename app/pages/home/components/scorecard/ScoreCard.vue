@@ -124,13 +124,15 @@
           return Array.from({length: this.nrOfPlayerImageCols()}, (v, k) => "auto").join(",");
         },
         nrOfPlayerImageRows: number => {
-          return Math.ceil(this.players.length / this.nrOfPlayerImageCols());
+          const rows = Math.ceil(this.players.length / this.nrOfPlayerImageCols());
+          return rows;
         },
         nrOfPlayerImageCols: number => {
-          return Math.min(6, Math.ceil(this.players.length / (this.players.length > 10 ? 4 : 5)));
+          return Math.min(6, this.players.length);
         },
         getPlayerImageOffset: number => {
-          return this.nrOfPlayerImageCols() - (this.players.length % this.nrOfPlayerImageCols());
+          const remainder = (this.players.length % this.nrOfPlayerImageCols());
+          return remainder === 0 ? 0 : this.nrOfPlayerImageCols() - remainder;
         },
         club: editingUserService.userWrapper.user.playsInTeam ? editingUserService.userWrapper.user.playsInTeam.club : (editingUserService.userWrapper.user.trainsTeams ? editingUserService.userWrapper.user.trainsTeams[0].club : undefined),
         isTrainer: authService.userWrapper.user.trains !== undefined,
@@ -193,10 +195,10 @@
   }
 
   .card-photo-team {
-    width: 34;
-    height: 34;
+    width: 36;
+    height: 36;
     margin-top: 4;
-    margin-right: 4;
+    margin-right: 2;
   }
 
   .card-photo-trainer {
