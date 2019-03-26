@@ -43,6 +43,7 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
     await removeBackgroundFromImageFile({
       path: outputFile,
       size: "regular", // the smallest size, costs 1 credit
+      type: "person", // help the API a little
       apiKey,
       outputFile
     }).then((result: RemoveBgResult) => {
