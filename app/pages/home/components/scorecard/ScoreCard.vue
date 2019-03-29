@@ -19,7 +19,7 @@
         <Img :row="Math.floor((i + getPlayerImageOffset()) / nrOfPlayerImageCols())"
              :col="Math.ceil((i + getPlayerImageOffset()) % nrOfPlayerImageCols())"
              :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill"
-             class="card-photo-team"
+             :class="'card-photo-team card-photo-team-' + nrOfPlayerImageCols()"
              :opacity="player.picture ? 1 : 0.7" v-for="(player, i) in players"
              :key="player.id"></Img>
       </GridLayout>
@@ -128,7 +128,17 @@
           return rows;
         },
         nrOfPlayerImageCols: number => {
-          return Math.min(6, this.players.length);
+          if (this.players.length > 15) {
+            return 6;
+          } else if (this.players.length > 12) {
+            return 5;
+          } else if (this.players.length > 9) {
+            return 4;
+          } else if (this.players.length > 4) {
+            return 3;
+          } else {
+            return 2;
+          }
         },
         getPlayerImageOffset: number => {
           const remainder = (this.players.length % this.nrOfPlayerImageCols());
@@ -195,10 +205,32 @@
   }
 
   .card-photo-team {
+    margin-right: 2;
+  }
+
+  .card-photo-team-2 {
+    width: 72;
+    height: 72;
+  }
+
+  .card-photo-team-3 {
+    width: 63;
+    height: 63;
+  }
+
+  .card-photo-team-4 {
+    width: 52;
+    height: 52;
+  }
+
+  .card-photo-team-5 {
+    width: 45;
+    height: 45;
+  }
+
+  .card-photo-team-6 {
     width: 36;
     height: 36;
-    margin-top: 4;
-    margin-right: 2;
   }
 
   .card-photo-trainer {
