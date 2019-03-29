@@ -53,12 +53,11 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Je mag doortellen als de bal op de grond stuitert, je hoeft dus niet opnieuw te beginnen.\n\n" +
       "Let op: Je moet de bal 1 keer met de borst aanraken en 1x met het bovenbeen. Dit mag (hoeft niet) achter elkaar en de volgorde maakt niet uit.\n\n" +
       "Vul het totaal aantal balcontacten in.";
-  else if (input === ExerciseType.CONTROL_LOW_BALL) return "Ga bij de middenstip of penaltystip staan.\n\n" +
-      "Achter je staan 5 pylonen een meter uit elkaar als mikpunt voor de aangever.\n\n" +
-      "1 pylon staat recht achter je en aan beide zijden daarvan 2 pylonen, elk een meter uit elkaar.\n\n" +
-      "Doe een zijwaartse pass naar de buitenste pylon R of L. Krijg de bal ingespeeld en probeer nu met 1 balcontact de bal zo dicht mogelijk bij de stip te leggen.\n\n" +
-      "Doe dit voor elke pylon 2 keer en haal daarna je 2 slechtste aannames weg.\n\n" +
-      "Tel de afstand in cm van de rest van je ballen bij elkaar op en vul het in.";
+  else if (input === ExerciseType.CONTROL_LOW_BALL) return "Ga bij de middenstip staan.\n\n" +
+      "Je krijgt nu 7x een bal aangespeeld vanaf de cirkel (9.15 meter). Telkens om en om, links en dan rechts, ongeveer 1 á 2 meter van de stip.\n\n" +
+      "Probeer elke bal met 1 balcontact stil te leggen op de stip. Markeer de plek waar de bal stil komt te liggen.\n\n" +
+      "Na 7 ballen haal je de drie beste en drie slechtste aannames weg.\n\n" +
+      "Meet de afstand van de markering die overblijft tot de stip. Noteer deze afstand.";
   else if (input === ExerciseType.AGILITY) return "Zet de T-Test uit op het veld.\n\n" +
       "Volg de algemene richtlijnen van de T-Test en vul de score in.";
   else if (input === ExerciseType.CROSSPASS) return "Dribbel met de bal richting middenstip, geef vervolgens een lange bal richting het midden van de goal.\n\n" +
@@ -195,5 +194,5 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH", 0, 100),
   SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 50, 12),
   HEADER_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300),
-  CONTROL_LOW_BALL: new Exercise("AALA", ["TEC"], "DISTANCE", "HIGH_LOW", 0, 1200, 12),
+  CONTROL_LOW_BALL: new Exercise("AALA", ["TEC"], "DISTANCE", "HIGH_LOW", 0, 100, 12),
 };
