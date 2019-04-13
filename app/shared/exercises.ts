@@ -149,7 +149,7 @@ export class Exercise {
     return 0;
   }
 
-  getScoreUnit(): string {
+  getScoreUnit(input = true): string {
     if (this.scoretype === "SPEED") {
       return "km/h";
     } else if (this.scoretype === "POINTS") {
@@ -157,7 +157,7 @@ export class Exercise {
     } else if (this.scoretype === "DISTANCE") {
       return "meter"
     } else if (this.scoretype === "COUNT") {
-      return "aantal"
+      return input ? "aantal" : "stuks"
     } else if (this.scoretype === "TIME") {
       return "sec"
     } else if (this.scoretype === "HEIGHT") {

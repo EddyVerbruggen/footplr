@@ -35,7 +35,7 @@
             <Button rowSpan="2" col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
-          <Label row="1" :text="item.hasMeasurement ? 'Laatste test ' + item.latestMeasurementDate : ' '"
+          <Label row="1" :text="item.hasMeasurement ? 'Laatste test: ' + item.latestMeasurement + ' ' + item.exerciseUnit + ' op ' + item.latestMeasurementDate : ' '"
                  class="latest-measurement-date" horizontalAlignment="right"></Label>
         </GridLayout>
       </v-template>
@@ -227,6 +227,7 @@
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
             exercise: excercisesKey,
             exerciseTranslated: translateExerciseType(excercisesKey),
+            exerciseUnit: exercise.getScoreUnit(false),
             categories: exercise.categories,
             score: latestMeasurement ? latestMeasurement.score : undefined,
             scoreClass: latestMeasurement ? (Math.ceil(latestMeasurement.score / 10)) * 10 : undefined
