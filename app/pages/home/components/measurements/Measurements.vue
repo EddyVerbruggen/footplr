@@ -19,7 +19,8 @@
                    class="score icon-round bold"
                    horizontalAlignment="center" verticalAlignment="center"
                    v-show="!item.saving && item.hasMeasurement"></Label>
-            <ActivityIndicator :busy="item.saving" rowSpan="2" col="0" width="24" v-show="item.saving"></ActivityIndicator>
+            <ActivityIndicator :busy="item.saving" rowSpan="2" col="0" width="24"
+                               v-show="item.saving"></ActivityIndicator>
             <Img rowSpan="2" col="1" :src="'~/assets/images/exercises/' + item.exercise + '.png'"></Img>
             <Label row="0" col="2" :text="item.exerciseTranslated" class="exercise bold" textWrap="true"
                    verticalAlignment="center"></Label>
@@ -31,12 +32,13 @@
             <Label rowSpan="2" col="3" class="icon-round" src="~/assets/images/stats.png" horizontalAlignment="center"
                    @tap="showDetails(item)" v-show="item.hasMeasurement && !isTeamSelected"></Label>
             <Img rowSpan="2" col="3" color="white" width="14" height="14" src="~/assets/images/stats.png"
-                 horizontalAlignment="center" @tap="showDetails(item)" v-show="item.hasMeasurement && !isTeamSelected"></Img>
+                 horizontalAlignment="center" @tap="showDetails(item)"
+                 v-show="item.hasMeasurement && !isTeamSelected"></Img>
             <Button rowSpan="2" col="4" text="+" class="add-measurement" horizontalAlignment="center"
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
-          <Label row="1" :text="item.hasMeasurement ? 'Laatste test: ' + item.latestMeasurement + ' ' + item.exerciseUnit + ' op ' + item.latestMeasurementDate : ' '"
-                 class="latest-measurement-date" horizontalAlignment="right"></Label>
+          <Label row="1" class="latest-measurement-date" horizontalAlignment="right"
+                 :text="item.hasMeasurement ? item.latestMeasurement + ' ' + item.exerciseUnit + ' op ' + item.latestMeasurementDate : ' '"></Label>
         </GridLayout>
       </v-template>
     </ListView>
