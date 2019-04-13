@@ -150,14 +150,16 @@ export class Exercise {
   }
 
   getScoreUnit(input = true): string {
-    if (this.scoretype === "SPEED") {
+    if (!input && this.abbrev === "HERS") {
+      return "gedaald"
+    } else if (this.scoretype === "SPEED") {
       return "km/h";
     } else if (this.scoretype === "POINTS") {
       return "punten"
     } else if (this.scoretype === "DISTANCE") {
       return "meter"
     } else if (this.scoretype === "COUNT") {
-      return input ? "aantal" : "stuks"
+      return input ? "aantal" : "stuks";
     } else if (this.scoretype === "TIME") {
       return "sec"
     } else if (this.scoretype === "HEIGHT") {
