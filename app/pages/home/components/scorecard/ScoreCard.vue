@@ -1,5 +1,5 @@
 <template>
-  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*">
+  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*" v-bind:class="'small-screen-' + isSmallScreen">
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
@@ -40,21 +40,21 @@
 
       <Label row="2" col="1" :text="playerAge" class="card-age bold" horizontalAlignment="center" verticalAlignment="top"></Label>
 
-      <GridLayout row="3" col="1" rows="auto, auto, auto" columns="2*, 2*, *, 2*" class="m-t-5" horizontalAlignment="center">
+      <GridLayout row="3" col="1" rows="auto, auto, auto" columns="2*, 2*, *, 2*, 2*" class="m-t-5" horizontalAlignment="center">
         <Label row="0" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
         <Label row="0" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
-        <Label row="0" col="2" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="0" col="3" text="DRI" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="0" col="3" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="0" col="4" text="DRI" class="card-item-name" horizontalAlignment="left"></Label>
 
         <Label row="1" col="0" :text="score('SHO')" class="card-item-score bold" horizontalAlignment="right"></Label>
         <Label row="1" col="1" text="SHO" class="card-item-name" horizontalAlignment="left"></Label>
-        <Label row="1" col="2" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="1" col="3" text="TEC" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="1" col="3" :text="score('TEC')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="1" col="4" text="TEC" class="card-item-name" horizontalAlignment="left"></Label>
 
         <Label row="2" col="0" :text="score('PAS')" class="card-item-score bold" horizontalAlignment="right"></Label>
         <Label row="2" col="1" text="PAS" class="card-item-name" horizontalAlignment="left"></Label>
-        <Label row="2" col="2" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"></Label>
-        <Label row="2" col="3" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
+        <Label row="2" col="3" :text="score('PHY')" class="card-item-score bold" horizontalAlignment="right"></Label>
+        <Label row="2" col="4" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
       </GridLayout>
 
       <Label row="4" colSpan="2" :text="showOwnMeasurements ? 'practice' : 'official'" horizontalAlignment="center" verticalAlignment="center" class="m-b-30" v-if="!players.length"></Label>
@@ -65,6 +65,7 @@
 </template>
 
 <script lang="ts">
+  import { screen } from "tns-core-modules/platform";
   import { applicationSettingsService, authService, editingUserService } from "~/main";
   import { EventBus } from "~/services/event-bus";
   import { getPlayersInTeam } from "~/services/TeamService";
@@ -115,6 +116,7 @@
 
     data() {
       return {
+        isSmallScreen: screen.mainScreen.widthDIPs <= 350, // fi. iPhone 5(s)/SE is 320
         player: editingUserService.userWrapper.user,
         players: [],
         getPlayerImageRows: string => {
@@ -124,8 +126,7 @@
           return Array.from({length: this.nrOfPlayerImageCols()}, (v, k) => "auto").join(",");
         },
         nrOfPlayerImageRows: number => {
-          const rows = Math.ceil(this.players.length / this.nrOfPlayerImageCols());
-          return rows;
+          return Math.ceil(this.players.length / this.nrOfPlayerImageCols());
         },
         nrOfPlayerImageCols: number => {
           if (this.players.length > 15) {
@@ -194,6 +195,10 @@
     font-size: 48;
   }
 
+  .small-screen-true .card-score {
+    font-size: 40;
+  }
+
   .card-role {
     font-size: 25;
     margin-bottom: 20;
@@ -202,6 +207,11 @@
   .card-photo {
     width: 150;
     height: 150;
+  }
+
+  .small-screen-true .card-photo {
+    width: 130;
+    height: 130;
   }
 
   .card-photo-team {
@@ -213,9 +223,19 @@
     height: 72;
   }
 
+  .small-screen-true .card-photo-team-2 {
+    width: 56;
+    height: 56;
+  }
+
   .card-photo-team-3 {
     width: 63;
     height: 63;
+  }
+
+  .small-screen-true .card-photo-team-3 {
+    width: 46;
+    height: 46;
   }
 
   .card-photo-team-4 {
@@ -223,14 +243,29 @@
     height: 52;
   }
 
+  .small-screen-true .card-photo-team-4 {
+    width: 40;
+    height: 40;
+  }
+
   .card-photo-team-5 {
     width: 45;
     height: 45;
   }
 
+  .small-screen-true .card-photo-team-5 {
+    width: 36;
+    height: 36;
+  }
+
   .card-photo-team-6 {
     width: 36;
     height: 36;
+  }
+
+  .small-screen-true .card-photo-team-6 {
+    width: 31;
+    height: 31;
   }
 
   .card-photo-trainer {
@@ -242,7 +277,10 @@
   .card-name {
     color: #4e66df;
     font-size: 25;
-    /*text-transform: uppercase;*/
+  }
+
+  .small-screen-true .card-name {
+    font-size: 22;
   }
 
   .card-age {
@@ -257,8 +295,18 @@
     margin-bottom: 4;
   }
 
+  .small-screen-true .card-item-score {
+    font-size: 20;
+    padding-right: 3;
+    margin-bottom: 0;
+  }
+
   .card-item-name {
     font-size: 22;
     vertical-align: center;
+  }
+
+  .small-screen-true .card-item-name {
+    font-size: 18;
   }
 </style>
