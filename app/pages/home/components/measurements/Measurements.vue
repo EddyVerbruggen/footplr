@@ -38,7 +38,7 @@
                     @tap="addMeasurement(item)"></Button>
           </GridLayout>
           <Label row="1" class="latest-measurement-date" horizontalAlignment="right"
-                 :text="item.hasMeasurement ? item.latestMeasurement + ' ' + item.exerciseUnit + ' op ' + item.latestMeasurementDate : ' '"></Label>
+                 :text="isTeamSelected ? ' ' : item.hasMeasurement ? item.latestMeasurement + ' ' + item.exerciseUnit + ' op ' + item.latestMeasurementDate : ' '"></Label>
         </GridLayout>
       </v-template>
     </ListView>
