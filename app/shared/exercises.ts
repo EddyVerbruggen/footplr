@@ -157,7 +157,7 @@ export class Exercise {
     } else if (this.scoretype === "POINTS") {
       return "punten"
     } else if (this.scoretype === "DISTANCE") {
-      return "meter"
+      return this.abbrev === "AALA" ? "cm" : "meter";
     } else if (this.scoretype === "COUNT") {
       return input ? "aantal" : "stuks";
     } else if (this.scoretype === "TIME") {
