@@ -1,18 +1,22 @@
 <template>
-  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*" v-bind:class="'small-screen-' + isSmallScreen">
+  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*"
+              v-bind:class="'small-screen-' + isSmallScreen + ' landscape-' + isLandscape">
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
     <StackLayout row="1" verticalAlignment="top" v-if="isSelf">
-      <Label text="football player ratings" class="page-title" horizontalAlignment="center" v-if="!isTrainer || players.length"></Label>
-      <GridLayout columns="auto, auto" class="m-t-10" horizontalAlignment="center" v-if="!players.length">
+      <Label text="football player ratings" class="page-title" horizontalAlignment="center"
+             v-if="!isTrainer || players.length"></Label>
+      <GridLayout columns="auto, auto" v-bind:class="isLandscape ? '' : 'm-t-10'" horizontalAlignment="center" v-if="!players.length">
         <Switch v-model="showOwnMeasurements"></Switch>
         <Label col="1" text="toon ook eigen metingen" class="p-10" @tap="toggleShowOwnMeasurements"></Label>
       </GridLayout>
     </StackLayout>
 
-    <GridLayout row="2" rows="65*, 13*, 9*, 40*, 24*" columns="19*, 64*" horizontalAlignment="center" verticalAlignment="center" width="88%">
-      <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
+    <GridLayout row="2" rows="65*, 13*, 9*, 40*, 24*" columns="19*, 64*"
+                horizontalAlignment="center" verticalAlignment="center" v-bind:width="isLandscape ? '26%' : '88%'">
+      <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official.png'"
+           width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <GridLayout row="0" col="1" :rows="getPlayerImageRows()" :columns="getPlayerImageColumns()"
                   horizontalAlignment="center" verticalAlignment="bottom" class="m-x-10" v-if="players.length">
@@ -24,23 +28,32 @@
              :key="player.id"></Img>
       </GridLayout>
 
-      <Img row="0" col="1" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill" horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length"></Img>
+      <Img row="0" col="1" :src="player.picture || '~/assets/images/placeholder_player.png'" stretch="aspectFill"
+           horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length"></Img>
 
-      <Img rowSpan="5" colSpan="2" :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official_overlay.png'" width="100%" horizontalAlignment="center" verticalAlignment="center"></Img>
+      <Img rowSpan="5" colSpan="2"
+           :src="'~/assets/images/badge_' + (showOwnMeasurements ? 'un' : '') + 'official_overlay.png'" width="100%"
+           horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <StackLayout row="0" col="0" verticalAlignment="bottom">
-        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center" verticalAlignment="center"></Label>
-        <Label :text="player.position || 'positie?'" class="card-role" horizontalAlignment="center" v-if="!players.length"></Label>
-        <Img :src="self.picture || '~/assets/images/placeholder_player.png'" class="card-photo-trainer" horizontalAlignment="center" v-if="players.length && isTrainer"></Img>
+        <Label :text="score('TOTAL')" class="card-score bold" horizontalAlignment="center"
+               verticalAlignment="center"></Label>
+        <Label :text="player.position || 'positie?'" class="card-role" horizontalAlignment="center"
+               v-if="!players.length"></Label>
+        <Img :src="self.picture || '~/assets/images/placeholder_player.png'" class="card-photo-trainer"
+             horizontalAlignment="center" v-if="players.length && isTrainer"></Img>
       </StackLayout>
 
       <Img row="1" rowSpan="2" col="0" :src="club.logo" verticalAlignment="center" class="m-8" v-if="club.logo"></Img>
 
-      <Label row="1" col="1" :text="playerName" class="card-name bold" horizontalAlignment="center" verticalAlignment="bottom"></Label>
+      <Label row="1" col="1" :text="playerName" class="card-name bold" horizontalAlignment="center"
+             verticalAlignment="bottom"></Label>
 
-      <Label row="2" col="1" :text="playerAge" class="card-age bold" horizontalAlignment="center" verticalAlignment="top"></Label>
+      <Label row="2" col="1" :text="playerAge" class="card-age bold" horizontalAlignment="center"
+             verticalAlignment="top"></Label>
 
-      <GridLayout row="3" col="1" rows="auto, auto, auto" columns="2*, 2*, *, 2*, 2*" class="m-t-5" horizontalAlignment="center">
+      <GridLayout row="3" col="1" rows="auto, auto, auto" columns="2*, 2*, *, 2*, 2*" class="m-t-5"
+                  horizontalAlignment="center">
         <Label row="0" col="0" :text="score('PAC')" class="card-item-score bold" horizontalAlignment="right"></Label>
         <Label row="0" col="1" text="PAC" class="card-item-name" horizontalAlignment="left"></Label>
         <Label row="0" col="3" :text="score('DRI')" class="card-item-score bold" horizontalAlignment="right"></Label>
@@ -57,7 +70,8 @@
         <Label row="2" col="4" text="PHY" class="card-item-name" horizontalAlignment="left"></Label>
       </GridLayout>
 
-      <Label row="4" colSpan="2" :text="showOwnMeasurements ? 'practice' : 'official'" horizontalAlignment="center" verticalAlignment="center" class="m-b-30" v-if="!players.length"></Label>
+      <Label row="4" colSpan="2" :text="showOwnMeasurements ? 'practice' : 'official'" horizontalAlignment="center"
+             verticalAlignment="center" v-bind:class="isLandscape ? 'm-b-5' : 'm-b-30'" v-if="!players.length"></Label>
 
     </GridLayout>
 
@@ -66,10 +80,12 @@
 
 <script lang="ts">
   import { screen } from "tns-core-modules/platform";
+  import * as application from "tns-core-modules/application";
   import { applicationSettingsService, authService, editingUserService } from "~/main";
   import { EventBus } from "~/services/event-bus";
   import { getPlayersInTeam } from "~/services/TeamService";
   import { getAgeMonths, getAgeYears } from "~/utils/date-util";
+  import { isLandscape } from "~/utils/landscape-util";
   import PlayerSelection from "../PlayerSelection";
 
   export default {
@@ -85,6 +101,11 @@
           this.players = [];
           this.player = result.player;
         }
+      });
+
+      const that = this;
+      application.on("orientationChanged", function (arg) {
+        that.isLandscape = isLandscape();
       });
     },
 
@@ -116,7 +137,8 @@
 
     data() {
       return {
-        isSmallScreen: screen.mainScreen.widthDIPs <= 350, // fi. iPhone 5(s)/SE is 320
+        isLandscape: isLandscape(),
+        isSmallScreen: (this.isLandscape ? screen.mainScreen.heightDIPs : screen.mainScreen.widthDIPs) <= 350, // fi. iPhone 5(s)/SE is 320
         player: editingUserService.userWrapper.user,
         players: [],
         getPlayerImageRows: string => {
@@ -190,13 +212,9 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .card-score {
     font-size: 48;
-  }
-
-  .small-screen-true .card-score {
-    font-size: 40;
   }
 
   .card-role {
@@ -209,11 +227,6 @@
     height: 150;
   }
 
-  .small-screen-true .card-photo {
-    width: 130;
-    height: 130;
-  }
-
   .card-photo-team {
     margin-right: 2;
   }
@@ -223,19 +236,9 @@
     height: 72;
   }
 
-  .small-screen-true .card-photo-team-2 {
-    width: 56;
-    height: 56;
-  }
-
   .card-photo-team-3 {
     width: 63;
     height: 63;
-  }
-
-  .small-screen-true .card-photo-team-3 {
-    width: 46;
-    height: 46;
   }
 
   .card-photo-team-4 {
@@ -243,29 +246,14 @@
     height: 52;
   }
 
-  .small-screen-true .card-photo-team-4 {
-    width: 40;
-    height: 40;
-  }
-
   .card-photo-team-5 {
     width: 45;
     height: 45;
   }
 
-  .small-screen-true .card-photo-team-5 {
-    width: 36;
-    height: 36;
-  }
-
   .card-photo-team-6 {
     width: 36;
     height: 36;
-  }
-
-  .small-screen-true .card-photo-team-6 {
-    width: 31;
-    height: 31;
   }
 
   .card-photo-trainer {
@@ -277,10 +265,6 @@
   .card-name {
     color: #4e66df;
     font-size: 25;
-  }
-
-  .small-screen-true .card-name {
-    font-size: 22;
   }
 
   .card-age {
@@ -295,18 +279,119 @@
     margin-bottom: 4;
   }
 
-  .small-screen-true .card-item-score {
-    font-size: 20;
-    padding-right: 3;
-    margin-bottom: 0;
-  }
-
   .card-item-name {
     font-size: 22;
     vertical-align: center;
   }
 
-  .small-screen-true .card-item-name {
-    font-size: 18;
+  .small-screen-true {
+    .card-score {
+      font-size: 40;
+    }
+
+    .card-photo {
+      width: 130;
+      height: 130;
+    }
+
+    .card-name {
+      font-size: 22;
+    }
+
+    .card-item-name {
+      font-size: 18;
+    }
+
+    .card-item-score {
+      font-size: 20;
+      padding-right: 3;
+      margin-bottom: 0;
+    }
+
+    .card-photo-team-2 {
+      width: 56;
+      height: 56;
+    }
+
+    .card-photo-team-3 {
+      width: 46;
+      height: 46;
+    }
+
+    .card-photo-team-4 {
+      width: 40;
+      height: 40;
+    }
+
+    .card-photo-team-5 {
+      width: 36;
+      height: 36;
+    }
+
+    .card-photo-team-6 {
+      width: 31;
+      height: 31;
+    }
+  }
+
+  .landscape-true {
+    .card-score {
+      font-size: 26;
+    }
+
+    .card-role {
+      font-size: 20;
+      margin-bottom: 10;
+    }
+
+    .card-photo {
+      width: 74;
+      height: 74;
+    }
+
+    .card-name {
+      font-size: 15;
+    }
+
+    .card-item-name {
+      font-size: 14;
+    }
+
+    .card-item-score {
+      font-size: 14;
+      padding-right: 2;
+      margin-bottom: 0;
+    }
+
+    .card-photo-team-2 {
+      width: 36;
+      height: 36;
+    }
+
+    .card-photo-team-3 {
+      width: 26;
+      height: 26;
+    }
+
+    .card-photo-team-4 {
+      width: 22;
+      height: 22;
+    }
+
+    .card-photo-team-5 {
+      width: 18;
+      height: 18;
+    }
+
+    .card-photo-team-6 {
+      width: 16;
+      height: 16;
+    }
+
+    .card-photo-trainer {
+      width: 40;
+      height: 40;
+      margin-bottom: 3;
+    }
   }
 </style>

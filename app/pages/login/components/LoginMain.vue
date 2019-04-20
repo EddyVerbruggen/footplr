@@ -76,6 +76,12 @@
 
     mounted() {
       this.appVersion = `v ${AppVersion.getVersionNameSync()} (${AppVersion.getVersionCodeSync()})`;
+
+      // setTimeout(() => {
+      //   this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
+      //   this.user.password = "xs4all";
+      //   this.login();
+      // }, 1000);
     },
 
     methods: {
