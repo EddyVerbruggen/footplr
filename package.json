@@ -7,10 +7,10 @@
   "nativescript": {
     "id": "com.footballplayerratings.app",
     "tns-ios": {
-      "version": "5.2.0"
+      "version": "5.3.1"
     },
     "tns-android": {
-      "version": "5.2.0"
+      "version": "5.3.1"
     }
   },
   "scripts": {
@@ -35,7 +35,7 @@
     "nativescript-theme-core": "~1.0.4",
     "nativescript-vue": "~2.0.2",
     "nativescript-web-image-cache": "git+https://github.com/EddyVerbruggen/nativescript-web-image-cache.git#2b7a51a36a289b39132daabca045e92784a26d70",
-    "tns-core-modules": "~5.2.2",
+    "tns-core-modules": "5.3.1",
     "vue-hot-reload-api": "~2.3.3"
   },
   "devDependencies": {
@@ -57,7 +57,7 @@
     "node-sass": "^4.9.2",
     "sass-loader": "^7.1.0",
     "terser-webpack-plugin": "^1.1.0",
-    "tns-platform-declarations": "~5.2.2",
+    "tns-platform-declarations": "5.3.1",
     "typescript": "~3.2.4",
     "vue-loader": "^15.2.6",
     "webpack": "^4.16.4",
