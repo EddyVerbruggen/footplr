@@ -58,7 +58,7 @@
       formatElapsed() {
         let elapsed = "" + this.elapsed;
         while (elapsed.substring(elapsed.indexOf(".")).length < 3) {
-          elapsed += (elapsed.indexOf(".") === -1 ? "." : "0");
+          elapsed += (elapsed.includes(".") ? "0" : ".");
         }
         this.elapsedFormatted = elapsed;
       },

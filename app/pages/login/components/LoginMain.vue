@@ -166,10 +166,10 @@
                 }
               }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
-            .catch(error => {
+            .catch((error: string) => {
               this.isAuthenticating = false;
               console.error(error);
-              if (error.indexOf("The password is invalid") > -1) {
+              if (error.includes("The password is invalid")) {
                 // user found
                 alert("Dat wachtwoord lijkt niet te kloppen.\nProbeer het nog eens.");
               } else {
