@@ -166,38 +166,41 @@
                 }
               }).then(() => console.log(`Set appVersion to ${this.appVersion} for user`));
             })
-            .catch((error: string) => {
+            .catch(error => {
               this.isAuthenticating = false;
               console.error(error);
-              if (error.includes("The password is invalid")) {
-                // user found
-                alert("Dat wachtwoord lijkt niet te kloppen.\nProbeer het nog eens.");
-              } else {
-                // no user found
-                prompt({
-                  title: "Bevestig je e-mail adres",
-                  defaultText: this.user.email,
-                  okButtonText: "Verder >",
-                  cancelButtonText: "Annuleren"
-                }).then(data => {
-                  if (data.result && data.text && data.text.trim().length > 4) {
-                    this.user.email = data.text.trim();
-                    prompt({
-                      title: `Bevestig je wachtwoord`,
-                      message: `Voor je nieuwe account\n${this.user.email}`,
-                      defaultText: this.user.password,
-                      okButtonText: "Registreren",
-                      cancelButtonText: "Annuleren"
-                    }).then(data => {
-                      if (data.result && data.text && data.text.trim().length > 0) {
-                        console.log("data.result: " + JSON.stringify(data));
-                        this.user.password = data.text.trim();
-                        this.signUp();
-                      }
-                    });
-                  }
-                });
-              }
+              alert("Dat lijkt niet te kloppen.\nProbeer het nog eens.");
+              /*
+            if (error.includes("The password is invalid")) {
+              // user found
+              alert("Dat wachtwoord lijkt niet te kloppen.\nProbeer het nog eens.");
+            } else {
+              // no user found
+              prompt({
+                title: "Bevestig je e-mail adres",
+                defaultText: this.user.email,
+                okButtonText: "Verder >",
+                cancelButtonText: "Annuleren"
+              }).then(data => {
+                if (data.result && data.text && data.text.trim().length > 4) {
+                  this.user.email = data.text.trim();
+                  prompt({
+                    title: `Bevestig je wachtwoord`,
+                    message: `Voor je nieuwe account\n${this.user.email}`,
+                    defaultText: this.user.password,
+                    okButtonText: "Registreren",
+                    cancelButtonText: "Annuleren"
+                  }).then(data => {
+                    if (data.result && data.text && data.text.trim().length > 0) {
+                      console.log("data.result: " + JSON.stringify(data));
+                      this.user.password = data.text.trim();
+                      this.signUp();
+                    }
+                  });
+                }
+              });
+            }
+             */
             });
       },
 
