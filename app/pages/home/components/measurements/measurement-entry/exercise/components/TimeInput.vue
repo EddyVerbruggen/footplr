@@ -83,13 +83,13 @@
 
 <style scoped>
   Button.btn-stopwatch {
-    border-width: 4;
-    border-radius: 10;
+    border-width: 3;
+    border-radius: 8;
     border-color: #1c70b7;
     font-size: 14;
     background-color: #2699fb;
     color: #fff;
-    min-width: 120;
+    min-width: 90;
   }
 
   Button.btn-stopwatch.btn-reset {
