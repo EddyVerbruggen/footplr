@@ -250,7 +250,7 @@
       color: #d6d6d6;
       font-size: 11;
       horizontal-align: center;
-      margin-top: 10;
+      margin-top: 4;
     }
 
     .main-container {
@@ -306,7 +306,7 @@
       font-size: 13;
       color: #888888;
       text-align: center;
-      margin-top: 6;
+      padding: 6;
     }
 
     .sign-up-stack {
