@@ -12,7 +12,7 @@ export default class ApplicationSettingsService {
 
   constructor() {
     this._username = ApplicationSettings.getString(ApplicationSettingsService.APP_SETTINGS_KEYS.USERNAME, null);
-    this._showOwnMeasurements = ApplicationSettings.getBoolean(ApplicationSettingsService.APP_SETTINGS_KEYS.SHOW_OWN_MEASUREMENTS, false);
+    this._showOwnMeasurements = ApplicationSettings.getBoolean(ApplicationSettingsService.APP_SETTINGS_KEYS.SHOW_OWN_MEASUREMENTS, true);
   }
 
   public isShowOwnMeasurements(): boolean {
