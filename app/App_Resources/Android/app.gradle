@@ -5,6 +5,10 @@ android {
     generatedDensities = []
     multiDexEnabled true
     applicationId = "com.footballplayerratings.app"
+    ndk {
+      abiFilters.clear()
+      abiFilters.addAll(['armeabi-v7a','arm64-v8a'])
+    }
   }
 
   dexOptions {
