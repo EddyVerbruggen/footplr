@@ -15,6 +15,7 @@ app/**/*.js
 !app/router/index.js
 
 *.log
+*.map
 
 firebase/functions/lib
 firebase/functions/src/shared

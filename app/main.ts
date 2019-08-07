@@ -1,17 +1,13 @@
 import Vue from "nativescript-vue"
 import { isIOS } from "tns-core-modules/platform";
-import ApplicationSettingsService from "~/services/ApplicationSettingsService";
 import routes from "./router";
 import AuthService from "./services/AuthService"
 import EditingUserService from "./services/EditingUserService"
-// To include the stylesheets, use this:
-import "./styles.scss";
 
 require ("nativescript-plugin-firebase");
 
 export const authService = new AuthService();
 export const editingUserService = new EditingUserService();
-export const applicationSettingsService = new ApplicationSettingsService();
 
 declare const IQKeyboardManager: any;
 if (isIOS) {
