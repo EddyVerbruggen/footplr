@@ -88,7 +88,11 @@
 
               this.goToNexPage();
             })
-            .catch(error => console.log(`firebase.init error: ${error}`));
+            .catch(error => {
+              // this can happen when the app was backgrounded on Android with the back button
+              console.log(`firebase.init error: ${error}`);
+              this.goToNexPage();
+            });
       }
     }
   };
