@@ -44,6 +44,7 @@
       </StackLayout>
 
       <Img row="1" rowSpan="2" col="0" :src="club.logo" verticalAlignment="center" class="m-8" v-if="club && club.logo"></Img>
+      <Img row="1" rowSpan="2" col="0" src="~/assets/images/fpr-logo-128.png" verticalAlignment="center" class="m-8" v-if="!club || !club.logo"></Img>
 
       <Label row="1" col="1" :text="playerName" class="card-name bold" horizontalAlignment="center" verticalAlignment="bottom"></Label>
 
