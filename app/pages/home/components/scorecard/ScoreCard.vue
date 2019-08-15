@@ -1,6 +1,5 @@
 <template>
-  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*"
-              v-bind:class="'small-screen-' + isSmallScreen + ' landscape-' + isLandscape">
+  <GridLayout rows="auto, auto, *" class="m-b-30" columns="*" v-bind:class="'small-screen-' + isSmallScreen + ' landscape-' + isLandscape">
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
@@ -44,13 +43,11 @@
              horizontalAlignment="center" v-if="players.length && isTrainer"></Img>
       </StackLayout>
 
-      <Img row="1" rowSpan="2" col="0" :src="club.logo" verticalAlignment="center" class="m-8" v-if="club.logo"></Img>
+      <Img row="1" rowSpan="2" col="0" :src="club.logo" verticalAlignment="center" class="m-8" v-if="club && club.logo"></Img>
 
-      <Label row="1" col="1" :text="playerName" class="card-name bold" horizontalAlignment="center"
-             verticalAlignment="bottom"></Label>
+      <Label row="1" col="1" :text="playerName" class="card-name bold" horizontalAlignment="center" verticalAlignment="bottom"></Label>
 
-      <Label row="2" col="1" :text="playerAge" class="card-age bold" horizontalAlignment="center"
-             verticalAlignment="top"></Label>
+      <Label row="2" col="1" :text="playerAge" class="card-age bold" horizontalAlignment="center" verticalAlignment="top"></Label>
 
       <GridLayout row="3" col="1" rows="auto, auto, auto" columns="2*, 2*, *, 2*, 2*" class="m-t-5"
                   horizontalAlignment="center">
@@ -74,6 +71,7 @@
              verticalAlignment="center" v-bind:class="isLandscape ? 'm-b-5' : 'm-b-30'" v-if="!players.length"></Label>
 
     </GridLayout>
+  </GridLayout>
 
   </GridLayout>
 </template>

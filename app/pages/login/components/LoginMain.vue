@@ -147,7 +147,8 @@
               this.$editingUserService.userWrapper.team = undefined;
               this.$editingUserService.userWrapper.user = this.$authService.userWrapper.user;
               this.$editingUserService.watchUser();
-              this.$navigateTo(routes.home, {clearHistory: true});
+              this.$navigateTo(routes.home, {clearHistory: true})
+                  .catch(err => console.log("Error navigating to Home: " + err));
               this.visible = false;
               setUserId(this.$authService.userWrapper.user.id);
               if (this.$authService.userWrapper.user.trains) {
