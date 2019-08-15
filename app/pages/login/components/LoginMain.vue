@@ -153,7 +153,7 @@
               if (this.$authService.userWrapper.user.trains) {
                 setUserPropertyUsertype("trainer");
               }
-              if (this.$authService.userWrapper.user.playsin) {
+              if (this.$authService.userWrapper.user.playsin || !this.$authService.userWrapper.user.trains) {
                 setUserPropertyUsertype("player");
               }
               // set the current app version for this user - may come in handy when helping users
