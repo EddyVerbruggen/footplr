@@ -107,6 +107,7 @@
 
         const data = [];
         const labels = [];
+        let highestMeasurement = 0;
 
         let q = editingUserService.userRef
             .collection("measurements")
@@ -125,6 +126,9 @@
               m.forEach(s => {
                 const measurementData = s.data();
                 const date = formatDate(measurementData.date);
+                if (measurementData.measurement > highestMeasurement) {
+                  highestMeasurement = measurementData.measurement;
+                }
                 measurementList.push({
                   id: index++,
                   ref: s.ref,
@@ -160,7 +164,7 @@
                 datasets,
                 labels,
                 reverseBounds: exercise.scoreCalculationType === "HIGH_LOW",
-                bounds: {min: exercise.lowbound, max: exercise.highbound}
+                bounds: {min: exercise.lowbound, max: Math.max(exercise.highbound, highestMeasurement)}
               })}`;
             })
             .catch(err => console.log(err));
