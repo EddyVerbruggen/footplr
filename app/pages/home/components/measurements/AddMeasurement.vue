@@ -3,21 +3,20 @@
     <GridLayout id="addView" @loaded="onViewLoaded" rows="auto, auto, auto, *, auto" columns="*, *"
                 horizontalAlignment="center" verticalAlignment="top" style="margin-bottom: 200" height="100%">
 
-      <GridLayout id="header" colSpan="2" rows="2*, *" columns="auto, *" class="p-r-20 p-t-20"
-                  :class="'background-color-score-' + scoreClass">
-        <Image :src="'~/assets/images/exercises/' + exercise + '.png'" height="70" class="m-l-12 m-t-12"
-               horizontalAlignment="left" verticalAlignment="top"></Image>
-        <Label col="1" :text="exerciseTranslated" class="bold exercise" width="70%" textWrap="true"
-               style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom"></Label>
-        <Label row="1" :text="(isTeam ? 'Team gemiddelde: ' : 'Vorige meting: ') + previousMeasurement"
-               class="previous-score bold" verticalAlignment="bottom"
+      <GridLayout id="header" colSpan="2" rows="2*, *" columns="auto, *" class="p-r-20 p-t-20" :class="'background-color-score-' + scoreClass">
+        <Image :src="'~/assets/images/exercises/' + exercise + '.png'" height="70" class="m-l-12 m-t-12" horizontalAlignment="left" verticalAlignment="top" v-show="!showExplanation"></Image>
+        <Label col="1" :text="exerciseTranslated" class="bold exercise" width="70%" textWrap="true" style="text-align: right" horizontalAlignment="right" verticalAlignment="bottom" v-show="!showExplanation"></Label>
+        <Label row="1" :text="(isTeam ? 'Team gemiddelde: ' : 'Vorige meting: ') + previousMeasurement" class="previous-score bold" verticalAlignment="bottom"
                v-show="!showExplanation && previousMeasurement"></Label>
-        <Button row="1" col="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140"
-                @tap="toggleShowExplanation()"
+        <Button row="1" col="1" text="UITLEG" class="btn btn-secondary btn-explanation" width="140" @tap="toggleShowExplanation()"
                 horizontalAlignment="right" v-show="!showExplanation"></Button>
-        <Label row="1" colSpan="2" class="c-white m-20 p-t-10" textWrap="true" verticalAlignment="top"
-               :text="getExplanation()"
-               v-show="showExplanation"></Label>
+
+        <StackLayout row="0" rowSpan="2" colSpan="2" class="c-white m-20 p-t-20" v-show="showExplanation">
+          <YoutubePlayer height="200" width="100%" horizontalAlignment="center" :src="getYouTubeId()" apiKey="AIzaSyDKAkonx9JxVQHTD6jDdQgqOuSBZBnn-BQ" v-if="getYouTubeId()"/>
+          <Label row="1" textWrap="true" verticalAlignment="top" class="m-t-20 explanation" :text="getExplanation()"></Label>
+          <Button text="UITLEG SLUITEN" class="btn btn-secondary btn-explanation-close" :class="'color-score-' + scoreClass" @tap="toggleShowExplanation()"></Button>
+        </StackLayout>
+
       </GridLayout>
 
       <Timer row="2" colSpan="2" :duration="timerDuration()" label="Start meting" :hint="timerHint()" class="m-t-10"
@@ -43,11 +42,9 @@
         </GridLayout>
       </ScrollView>
 
-      <GridLayout row="4" colSpan="2" columns="*, *">
-        <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal" v-show="!showExplanation"></Button>
-        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore" v-show="!showExplanation"></Button>
-        <Button col="1" text="TERUG" class="btn btn-secondary-colorless" :class="'color-score-' + scoreClass"
-                @tap="toggleShowExplanation()" v-show="showExplanation"></Button>
+      <GridLayout row="4" colSpan="2" columns="*, *" v-show="!showExplanation">
+        <Button col="0" text="ANNULEREN" class="btn btn-secondary" @tap="closeModal"></Button>
+        <Button col="1" text="OPSLAAN" class="btn btn-primary" @tap="saveScore"></Button>
       </GridLayout>
     </GridLayout>
   </Page>
@@ -155,6 +152,10 @@
         return translateExerciseExplanation(this.exercise);
       },
 
+      getYouTubeId: function () {
+        return Excercises[this.exercise].youTubeId;
+      },
+
       closeModal(event) {
         dismissKeyboard(event.object);
         this.$modal.close(false);
@@ -211,11 +212,22 @@
     color: #fff;
   }
 
+  Label.explanation {
+    font-size: 13;
+  }
+
   Button.btn-explanation {
     border-width: 2;
     border-color: #fff;
     color: #fff;
     margin: 16 0 16 0;
+  }
+
+  Button.btn-explanation-close {
+    border-width: 2;
+    border-color: #fff;
+    color: #fff;
+    margin: 24 0 400 0;
   }
 
   .player-row {

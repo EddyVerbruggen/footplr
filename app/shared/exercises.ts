@@ -127,6 +127,7 @@ export type ScoreCalculationType = "LOW_HIGH" | "HIGH_LOW";
 
 export class Exercise {
   constructor(public abbrev: string,
+              public youTubeId: string,
               public categories: Array<Category>, // TODO can be removed; only relevant for firebase function (which uses its own category mapping)
               public scoretype: ScoreType,
               public scoreCalculationType: ScoreCalculationType,
@@ -180,21 +181,21 @@ export class Exercise {
 
 // Note that the order here determines what the order is on-screen
 export const Excercises: { [t in ExerciseType]: Exercise } = {
-  PUSH_UPS: new Exercise("PUSH", ["PHY"], "COUNT", "LOW_HIGH", 0, 61, 16),
-  SIT_UPS: new Exercise("SITU", ["PHY"], "COUNT", "LOW_HIGH", 0, 55, 16),
-  CONTROL_HIGH_BALL: new Exercise("AAHO", ["TEC"], "POINTS", "LOW_HIGH", 0, 130, 12),
-  EXPLOSIVENESS: new Exercise("EXPL", ["PAC", "PHY"], "TIME", "HIGH_LOW", 7, 13),
-  SPRINT: new Exercise("SPRI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.32, 8.0),
-  HEARTRATE: new Exercise("HERS", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0, 70, 16),
-  PASSING_MOVEMENTS: new Exercise("TRIC", ["TEC"], "COUNT", "LOW_HIGH", 0, 20, 12),
-  DRIBBLE: new Exercise("DRTE", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
-  AGILITY: new Exercise("TTES", ["PAC"], "TIME", "HIGH_LOW", 8, 14, 12),
-  STAMINA: new Exercise("ISRT", ["PAC", "PHY"], "COUNT", "LOW_HIGH", 0, 125, 12),
-  SHOT_STRENGTH: new Exercise("SCHI", ["SHO"], "SPEED", "LOW_HIGH", 0, 150),
-  JUMP_HEIGHT: new Exercise("SPRO", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 77, 16),
-  CROSSPASS: new Exercise("CRPS", ["PAS"], "DISTANCE", "LOW_HIGH", 0, 90, 12),
-  AIM: new Exercise("MIKK", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH", 0, 100),
-  SPEED_OF_ACTION: new Exercise("HAND", ["PAC", "PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 50, 12),
-  HEADER_HEIGHT: new Exercise("KOPS", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300),
-  CONTROL_LOW_BALL: new Exercise("AALA", ["TEC"], "DISTANCE", "HIGH_LOW", 0, 100, 12),
+  PUSH_UPS: new Exercise("PUSH", "ysrkumUplrI", ["PHY"], "COUNT", "LOW_HIGH", 0, 61, 16),
+  SIT_UPS: new Exercise("SITU", "jkKhPD3CaJY", ["PHY"], "COUNT", "LOW_HIGH", 0, 55, 16),
+  CONTROL_HIGH_BALL: new Exercise("AAHO", "TsprnAlWTaY", ["TEC"], "POINTS", "LOW_HIGH", 0, 130, 12),
+  EXPLOSIVENESS: new Exercise("EXPL", undefined, ["PAC", "PHY"], "TIME", "HIGH_LOW", 7, 13),
+  SPRINT: new Exercise("SPRI", "Db84D_s4DTI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.32, 8.0),
+  HEARTRATE: new Exercise("HERS", undefined, ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0, 70, 16),
+  PASSING_MOVEMENTS: new Exercise("TRIC", "kbfxpa2t0cI", ["TEC"], "COUNT", "LOW_HIGH", 0, 20, 12),
+  DRIBBLE: new Exercise("DRTE", "h9dwN4RlVOs", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
+  AGILITY: new Exercise("TTES", undefined, ["PAC"], "TIME", "HIGH_LOW", 8, 14, 12),
+  STAMINA: new Exercise("ISRT", "ghq4rnYyI7Y", ["PAC", "PHY"], "COUNT", "LOW_HIGH", 0, 125, 12),
+  SHOT_STRENGTH: new Exercise("SCHI", undefined, ["SHO"], "SPEED", "LOW_HIGH", 0, 150),
+  JUMP_HEIGHT: new Exercise("SPRO", undefined, ["PHY"], "HEIGHT", "LOW_HIGH", 0, 77, 16),
+  CROSSPASS: new Exercise("CRPS", undefined, ["PAS"], "DISTANCE", "LOW_HIGH", 0, 90, 12),
+  AIM: new Exercise("MIKK", "3b3lQMI6nrs", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH", 0, 100),
+  SPEED_OF_ACTION: new Exercise("HAND", undefined, ["PAC", "PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 50, 12),
+  HEADER_HEIGHT: new Exercise("KOPS", "UCLf4CKyGHM", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300),
+  CONTROL_LOW_BALL: new Exercise("AALA", undefined, ["TEC"], "DISTANCE", "HIGH_LOW", 0, 100, 12),
 };

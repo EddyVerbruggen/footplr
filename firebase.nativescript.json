@@ -8,7 +8,7 @@
     "authentication": true,
     "remote_config": false,
     "messaging": false,
-    "crashlytics": true,
+    "crashlytics": false,
     "crash_reporting": false,
     "performance_monitoring": true,
     "storage": true,
