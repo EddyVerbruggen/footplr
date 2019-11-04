@@ -20,8 +20,9 @@ if (isIOS) {
 }
 
 // (<any>Vue).registerElement('WebImage', () => require('nativescript-web-image-cache').WebImage);
-(<any>Vue).registerElement('NumericKeyboard', () => require('nativescript-numeric-keyboard').NumericKeyboardView);
-(<any>Vue).registerElement('YoutubePlayer', () => require('nativescript-youtubeplayer').YoutubePlayer);
+(<any>Vue).registerElement("NumericKeyboard", () => require("nativescript-numeric-keyboard").NumericKeyboardView);
+(<any>Vue).registerElement("YoutubePlayer", () => require("nativescript-youtubeplayer").YoutubePlayer);
+(<any>Vue).registerElement("PDFView", () => require("nativescript-pdf-view").PDFView);
 
 const v = <any>Vue;
 declare const TNS_ENV: any;

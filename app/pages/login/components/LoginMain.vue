@@ -54,9 +54,14 @@
   import alert from "~/utils/alert"
   import { setUserId, setUserPropertyUsertype } from "~/utils/analytics-util";
   import { dismissKeyboard } from "~/utils/keyboard-util";
+  import AcceptTermsAndConditions from "./AcceptTermsAndConditions.vue"
 
   export default {
     name: 'login-main',
+
+    components: {
+      AcceptTermsAndConditions
+    },
 
     props: {
       visible: true
@@ -170,54 +175,62 @@
             .catch(error => {
               this.isAuthenticating = false;
               console.error(error);
-              alert("Dat lijkt niet te kloppen.\nProbeer het nog eens.");
-              /*
-            if (error.includes("The password is invalid")) {
-              // user found
-              alert("Dat wachtwoord lijkt niet te kloppen.\nProbeer het nog eens.");
-            } else {
-              // no user found
-              prompt({
-                title: "Bevestig je e-mail adres",
-                defaultText: this.user.email,
-                okButtonText: "Verder >",
-                cancelButtonText: "Annuleren"
-              }).then(data => {
-                if (data.result && data.text && data.text.trim().length > 4) {
-                  this.user.email = data.text.trim();
-                  prompt({
-                    title: `Bevestig je wachtwoord`,
-                    message: `Voor je nieuwe account\n${this.user.email}`,
-                    defaultText: this.user.password,
-                    okButtonText: "Registreren",
-                    cancelButtonText: "Annuleren"
-                  }).then(data => {
-                    if (data.result && data.text && data.text.trim().length > 0) {
-                      console.log("data.result: " + JSON.stringify(data));
-                      this.user.password = data.text.trim();
-                      this.signUp();
-                    }
-                  });
-                }
-              });
-            }
-             */
+
+              if (error.includes("The password is invalid")) {
+                // user found
+                alert("Dat wachtwoord lijkt niet te kloppen.\nProbeer het nog eens.");
+              } else {
+                // no user found
+                prompt({
+                  title: "Bevestig je e-mail adres",
+                  defaultText: this.user.email,
+                  okButtonText: "Verder >",
+                  cancelButtonText: "Annuleren"
+                }).then(data => {
+                  if (data.result && data.text && data.text.trim().length > 4) {
+                    this.user.email = data.text.trim();
+                    prompt({
+                      title: `Bevestig je wachtwoord`,
+                      message: `Voor je nieuwe account\n${this.user.email}`,
+                      defaultText: this.user.password,
+                      okButtonText: "Registreren",
+                      cancelButtonText: "Annuleren"
+                    }).then(data => {
+                      if (data.result && data.text) {
+                        if (data.text.trim().length < 6) {
+                          alert("Het wachtwoord dient tenminste 6 tekens lang te zijn.");
+                        } else {
+                          console.log("data.result: " + JSON.stringify(data));
+                          this.user.password = data.text.trim();
+                          this.signUp();
+                        }
+                      }
+                    });
+                  }
+                });
+              }
             });
       },
 
-      // TODO perhaps it's better for now to not allow users registering
       signUp() {
         if (getConnectionType() === connectionType.none) {
           alert("Om te kunnen registreren is een Internetverbinding vereist")
           return;
         }
-        this.$authService
-            .register(this.user.email, this.user.password)
-            .then(() => {
-              alert("Je account is succesvol aangemaakt. Welkom!");
-              this.login();
-            })
-            .catch(error => alert(error));
+
+        // show terms & conditions - create account upon close
+        this.$showModal(AcceptTermsAndConditions, {
+          fullscreen: true,
+        }).then(() => {
+          console.log(">> back from modal; creating account (TODO enable)");
+          this.$authService
+              .register(this.user.email, this.user.password)
+              .then(() => {
+                alert("Je account is succesvol aangemaakt. Welkom!");
+                this.login();
+              })
+              .catch(error => alert(error));
+        });
       },
 
       forgotPassword() {
