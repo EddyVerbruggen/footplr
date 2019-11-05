@@ -1,7 +1,7 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>
-<!--    <Image src="~/assets/images/fpr-logo-full.png" width="200"></Image>-->
+<!--    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>-->
+    <Image src="~/assets/images/fpr-logo-full.png" width="200"></Image>
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
       <TextField
@@ -182,7 +182,8 @@
               } else {
                 // no user found
                 prompt({
-                  title: "Bevestig je e-mail adres",
+                  title: "Welkom bij Football Player Rating!",
+                  message: "Vul hier het emailadres in waarmee je je wilt aanmelden bij de app:",
                   defaultText: this.user.email,
                   okButtonText: "Verder >",
                   cancelButtonText: "Annuleren"
@@ -190,8 +191,8 @@
                   if (data.result && data.text && data.text.trim().length > 4) {
                     this.user.email = data.text.trim();
                     prompt({
-                      title: `Bevestig je wachtwoord`,
-                      message: `Voor je nieuwe account\n${this.user.email}`,
+                      title: `Kies een wachtwoord`,
+                      message: `Het wachtwoord dient tenminste 6 tekens lang te zijn`,
                       defaultText: this.user.password,
                       okButtonText: "Registreren",
                       cancelButtonText: "Annuleren"
@@ -200,7 +201,6 @@
                         if (data.text.trim().length < 6) {
                           alert("Het wachtwoord dient tenminste 6 tekens lang te zijn.");
                         } else {
-                          console.log("data.result: " + JSON.stringify(data));
                           this.user.password = data.text.trim();
                           this.signUp();
                         }
@@ -222,14 +222,17 @@
         this.$showModal(AcceptTermsAndConditions, {
           fullscreen: true,
         }).then(() => {
-          console.log(">> back from modal; creating account (TODO enable)");
+          this.isAuthenticating = true;
           this.$authService
               .register(this.user.email, this.user.password)
               .then(() => {
-                alert("Je account is succesvol aangemaakt. Welkom!");
+                alert("Je account is aangemaakt. Welkom!");
                 this.login();
               })
-              .catch(error => alert(error));
+              .catch(error => {
+                this.isAuthenticating = false;
+                alert(error);
+              });
         });
       },
 

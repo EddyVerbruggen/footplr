@@ -1,8 +1,7 @@
 <template>
   <Page>
     <GridLayout rows="*, auto" verticalAlignment="top" height="100%">
-      <!-- TODO change to the actual terms -->
-      <PDFView row="0" height="100%" width="100%" src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" verticalAlignment="top"></PDFView>
+      <PDFView row="0" height="100%" width="100%" src="https://www.footballplayerratings.nl/wp-content/uploads/2019/11/algemene-voorwaarden-voor-apps-1572692335.pdf" verticalAlignment="top"></PDFView>
       <Button row="1" text="IK ACCEPTEER DEZE VOORWAARDEN" textWrap="true" class="btn btn-secondary" verticalAlignment="bottom" @tap="$modal.close()"></Button>
     </GridLayout>
   </Page>
@@ -14,7 +13,7 @@
 
   export default {
     created() {
-      // setScreenName(`terms`);
+      setScreenName(`terms`);
     }
   }
 </script>
