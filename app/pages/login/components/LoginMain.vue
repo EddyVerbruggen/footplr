@@ -182,7 +182,7 @@
               } else {
                 // no user found
                 prompt({
-                  title: "Welkom bij Football Player Rating!",
+                  title: "Welkom bij Football Player Ratings!",
                   message: "Vul hier het emailadres in waarmee je je wilt aanmelden bij de app:",
                   defaultText: this.user.email,
                   okButtonText: "Verder >",
