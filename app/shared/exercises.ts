@@ -29,7 +29,7 @@ export function translateExerciseType(input: ExerciseType): string {
   else if (input === ExerciseType.CROSSPASS) return "Crosspass / Lange bal";
   else if (input === ExerciseType.DRIBBLE) return "Dribbel";
   else if (input === ExerciseType.EXPLOSIVENESS) return "Explosiviteit";
-  else if (input === ExerciseType.SPEED_OF_ACTION) return "Handelingssnelheid";
+  else if (input === ExerciseType.SPEED_OF_ACTION) return "Passing";
   else if (input === ExerciseType.HEARTRATE) return "Herstelvermogen / Hartslag";
   else if (input === ExerciseType.HEADER_HEIGHT) return "Hoogte kopsprong";
   else if (input === ExerciseType.AIM) return "Mikken";
@@ -69,9 +69,9 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Bestudeer het parcours met behulp van onze instructiefilmpjes.";
   else if (input === ExerciseType.EXPLOSIVENESS) return "Maak vanuit stilstand 1 serie van 5 sprints, heen en weer over de afstand van achterlijn tot de 5-meter lijn.\n\n" +
       "Loop om de pylonen en vul je tijd in.";
-  else if (input === ExerciseType.SPEED_OF_ACTION) return "Leg 10 ballen gelijk verdeeld op de 16-meter lijn tussen de eindpunten van de strafschopcirkel.\n\n" +
-      "Probeer binnen 20 seconden alle ballen onder de '5' door te schieten.\n\n" +
-      "Let op: je moet alle ballen 2 keer aanraken!";
+  else if (input === ExerciseType.SPEED_OF_ACTION) return "Zet op de achterlijn 10 grote pylonen naast elkaar met tussen elke pylon een klein beetje ruimte.\n\n" +
+      "Probeer nu 'vanuit de beweging' de 10 grote pylonen om te schieten vanaf de 16 meter-lijn.\n\n" +
+      "Je mag 10 ballen schieten. Hoeveel pylonen schiet je om?";
   else if (input === ExerciseType.HEARTRATE) return "VIA TEST 'UITHOUDINGSVERMOGEN' (ISRT):\n" +
       "Meting 1. Check je hartslag middels een hartslagmeter direct wanneer je uitstapt bij de ISRT.\n\n" +
       "Meting 2. Meet een minuut na meting 1 jouw hartslag middels een hartslagmeter.\n\n\n" +
@@ -193,9 +193,9 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   STAMINA: new Exercise("ISRT", "ghq4rnYyI7Y", ["PAC", "PHY"], "COUNT", "LOW_HIGH", 0, 125, 12),
   SHOT_STRENGTH: new Exercise("SCHI", "3zXxlNIMg0U", ["SHO"], "SPEED", "LOW_HIGH", 0, 150),
   JUMP_HEIGHT: new Exercise("SPRO", "c6_GQvtBxkg", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 77, 16),
-  CROSSPASS: new Exercise("CRPS", undefined, ["PAS"], "DISTANCE", "LOW_HIGH", 0, 90, 12),
+  CROSSPASS: new Exercise("CRPS", "mrfqNLH9wgY", ["PAS"], "DISTANCE", "LOW_HIGH", 0, 90, 12),
   AIM: new Exercise("MIKK", "3b3lQMI6nrs", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH", 0, 100),
-  SPEED_OF_ACTION: new Exercise("HAND", undefined, ["PAC", "PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 50, 12),
+  SPEED_OF_ACTION: new Exercise("HAND", "0GLP93V3-wA", ["PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 10),
   HEADER_HEIGHT: new Exercise("KOPS", "UCLf4CKyGHM", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300),
   CONTROL_LOW_BALL: new Exercise("AALA", undefined, ["TEC"], "DISTANCE", "HIGH_LOW", 0, 100, 12),
 };

@@ -1,5 +1,5 @@
 <template>
-  <NumberInput :player="player" hint="score"></NumberInput>
+  <NumberInput :player="player" hint="pylonen"></NumberInput>
 </template>
 
 <script lang="ts">

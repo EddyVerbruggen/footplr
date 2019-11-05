@@ -105,13 +105,11 @@
         isTeam: !!editingUserService.userWrapper.team,
         timerHint: () => {
           if (this.exercise === "HEARTRATE") return "Tel het aantal slagen..";
-          else if (this.exercise === "SPEED_OF_ACTION") return "Tel de scores op..";
           else if (this.exercise === "CONTROL_HIGH_BALL") return "Tel de scores op..";
           else return "";
         },
         timerDuration: () => {
           if (this.exercise === "HEARTRATE") return 60;
-          else if (this.exercise === "SPEED_OF_ACTION") return 20;
           else if (this.exercise === "CONTROL_HIGH_BALL") return 30;
           else return 0;
         },
@@ -128,7 +126,7 @@
     computed: {
       showTimer: function () {
         return !this.showExplanation &&
-            (this.exercise === "HEARTRATE" || this.exercise === "SPEED_OF_ACTION" || this.exercise === "CONTROL_HIGH_BALL")
+            (this.exercise === "HEARTRATE" || this.exercise === "CONTROL_HIGH_BALL")
       },
 
       nrOfPlayers: function () {
