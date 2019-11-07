@@ -29,6 +29,7 @@ npm run build
 ```
 
 ### Deploy Functions
+If this command gives you a 401, just `firebase logout` and `firebase login` again.
 
 ```bash
 cd functions
