@@ -120,7 +120,8 @@
         score: this.previousScore || 50, // this is calculated based on the score
         scoreClass: this.scoreClass, // this is updated in mounted()
         showExplanation: false,
-        players: undefined
+        players: undefined,
+        modalClosed: false
       }
     },
 
@@ -192,6 +193,10 @@
                 .then(() => {
                   console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`);
                   logEvent("measurement_added");
+                  if (!this.modalClosed) {
+                    this.modalClosed = true;
+                    this.$modal.close(true);
+                  }
                 })
                 .catch(err => {
                   console.log(err);
@@ -200,10 +205,10 @@
           }
 
           if (this.playerMeasurements.size === 1 && (score === 0 || score === 100)) {
-            console.log(">> TODO prompt: " + score);
+            const exercise = Excercises[this.exercise];
             confirm({
-              title: `Klopt de meting ${measurement}?`,
-              message: `Verwacht is tussen ${this.exercise.lowbound} en ${this.exercise.highbound}`,
+              title: `Klopt de meetwaarde ${measurement}?`,
+              message: `We checken het even, want meestal ligt deze waarde tussen ${exercise.lowbound} en ${exercise.highbound}.`,
               okButtonText: "Ja, dit klopt!",
               cancelButtonText: "Nee, oeps",
               cancelable: true
@@ -216,9 +221,6 @@
             saveScore();
           }
         });
-
-        // note that this closes the modal before player data has been saved (which is 🆗)
-        this.$modal.close(true);
       }
     }
   };
