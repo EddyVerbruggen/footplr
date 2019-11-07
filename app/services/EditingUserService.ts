@@ -39,7 +39,7 @@ export default class EditingUserService {
     userData.id = doc.id;
     userData.ref = doc.ref;
 
-    // remember these team (no need to re-fetch)
+    // remember these teams (no need to re-fetch)
     const playsInTeam = this.userWrapper.user.playsInTeam;
     const trainsTeams = this.userWrapper.user.trainsTeams;
 

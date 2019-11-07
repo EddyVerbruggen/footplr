@@ -41,12 +41,12 @@
       selectedPlayerName: function () {
         if (this.selectedPlayer) {
           if (!this.selectedPlayer.firstname && !this.selectedPlayer.lastname) {
-            return "Speler zonder naam"
+            return "Speler zonder naam";
           } else {
             return this.selectedPlayer.firstname + " " + (this.selectedPlayer.lastname ? this.selectedPlayer.lastname : "");
           }
         } else if (this.$editingUserService.userWrapper.team) {
-          return this.$editingUserService.userWrapper.team.name
+          return this.$editingUserService.userWrapper.team.name;
         }
       }
     },
