@@ -2,7 +2,7 @@ import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
 import { getString } from "tns-core-modules/application-settings";
 import { getClub } from "~/services/ClubService";
-import { getTeam } from "~/services/TeamService"
+import { getTeam, moveToTeam } from "~/services/TeamService"
 import User from "../models/User";
 import BackendService from "./BackendService";
 import DocumentReference = firestore.DocumentReference;
@@ -38,6 +38,22 @@ export default class AuthService extends BackendService {
       return user;
     } else {
       return null;
+    }
+  }
+
+  async getExistingUser(email: string): Promise<User> {
+    const querySnapshot: firestore.QuerySnapshot = await firebase.firestore.collection("users")
+        .where("email", "==", email)
+        .get();
+
+    if (querySnapshot.docs.length === 0) {
+      return undefined;
+    } else {
+      const userDoc = querySnapshot.docs[0];
+      const user = <User>userDoc.data();
+      user.ref = userDoc.ref;
+      user.id = userDoc.id;
+      return user;
     }
   }
 

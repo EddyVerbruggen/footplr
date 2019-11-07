@@ -144,32 +144,55 @@
       onTapAddPlayer() {
         prompt({
           title: "Wat is het emailadres?",
-          message: "De speler ontvangt een mailtje met verdere instructies op dit adres",
+          message: "Heeft de speler nog geen FPR account, dan ontvangt hij of zij een mailtje met verdere instructies op dit emailadres.",
           defaultText: "",
-          okButtonText: "Registreren",
+          okButtonText: "Toevoegen",
           cancelButtonText: "Annuleren"
         }).then(data => {
           if (data.result) {
             this.isRegistering = true;
+            const email = data.text.trim().toLowerCase();
+
             this.$authService
-                .register(data.text.trim().toLowerCase(), this.generatePassword(), this.userWrapper.team.ref, true)
+                .getExistingUser(email)
                 .then(user => {
-                  this.isRegistering = false;
-                  showInfo("De speler is aangemaakt", "Vul hieronder het profiel zoveel mogelijk aan");
-                  setTimeout(() => {
+                  if (user) {
                     this.userWrapper.user = user;
                     this.$editingUserService.userWrapper.user = user;
-                    this.$editingUserService.userWrapper.team = undefined;
-                    this.$editingUserService.watchUser();
-                    EventBus.$emit("player-selected", {player: user});
-                    EventBus.$emit("update-players");
-                  }, 500);
-                })
-                .catch(error => {
-                  this.isRegistering = false;
-                  console.log("Failed to register player: " + error);
-                  showError("Fout bij het registreren ☹️", error);
-                })
+                    this.$editingUserService.userRef = user.ref;
+                    this.$editingUserService.updateUserDataInFirebase({
+                      playsin: this.userWrapper.team.ref
+                    }).then(() => {
+                      this.isRegistering = false;
+                      this.$editingUserService.userWrapper.team = undefined;
+                      this.$editingUserService.watchUser();
+                      EventBus.$emit("player-selected", {player: user});
+                      EventBus.$emit("update-players");
+                    });
+
+                  } else {
+                    this.$authService
+                        .register(email, this.generatePassword(), this.userWrapper.team.ref, true)
+                        .then(user => {
+                          this.isRegistering = false;
+                          showInfo("De speler is aangemaakt", "Vul hieronder het profiel zoveel mogelijk aan");
+                          setTimeout(() => {
+                            this.userWrapper.user = user;
+                            this.$editingUserService.userWrapper.user = user;
+                            this.$editingUserService.userWrapper.team = undefined;
+                            this.$editingUserService.watchUser();
+                            EventBus.$emit("player-selected", {player: user});
+                            EventBus.$emit("update-players");
+                          }, 500);
+                        })
+                        .catch(error => {
+                          this.isRegistering = false;
+                          console.log("Failed to register player: " + error);
+                          showError("Fout bij het registreren ☹️", error);
+                        })
+
+                  }
+            });
           }
         });
       },
