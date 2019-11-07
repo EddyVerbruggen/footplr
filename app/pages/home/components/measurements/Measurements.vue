@@ -49,7 +49,7 @@
   import { authService, editingUserService } from "~/main";
   import { EventBus } from "~/services/event-bus";
   import { getPlayersInTeam } from "~/services/TeamService"
-  import { Excercises, translateExerciseType } from "~/shared/exercises";
+  import { Excercises, ExerciseType, translateExerciseType } from "~/shared/exercises";
   import isOnline from "~/utils/connectivity.util";
   import { formatDate } from "~/utils/date-util";
   import { showInfo } from "~/utils/feedback-util";
@@ -101,7 +101,7 @@
     methods: {
       onListViewLoading(args) {
         if (args.ios) {
-          args.ios.selectionStyle = UITableViewCellSelectionStyle.None;
+          args.ios.selectionStyle = 0; // UITableViewCellSelectionStyle.None;
         }
       },
 
@@ -228,7 +228,7 @@
             latestMeasurement: latestMeasurement ? latestMeasurement.measurement : undefined,
             latestMeasurementDate: latestMeasurement ? formatDate(new Date(latestMeasurement.date)) : "",
             exercise: excercisesKey,
-            exerciseTranslated: translateExerciseType(excercisesKey),
+            exerciseTranslated: translateExerciseType(<ExerciseType>excercisesKey),
             exerciseUnit: exercise.getScoreUnit(false),
             categories: exercise.categories,
             score: latestMeasurement ? latestMeasurement.score : undefined,

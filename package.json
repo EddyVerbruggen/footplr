@@ -57,7 +57,7 @@
     "node-sass": "^4.9.2",
     "sass-loader": "^7.1.0",
     "terser-webpack-plugin": "^1.1.0",
-    "tns-platform-declarations": "~6.1.1",
+    "tns-platform-declarations": "~6.2.0",
     "typescript": "~3.4.5",
     "vue-loader": "^15.2.6",
     "webpack": "^4.16.4",
