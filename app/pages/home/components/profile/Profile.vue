@@ -79,6 +79,7 @@
   import { takeOrPickPhoto } from "~/utils/photo-util";
   import PlayerSelection from "../PlayerSelection";
   import UpdateBirthDate from "./UpdateBirthDate.vue"
+  import { isIOS } from "tns-core-modules/platform";
 
   export default {
     components: {
@@ -238,7 +239,7 @@
 
       editBirthDate() {
         this.$showModal(UpdateBirthDate, {
-          fullscreen: true,
+          fullscreen: !isIOS,
           props: {
             birthdate: this.userWrapper.user.birthdate
           }

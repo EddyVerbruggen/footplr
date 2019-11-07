@@ -56,6 +56,7 @@
   import PlayerSelection from "../PlayerSelection";
   import AddMeasurement from "./AddMeasurement.vue"
   import MeasurementDetails from "./MeasurementDetails.vue"
+  import { isIOS } from "tns-core-modules/platform";
 
   export default {
     components: {
@@ -122,7 +123,7 @@
           return;
         }
         this.$showModal(MeasurementDetails, {
-          fullscreen: true,
+          fullscreen: !isIOS,
           props: {
             exercise: item.exercise,
             exerciseTranslated: item.exerciseTranslated,
@@ -139,7 +140,7 @@
           return;
         }
         this.$showModal(AddMeasurement, {
-          fullscreen: true,
+          fullscreen: !isIOS, // perhaps nice on Android as well, but not tested
           props: {
             exercise: item.exercise,
             exerciseTranslated: item.exerciseTranslated,

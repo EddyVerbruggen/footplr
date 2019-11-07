@@ -239,6 +239,7 @@
   Button.btn-explanation {
     border-width: 2;
     border-color: #fff;
+    background-color: transparent;
     color: #fff;
     margin: 16 0 16 0;
   }
@@ -246,6 +247,7 @@
   Button.btn-explanation-close {
     border-width: 2;
     border-color: #fff;
+    background-color: transparent;
     color: #fff;
     margin: 24 0 400 0;
   }
