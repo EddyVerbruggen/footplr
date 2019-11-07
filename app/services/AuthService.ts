@@ -2,7 +2,7 @@ import * as firebase from "nativescript-plugin-firebase";
 import { firestore } from "nativescript-plugin-firebase";
 import { getString } from "tns-core-modules/application-settings";
 import { getClub } from "~/services/ClubService";
-import { getTeam, moveToTeam } from "~/services/TeamService"
+import { getTeam } from "~/services/TeamService"
 import User from "../models/User";
 import BackendService from "./BackendService";
 import DocumentReference = firestore.DocumentReference;
