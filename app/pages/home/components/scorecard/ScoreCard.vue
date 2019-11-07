@@ -32,7 +32,7 @@
            horizontalAlignment="center" verticalAlignment="bottom" class="card-photo" v-show="!players.length"></Img>
 
       <Img rowSpan="5" colSpan="2"
-           :src="'~/assets/images/' + (showOwnMeasurements ? 'unofficial/badge_unofficial' : 'official/badge_official_' + (Math.ceil(score('TOTAL') / 10)) * 10) + '_overlay.png'" width="100%"
+           :src="'~/assets/images/badge/' + (showOwnMeasurements ? 'unofficial/badge_unofficial' : 'official/badge_official_' + (Math.ceil(score('TOTAL') / 10)) * 10) + '_overlay.png'" width="100%"
            horizontalAlignment="center" verticalAlignment="center"></Img>
 
       <StackLayout row="0" col="0" verticalAlignment="bottom">
