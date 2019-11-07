@@ -1,6 +1,6 @@
 <template>
   <StackLayout ref="mainContainer" class="main-container">
-<!--    <Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image>-->
+    <!--Image src="~/assets/images/fpr-logo-full.png" width="200" @tap="quickLogin"></Image-->
     <Image src="~/assets/images/fpr-logo-full.png" width="200"></Image>
 
     <GridLayout ref="formControls" class="form-controls" rows="auto, auto">
@@ -26,7 +26,7 @@
     </GridLayout>
 
     <Button
-        text="AANMELDEN"
+        :text="loginButtonText"
         :isEnabled="!isAuthenticating"
         class="btn btn-secondary"
         @tap="login"></Button>
@@ -70,6 +70,7 @@
     data() {
       return {
         appVersion: undefined,
+        loginButtonText: applicationSettingsService.getUsername() ? "AANMELDEN" : "REGISTREREN / AANMELDEN",
         isLoggingIn: true,
         isAuthenticating: false,
         user: {
@@ -81,12 +82,6 @@
 
     mounted() {
       this.appVersion = `v ${AppVersion.getVersionNameSync()} (${AppVersion.getVersionCodeSync()})`;
-
-      // setTimeout(() => {
-      //   this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
-      //   this.user.password = "xs4all";
-      //   this.login();
-      // }, 1000);
     },
 
     methods: {
@@ -103,20 +98,11 @@
           cancelButtonText: cancelLabel
         }).then(picked => {
           if (picked && picked !== cancelLabel) {
-            if (picked === "Mark (trainer & speler Victoria H2)") {
-              this.user.email = "fennemrdejong@gmail.com";
-              this.user.password = "fpr123";
-            } else if (picked === "Nick (speler Victoria H2)") {
-              this.user.email = "nickwagenaar9@gmail.com";
-              this.user.password = "fpr123";
-            } else if (picked === "Daniel (speler Victoria H2)") {
-              this.user.email = "danielhindriks@gmail.com";
-              this.user.password = "fpr123";
-            } else if (picked === "Annette (trainer Hoogland JO9-7)") {
-              this.user.email = "eddyverbruggen+fprAnnette@gmail.com";
+            if (picked === "Annette (trainer Hoogland JO9-7)") {
+              this.user.email = "eddyverbruggen+fprannette@gmail.com";
               this.user.password = "xs4all";
             } else if (picked === "Bas V (speler Hoogland JO9-7)") {
-              this.user.email = "hoogland.JO9-7.player1@fpr.com";
+              this.user.email = "hoogland.jo9-7.player1@fpr.com";
               this.user.password = "xs4all";
             }
             this.login();
