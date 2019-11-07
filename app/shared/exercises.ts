@@ -3,7 +3,6 @@ import { Category } from "./category";
 
 export enum ExerciseType {
   CONTROL_HIGH_BALL = "CONTROL_HIGH_BALL",
-  CONTROL_LOW_BALL = "CONTROL_LOW_BALL",
   AGILITY = "AGILITY",
   CROSSPASS = "CROSSPASS",
   DRIBBLE = "DRIBBLE",
@@ -24,7 +23,6 @@ export enum ExerciseType {
 // we don't require proper i18n for the time being, so doing this the poor mans way for now
 export function translateExerciseType(input: ExerciseType): string {
   if (input === ExerciseType.CONTROL_HIGH_BALL) return "Balcontrole: Hooghouden";
-  else if (input === ExerciseType.CONTROL_LOW_BALL) return "Balcontrole: Aanname";
   else if (input === ExerciseType.AGILITY) return "Wendbaarheid";
   else if (input === ExerciseType.CROSSPASS) return "Crosspass / Lange bal";
   else if (input === ExerciseType.DRIBBLE) return "Dribbel";
@@ -53,11 +51,6 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Je mag doortellen als de bal op de grond stuitert, je hoeft dus niet opnieuw te beginnen.\n\n" +
       "Let op: Je moet de bal 1 keer met de borst aanraken en 1x met het bovenbeen. Dit mag (hoeft niet) achter elkaar en de volgorde maakt niet uit.\n\n" +
       "Vul het totaal aantal balcontacten in.";
-  else if (input === ExerciseType.CONTROL_LOW_BALL) return "Ga bij de middenstip staan.\n\n" +
-      "Je krijgt nu 7x een bal aangespeeld vanaf de cirkel (9.15 meter). Telkens om en om, links en dan rechts, ongeveer 1 á 2 meter van de stip.\n\n" +
-      "Probeer elke bal met 1 balcontact stil te leggen op de stip. Markeer de plek waar de bal stil komt te liggen.\n\n" +
-      "Na 7 ballen haal je de drie beste en drie slechtste aannames weg.\n\n" +
-      "Meet de afstand van de markering die overblijft tot de stip. Noteer deze afstand.";
   else if (input === ExerciseType.AGILITY) return "Zet de T-Test uit op het veld.\n\n" +
       "Volg de algemene richtlijnen van de T-Test en vul de score in.";
   else if (input === ExerciseType.CROSSPASS) return "Dribbel met de bal richting middenstip, geef vervolgens een lange bal richting het midden van de goal.\n\n" +
@@ -196,6 +189,5 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   CROSSPASS: new Exercise("CRPS", "mrfqNLH9wgY", ["PAS"], "DISTANCE", "LOW_HIGH", 0, 90, 12),
   AIM: new Exercise("MIKK", "3b3lQMI6nrs", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH", 0, 100),
   SPEED_OF_ACTION: new Exercise("HAND", "0GLP93V3-wA", ["PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 10),
-  HEADER_HEIGHT: new Exercise("KOPS", "UCLf4CKyGHM", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300),
-  CONTROL_LOW_BALL: new Exercise("AALA", undefined, ["TEC"], "DISTANCE", "HIGH_LOW", 0, 100, 12),
+  HEADER_HEIGHT: new Exercise("KOPS", "UCLf4CKyGHM", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300)
 };
