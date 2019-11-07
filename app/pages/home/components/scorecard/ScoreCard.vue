@@ -12,7 +12,7 @@
       </GridLayout>
     </StackLayout>
 
-    <GridLayout row="2" rows="65*, 13*, 9*, 40*, 24*" columns="19*, 64*"
+    <GridLayout row="2" rows="63.5*, 14.5*, 9*, 40*, 24*" columns="19*, 64*"
                 horizontalAlignment="center" verticalAlignment="center" v-bind:width="isLandscape ? '26%' : '88%'">
       <Img rowSpan="5" colSpan="2"
            :src="'~/assets/images/badge/' + (showOwnMeasurements ? 'unofficial/badge_unofficial' : 'official/badge_official_' + (Math.ceil(score('TOTAL') / 10)) * 10) + '.png'"
@@ -263,7 +263,6 @@
   }
 
   .card-name {
-    color: #4e66df;
     font-size: 25;
   }
 
