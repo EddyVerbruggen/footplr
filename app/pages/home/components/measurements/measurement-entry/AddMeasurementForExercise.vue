@@ -12,7 +12,6 @@
     <Stamina :player="player" v-if="exercise === 'STAMINA'"></Stamina>
     <Passing :player="player" v-if="exercise === 'SPEED_OF_ACTION'"></Passing>
     <PassingMovements :player="player" v-if="exercise === 'PASSING_MOVEMENTS'"></PassingMovements>
-    <ControlLowBall :player="player" v-if="exercise === 'CONTROL_LOW_BALL'"></ControlLowBall>
     <ControlHighBall :player="player" v-if="exercise === 'CONTROL_HIGH_BALL'"></ControlHighBall>
     <Crosspass :player="player" v-if="exercise === 'CROSSPASS'"></Crosspass>
     <JumpHeight :player="player" v-if="exercise === 'JUMP_HEIGHT'"></JumpHeight>
@@ -24,7 +23,6 @@
   import Agility from "./exercise/Agility";
   import Aim from "./exercise/Aim";
   import ControlHighBall from "./exercise/ControlHighBall";
-  import ControlLowBall from "./exercise/ControlLowBall";
   import Crosspass from "./exercise/Crosspass";
   import Dribble from "./exercise/Dribble";
   import Explosiveness from "./exercise/Explosiveness";
@@ -53,7 +51,6 @@
       Sprint,
       Explosiveness,
       Aim,
-      ControlLowBall,
       ControlHighBall,
       Crosspass,
       JumpHeight,

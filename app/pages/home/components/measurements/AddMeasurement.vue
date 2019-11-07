@@ -51,6 +51,7 @@
 </template>
 
 <script lang="ts">
+  import { confirm } from "tns-core-modules/ui/dialogs";
   import { authService, editingUserService } from "~/main";
   import { EventBus } from "~/services/event-bus";
   import { getPlayersInTeam } from "~/services/TeamService"
@@ -176,25 +177,44 @@
           // round to 0 decimals
           const score = Math.round(Excercises[this.exercise].calculateScore(measurement));
 
-          player
-              .ref
-              .collection("measurements")
-              .add({
-                date: this.date,
-                measurement,
-                score,
-                exercise: this.exercise,
-                official: this.isTrainer || !this.isSelf,
-                measuredby: authService.userWrapper.user.ref
-              })
-              .then(() => {
-                console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`);
-                logEvent("measurement_added");
-              })
-              .catch(err => {
-                console.log(err);
-                showError("Onverwachte fout, probeer nogmaals", "Tijdens opslaan van de meting ging het mis. Details: " + err);
-              });
+          const saveScore = () => {
+            player
+                .ref
+                .collection("measurements")
+                .add({
+                  date: this.date,
+                  measurement,
+                  score,
+                  exercise: this.exercise,
+                  official: this.isTrainer || !this.isSelf,
+                  measuredby: authService.userWrapper.user.ref
+                })
+                .then(() => {
+                  console.log(`measurement ${measurement} (score ${score}) saved for ${player.firstname} ${player.lastname}`);
+                  logEvent("measurement_added");
+                })
+                .catch(err => {
+                  console.log(err);
+                  showError("Onverwachte fout, probeer nogmaals", "Tijdens opslaan van de meting ging het mis. Details: " + err);
+                });
+          }
+
+          if (this.playerMeasurements.size === 1 && (score === 0 || score === 100)) {
+            console.log(">> TODO prompt: " + score);
+            confirm({
+              title: `Klopt de meting ${measurement}?`,
+              message: `Verwacht is tussen ${this.exercise.lowbound} en ${this.exercise.highbound}`,
+              okButtonText: "Ja, dit klopt!",
+              cancelButtonText: "Nee, oeps",
+              cancelable: true
+            }).then(confirmed => {
+              if (confirmed) {
+                saveScore();
+              }
+            })
+          } else {
+            saveScore();
+          }
         });
 
         // note that this closes the modal before player data has been saved (which is 🆗)
