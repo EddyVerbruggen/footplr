@@ -178,7 +178,7 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   SIT_UPS: new Exercise("SITU", "jkKhPD3CaJY", ["PHY"], "COUNT", "LOW_HIGH", 0, 55, 16),
   CONTROL_HIGH_BALL: new Exercise("AAHO", "TsprnAlWTaY", ["TEC"], "POINTS", "LOW_HIGH", 0, 130, 12),
   EXPLOSIVENESS: new Exercise("EXPL", "amv7oiXBvEM", ["PAC", "PHY"], "TIME", "HIGH_LOW", 7, 13),
-  SPRINT: new Exercise("SPRI", "Db84D_s4DTI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.32, 8.0),
+  SPRINT: new Exercise("SPRI", "Db84D_s4DTI", ["PAC", "PHY"], "TIME", "HIGH_LOW", 4.32, 9.0),
   HEARTRATE: new Exercise("HERS", "C4HMiGbWrbI", ["PHY", "PAC"], "COUNT", "LOW_HIGH", 0, 70, 16),
   PASSING_MOVEMENTS: new Exercise("TRIC", "kbfxpa2t0cI", ["TEC"], "COUNT", "LOW_HIGH", 0, 20, 12),
   DRIBBLE: new Exercise("DRTE", "h9dwN4RlVOs", ["DRI", "PAC"], "TIME", "HIGH_LOW", 8, 25),
