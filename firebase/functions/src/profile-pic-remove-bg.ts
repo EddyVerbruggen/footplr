@@ -2,9 +2,9 @@ import { Storage } from "@google-cloud/storage";
 import * as firebase from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as fs from "fs";
-import * as os from "os";
+import { tmpdir } from "os";
 import * as path from "path";
-import { removeBackgroundFromImageFile, RemoveBgResult, RemoveBgError } from "remove.bg";
+import { removeBackgroundFromImageFile, RemoveBgResult } from "remove.bg";
 import { apiKey } from "./remove-bg-apikey.json";
 
 let _initDone = false;
@@ -33,25 +33,26 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
     projectId: "foorball-player-ratings"
   }).bucket(fileBucket);
 
-  const outputFile = path.join(os.tmpdir(), fileName);
+  const outputFile = path.join(tmpdir(), fileName);
 
   await bucket.file(filePath).download({
     destination: outputFile
   });
 
   try {
-    await removeBackgroundFromImageFile({
+    const result: RemoveBgResult = await removeBackgroundFromImageFile({
       path: outputFile,
-      size: "regular", // the smallest size, costs 1 credit
-      type: "person", // help the API a little
+      size: "regular", // the smallest size, costs 0.25 credits
+      type: "person", // help the API a little by telling it what to expect
       apiKey,
       outputFile
-    }).then((result: RemoveBgResult) => {
-      console.log(`File of ${result.resultWidth} x ${result.resultHeight} pixels cost ${result.creditsCharged} credits`);
-    }).catch((errors: Array<RemoveBgError>) => {
-      console.log(JSON.stringify(errors));
     });
+    console.log(`File of ${result.resultWidth} x ${result.resultHeight} pixels, type ${result.detectedType}, cost ${result.creditsCharged} credits`);
+  } catch (errors) {
+    console.log(JSON.stringify(errors));
+  }
 
+  try {
     // removing the background worked, and it's now a .png file
     const newFile = filePath.replace(".jpg", ".png");
     await bucket.upload(outputFile, {
@@ -90,6 +91,5 @@ export const removeBg = functions.storage.object().onFinalize(async (object) => 
   }
 
   fs.unlinkSync(outputFile);
-
   return null;
 });
