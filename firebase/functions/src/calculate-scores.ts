@@ -105,18 +105,17 @@ function calc(measurements: LatestMeasurements): Scores {
   const PAC = Math.round(
       (calculateScore(measurements.STAMINA, Excercises.STAMINA) +
           calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE) +
-          calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
           calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
           calculateScore(measurements.SPRINT, Excercises.SPRINT) +
           calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
-          calculateScore(measurements.AGILITY, Excercises.AGILITY)) / 7);
+          calculateScore(measurements.AGILITY, Excercises.AGILITY)) / 6);
 
   const TEC = Math.round(
       (calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
           calculateScore(measurements.PASSING_MOVEMENTS, Excercises.PASSING_MOVEMENTS) +
           calculateScore(measurements.AIM, Excercises.AIM) +
           calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL) +
-          calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE)) / 6);
+          calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE)) / 5);
 
   const DRI = Math.round(
       calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
@@ -124,7 +123,8 @@ function calc(measurements: LatestMeasurements): Scores {
   const PAS = Math.round(
       (calculateScore(measurements.AGILITY, Excercises.AGILITY) +
           calculateScore(measurements.AIM, Excercises.AIM) +
-          calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) / 3);
+          calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
+          calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) / 4);
 
   const PHY = Math.round(
       (calculateScore(measurements.STAMINA, Excercises.STAMINA) +

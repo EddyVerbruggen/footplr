@@ -1,5 +1,8 @@
 {
   "name": "functions",
+  "engines": {
+    "node": "8"
+  },
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "cp -R ../../app/shared ./src && tsc",
