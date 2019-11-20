@@ -219,7 +219,9 @@
                     if (uploadedFile.downloadURL) {
                       editingUserService.updateUserDataInFirebase({
                         picture: uploadedFile.downloadURL
-                      }).then(() => console.log("Updated user pic!"));
+                      }).then(() => {
+                        EventBus.$emit("player-selected", {player: this.userWrapper.user});
+                      });
                     }
                   },
                   error => {
@@ -255,6 +257,8 @@
                 this.$authService.userWrapper.user.birthdate = birthdate;
                 // "reload" home, so we can show the other tabs (which were hidden because of the missing birthdate)
                 this.$navigateTo(routes.home, {clearHistory: true, animated: false, props: {loadProfileTab: true}});
+              } else {
+                EventBus.$emit("player-selected", {player: this.userWrapper.user});
               }
             });
           }
@@ -275,7 +279,9 @@
             this.userWrapper.user.position = picked;
             this.$editingUserService.updateUserDataInFirebase({
               position: picked
-            }).then(() => console.log("Updated!"));
+            }).then(() => {
+              EventBus.$emit("player-selected", {player: this.userWrapper.user});
+            });
           }
         });
       },
