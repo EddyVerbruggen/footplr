@@ -220,7 +220,9 @@
                       editingUserService.updateUserDataInFirebase({
                         picture: uploadedFile.downloadURL
                       }).then(() => {
-                        EventBus.$emit("player-selected", {player: this.userWrapper.user});
+                        editingUserService.anyPageCallback = () => {
+                          EventBus.$emit("player-selected", {player: this.userWrapper.user});
+                        };
                       });
                     }
                   },

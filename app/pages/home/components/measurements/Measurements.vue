@@ -1,5 +1,5 @@
 <template>
-  <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%">
+  <GridLayout rows="auto, auto, *" verticalAlignment="top" height="100%" @loaded="onLoad">
 
     <PlayerSelection v-if="isTrainer"></PlayerSelection>
 
@@ -69,10 +69,6 @@
       // TODO we need to clean this up upon logout, or when entering/leaving the tab
       EventBus.$on("player-selected", stuff => this.playerSelected(stuff));
 
-      editingUserService.anyPageCallback = () => {
-        this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
-      };
-
       // if (authService.userWrapper.user.trains !== undefined) {
       //   this.fetchTeamMeasurements();
       // } else {
@@ -100,6 +96,12 @@
     },
 
     methods: {
+      onLoad() {
+        editingUserService.anyPageCallback = () => {
+          this.fillExerciseScoresWithMeasurements(editingUserService.userWrapper.user.latestmeasurements);
+        };
+      },
+
       onListViewLoading(args) {
         if (args.ios) {
           args.ios.selectionStyle = 0; // UITableViewCellSelectionStyle.None;
