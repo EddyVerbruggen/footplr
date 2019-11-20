@@ -1,5 +1,5 @@
-import { ScoreType } from "./exercises";
 import { Category } from "./category";
+import { ScoreType } from "./exercises";
 
 export enum ExerciseType {
   CONTROL_HIGH_BALL = "CONTROL_HIGH_BALL",
@@ -46,20 +46,22 @@ export function translateExerciseType(input: ExerciseType): string {
 
 export function translateExerciseExplanation(input: ExerciseType): string {
   // noinspection Duplicates
-  if (input === ExerciseType.CONTROL_HIGH_BALL) return "Plaats 1 voet op de bal. Op het moment dat je de bal in beweging brengt, start de tijd.\n\n" +
-      "Je hebt nu 30 seconden de tijd om de bal zo vaak mogelijk hoog te houden met je voeten.\n\n" +
-      "Je mag doortellen als de bal op de grond stuitert, je hoeft dus niet opnieuw te beginnen.\n\n" +
+  if (input === ExerciseType.CONTROL_HIGH_BALL) return "Plaats 1 voet op de bal. Op het moment dat je de bal in beweging brengt start de tijd.\n\n" +
+      "Je krijgt nu 30 seconden om zoveel mogelijk de bal hoog te houden.\n\n" +
       "Let op: Je moet de bal 1 keer met de borst aanraken en 1x met het bovenbeen. Dit mag (hoeft niet) achter elkaar en de volgorde maakt niet uit.\n\n" +
       "Vul het totaal aantal balcontacten in.";
-  else if (input === ExerciseType.AGILITY) return "Zet de T-Test uit op het veld.\n\n" +
-      "Volg de algemene richtlijnen van de T-Test en vul de score in.";
-  else if (input === ExerciseType.CROSSPASS) return "Dribbel met de bal richting middenstip, geef vervolgens een lange bal richting het midden van de goal.\n\n" +
-      "Markeer de plek waar de bal stuitert met een hoedje. Doe dit in totaal 3 keer.\n\n" +
-      "Meet nu bij elk hoedje hoeveel meter de bal diep is gespeeld. Trek elke meter die de bal breed uit het midden ligt er weer vanaf.\n\n" +
-      "Vul alleen de middelste waarde in.";
-  else if (input === ExerciseType.DRIBBLE) return "Gebruik de linker- of rechterkant van het strafschopgebied en probeer het FPR-dribbelparcours zo snel mogelijk af te leggen.\n\n" +
+  else if (input === ExerciseType.AGILITY) return "Zet de T-Test uit met 4 pylonen:\n\n" +
+      "3 pylonen op 5 meter van elkaar af in de breedte.\n\n" +
+      "Op 10 meter van de middelste pylon zet je een 4e pylon in de diepte.\n\n" +
+      "Volg de looplijnen van de T-Test zoals in de video en vul de score in. Vergeet niet de pylonen aan te tikken!";
+  else if (input === ExerciseType.CROSSPASS) return "Maak een lijn van pylonen waarmee je gemakkelijk de afstand kan bepalen, zoals in de video om de 5 meter een pylon.\n\n" +
+      "Dribbel met de bal richting middenstip en pass de bal zo diep mogelijk op deze pylonen-lijn.\n" +
+      "Kijk waar de bal stuit en bepaal de diepte.\n" +
+      "Kijk dan hoeveel meter de bal naast de pylonen-lijn is gekomen. Trek deze afstand van de diepte af.\n\n" +
+      "Pass 3 keer: 2 keer voor het gevoel, 1 keer voor de meting. Alleen de 3e pass telt.";
+  else if (input === ExerciseType.DRIBBLE) return "Gebruik de linker- of rechterkant van het strafschopgebied. Probeer het FPR-dribbelparcours zo snel mogelijk af te leggen.\n\n" +
       "Een afgesneden of foutief afgelegde route telt niet.\n\n" +
-      "Bestudeer het parcours met behulp van onze instructiefilmpjes.";
+      "Voer je tijd in.";
   else if (input === ExerciseType.EXPLOSIVENESS) return "Maak vanuit stilstand 1 serie van 5 sprints, heen en weer over de afstand van achterlijn tot de 5-meter lijn.\n\n" +
       "Loop om de pylonen en vul je tijd in.";
   else if (input === ExerciseType.SPEED_OF_ACTION) return "Zet op de achterlijn 10 grote pylonen naast elkaar met tussen elke pylon een klein beetje ruimte.\n\n" +
@@ -74,8 +76,8 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Meting 2. Meet een minuut na meting 1 jouw hartslag middels een hartslagmeter.";
   else if (input === ExerciseType.HEADER_HEIGHT) return "Hoe hoog kom jij voor een kopbal?\n\n" +
       "Meet tot hoe hoog jij een bal kan aanraken. De aanloop en afzet zijn geheel vrij, er wordt tijdens een wedstrijd tenslotte ook op veel verschillende manieren aangelopen en gekopt.";
-  else if (input === ExerciseType.AIM) return "Leg 10 ballen gelijk verdeeld op de 11-meter lijn tussen de breedte van de doelpalen.\n\n" +
-      "Probeer elke bal in de roos te mikken voor de maximale score van 10 punten per schot.\n\n" +
+  else if (input === ExerciseType.AIM) return "Leg 10 ballen ter hoogte van de penaltystip verdeeld over de breedte van het doelgebied.\n\n" +
+      "Probeer elke bal in de roos te mikken voor de maximale score van 10 punten per schot. Hoe dichter bij de roos, hoe hoger je score.\n\n" +
       "Tel alle punten bij elkaar op en vul het in.";
   else if (input === ExerciseType.PASSING_MOVEMENTS) return "Probeer binnen 20 seconden zoveel mogelijk passeerbewegingen correct uit te voeren.\n\n" +
       "Voor elke nieuwe correcte beweging krijg je 1 punt. Voor elke beweging die je eerder hebt gedaan in deze test krijg je een half punt. Tel de punten bij elkaar op.\n\n" +
@@ -88,16 +90,16 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Vul het aantal push-ups in, dat je achter elkaar doet zonder dat je stilvalt of pauzeert.";
   else if (input === ExerciseType.SHOT_STRENGTH) return "Volg de gebruikershandleiding van de snelheidsmeter.\n\n" +
       "Oefen een paar keer voor je echt gaat noteren. Let op techniek en richting, doe niet alles op volle kracht.\n\n" +
-      "Wanneer je er klaar voor bent, schiet je 3 keer zo hard mogelijk.\n\n" +
+      "Wanneer je er klaar voor bent, schiet je 3x zo hard mogelijk de bal met je wreef.\n\n" +
       "Vul het hardste schot in.";
   else if (input === ExerciseType.SIT_UPS) return "Ga met je rug plat op de grond liggen met je knieën gebogen en je voeten plat op de grond.\n\n" +
       "Span je buikspieren aan en kom omhoog.\n\n" +
-      "Je handen moeten de bovenkant van je knieën raken.\n\n" +
-      "Kom weer terug in de startpositie en herhaal de oefening zonder hulp van anderen.\n\n" +
+      "Tik met beide handen je tegelijkertijd je enkels aan en ga weer terug in de startpositie.\n\n" +
+      "Herhaal de oefening zonder hulp van anderen.\n\n" +
       "Tel het aantal herhalingen binnen 1 minuut.";
-  else if (input === ExerciseType.SPRINT) return "Sprint vanuit stilstand, vanaf de zijkant van het strafschopgebied over een afstand van 35 meter.\n\n" +
-      "Dit is bijna tot de andere kant van het strafschopgebied (40 meter). Het 35-meter punt is precies in het midden van het doelgebied en het strafschopgebied.\n\n" +
-      "Zet daar 2 pylonen neer, waar tussendoor gelopen moet worden.";
+  else if (input === ExerciseType.SPRINT) return "Zet 2 pylonen naast elkaar, waar een speler tussen door kan lopen. Doe dit 35 meter verderop ook.\n\n" +
+      "Sprint nu vanuit stilstand de afstand van 35 meter.\n\n" +
+      "Vul je tijd in.";
   else if (input === ExerciseType.JUMP_HEIGHT) return "Ga naast een muur of 'VJTester' staan met wat kalk op je vingertoppen.\n\n" +
       "Ga met beide voeten plat op de grond naast elkaar staan en reik nu met je hand zo hoog mogelijk. Tik op het hoogste punt het meetsysteem of de muur aan.\n\n" +
       "Maak nu een sprong recht omhoog en tik op het hoogste punt het meetsysteem of de muur aan.\n\n" +
@@ -105,8 +107,10 @@ export function translateExerciseExplanation(input: ExerciseType): string {
       "Meet 3 sprongen en vul het grootste verschil in.";
   else if (input === ExerciseType.STAMINA) return "Deze meting kun je als je wilt tegelijkertijd met de oefening 'Herstelvermogen' doen.\n\n" +
       "Download het geluidsbestand via de FPR website.\n" +
-      "Zorg dat je het geluidsbestand goed kunt horen tijdens het lopen.\n\n" +
-      "Loop de ISRT volgens gebruikelijke norm.\n\n" +
+      "Zet rode pylonen 20 meter uit elkaar.\n" +
+      "3 meter binnen beide rode pylonen een gele pylon.\n" +
+      "8 meter buiten beide rode pylonen een blauwe pylon.\n\n" +
+      "Loop de ISRT volgens de gebruikelijke norm.\n" +
       "Vul het behaald aantal trappen in.";
   else {
     console.log(`!!!!!!!!!!!!!!!!!!! no translation found for ExerciseType '${input}'`);
