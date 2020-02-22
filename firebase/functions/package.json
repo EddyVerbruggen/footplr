@@ -5,7 +5,7 @@
   },
   "scripts": {
     "lint": "tslint --project tsconfig.json",
-    "build": "cp -R ../../app/shared ./src && tsc",
+    "build": "cp -R ../../app/shared ./src && tsc src/*.ts --resolveJsonModule && tsc src/**/*.ts ",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
