@@ -108,14 +108,31 @@ function calc(measurements: LatestMeasurements): Scores {
           calculateScore(measurements.EXPLOSIVENESS, Excercises.EXPLOSIVENESS) +
           calculateScore(measurements.SPRINT, Excercises.SPRINT) +
           calculateScore(measurements.HEARTRATE, Excercises.HEARTRATE) +
-          calculateScore(measurements.AGILITY, Excercises.AGILITY)) / 6);
+          calculateScore(measurements.AGILITY, Excercises.AGILITY)) /
+      Math.max(1,
+          (measurements.STAMINA ? 1 : 0) +
+          (measurements.DRIBBLE ? 1 : 0) +
+          (measurements.EXPLOSIVENESS ? 1 : 0) +
+          (measurements.SPRINT ? 1 : 0) +
+          (measurements.HEARTRATE ? 1 : 0) +
+          (measurements.AGILITY ? 1 : 0)
+      )
+  );
 
   const TEC = Math.round(
       (calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
           calculateScore(measurements.PASSING_MOVEMENTS, Excercises.PASSING_MOVEMENTS) +
           calculateScore(measurements.AIM, Excercises.AIM) +
           calculateScore(measurements.CONTROL_HIGH_BALL, Excercises.CONTROL_HIGH_BALL) +
-          calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE)) / 5);
+          calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE)) /
+      Math.max(1,
+          (measurements.SPEED_OF_ACTION ? 1 : 0) +
+          (measurements.PASSING_MOVEMENTS ? 1 : 0) +
+          (measurements.AIM ? 1 : 0) +
+          (measurements.CONTROL_HIGH_BALL ? 1 : 0) +
+          (measurements.DRIBBLE ? 1 : 0)
+      )
+  );
 
   const DRI = Math.round(
       calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
@@ -124,7 +141,14 @@ function calc(measurements: LatestMeasurements): Scores {
       (calculateScore(measurements.AGILITY, Excercises.AGILITY) +
           calculateScore(measurements.AIM, Excercises.AIM) +
           calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
-          calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) / 4);
+          calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) /
+      Math.max(1,
+          (measurements.AGILITY ? 1 : 0) +
+          (measurements.AIM ? 1 : 0) +
+          (measurements.SPEED_OF_ACTION ? 1 : 0) +
+          (measurements.CROSSPASS ? 1 : 0)
+      )
+  );
 
   const PHY = Math.round(
       (calculateScore(measurements.STAMINA, Excercises.STAMINA) +
@@ -134,13 +158,38 @@ function calc(measurements: LatestMeasurements): Scores {
           calculateScore(measurements.HEADER_HEIGHT, Excercises.HEADER_HEIGHT) +
           calculateScore(measurements.JUMP_HEIGHT, Excercises.JUMP_HEIGHT) +
           calculateScore(measurements.SIT_UPS, Excercises.SIT_UPS) +
-          calculateScore(measurements.PUSH_UPS, Excercises.PUSH_UPS)) / 8);
+          calculateScore(measurements.PUSH_UPS, Excercises.PUSH_UPS)) /
+      Math.max(1,
+          (measurements.STAMINA ? 1 : 0) +
+          (measurements.EXPLOSIVENESS ? 1 : 0) +
+          (measurements.SPRINT ? 1 : 0) +
+          (measurements.HEARTRATE ? 1 : 0) +
+          (measurements.HEADER_HEIGHT ? 1 : 0) +
+          (measurements.JUMP_HEIGHT ? 1 : 0) +
+          (measurements.SIT_UPS ? 1 : 0) +
+          (measurements.PUSH_UPS ? 1 : 0)
+      )
+  );
 
   const SHO = Math.round(
       (calculateScore(measurements.SHOT_STRENGTH, Excercises.SHOT_STRENGTH) +
-          calculateScore(measurements.AIM, Excercises.AIM)) / 2);
+          calculateScore(measurements.AIM, Excercises.AIM)) /
+      Math.max(1,
+          (measurements.SHOT_STRENGTH ? 1 : 0) +
+          (measurements.AIM ? 1 : 0)
+      )
+  );
 
-  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) / 6);
+  const TOTAL = Math.round((PAC + TEC + DRI + PAS + PHY + SHO) /
+      Math.max(1,
+          (PAC ? 1 : 0) +
+          (TEC ? 1 : 0) +
+          (DRI ? 1 : 0) +
+          (PAS ? 1 : 0) +
+          (PHY ? 1 : 0) +
+          (SHO ? 1 : 0)
+      )
+  );
 
   return <Scores>{
     PAC,
