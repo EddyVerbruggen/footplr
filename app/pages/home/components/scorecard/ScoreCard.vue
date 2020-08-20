@@ -177,13 +177,18 @@
         userWrapper: editingUserService.userWrapper,
         score: type => {
           if (this.players.length && this.$editingUserService.userWrapper.team) {
-            let score = 0;
+            let score = 0,
+                playersWithScores = 0;
             this.players.forEach(p => {
               if (p.scores) {
-                score += p.scores[this.showOwnMeasurements ? "combined" : "official"][type];
+                const scoreForType = p.scores[this.showOwnMeasurements ? "combined" : "official"][type];
+                if (scoreForType) {
+                  score += scoreForType;
+                  playersWithScores++;
+                }
               }
             });
-            return score === 0 ? "-" : Math.round(score / this.players.length);
+            return score === 0 || playersWithScores === 0 ? "-" : Math.round(score / playersWithScores);
           } else if (this.$editingUserService.userWrapper.user && this.$editingUserService.userWrapper.user.scores) {
             const score = this.$editingUserService.userWrapper.user.scores[this.showOwnMeasurements ? "combined" : "official"][type];
             return score === 0 ? "-" : score;
