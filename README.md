@@ -3,7 +3,8 @@
 > A native application built with NativeScript-Vue, using Firebase!
 
 ## Disclaimer
-This is a Dutch app that will be available in the App stores in Q1 2019.
+This is a Dutch app, only available in the NL App stores.
+
 Feel free to look at the code and copy anything you like.
 
 ## Configuration
