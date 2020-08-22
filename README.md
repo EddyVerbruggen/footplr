@@ -51,3 +51,7 @@ You can also try this to save a little time (not available on NativeScript < 5):
 ```bash
 tns run android --hmr
 ```
+
+### Android build fix
+Apply this change to node_modules: https://github.com/triniwiz/nativescript-youtubeplayer/pull/47.
+But change the (<any>blabla) to: this._getFragmentManager()) as it's a .js file ;)
