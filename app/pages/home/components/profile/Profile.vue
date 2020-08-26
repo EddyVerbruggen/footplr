@@ -213,7 +213,12 @@
 
               const childRef = firebaseWebApi.storage().ref().child(`profilepics/${editingUserService.userWrapper.user.id}.jpg`);
 
-              childRef.put(fs.File.fromPath(path)).then(
+              childRef.put(
+                  fs.File.fromPath(path),
+                  {
+                    // can be empty, but must exist
+                  }
+              ).then(
                   uploadedFile => {
                     this.savingPicture = false;
                     if (uploadedFile.downloadURL) {
