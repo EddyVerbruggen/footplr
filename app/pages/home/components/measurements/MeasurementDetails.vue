@@ -160,7 +160,7 @@
               }];
 
               const exercise = Excercises[this.exercise];
-              this.webViewSRC = `~/assets/graph-chartjs.html?${JSON.stringify({
+              this.webViewSRC = `~/assets/graphchartjs.html?${JSON.stringify({
                 datasets,
                 labels,
                 reverseBounds: exercise.scoreCalculationType === "HIGH_LOW",
@@ -175,6 +175,8 @@
         if (webView.android) {
           webView.android.getSettings().setDisplayZoomControls(false);
           webView.android.getSettings().setBuiltInZoomControls(false);
+          // https://developer.android.com/reference/android/webkit/WebSettings?authuser=1#setAllowFileAccess(boolean)
+          webView.android.getSettings().setAllowFileAccess(true);
         } else {
           webView.ios.scrollView.scrollEnabled = false;
           webView.ios.scrollView.bounces = false;
