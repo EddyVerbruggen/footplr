@@ -138,12 +138,10 @@ function calc(measurements: LatestMeasurements): Scores {
       calculateScore(measurements.DRIBBLE, Excercises.DRIBBLE));
 
   const PAS = Math.round(
-      (calculateScore(measurements.AGILITY, Excercises.AGILITY) +
-          calculateScore(measurements.AIM, Excercises.AIM) +
+      (calculateScore(measurements.AIM, Excercises.AIM) +
           calculateScore(measurements.SPEED_OF_ACTION, Excercises.SPEED_OF_ACTION) +
           calculateScore(measurements.CROSSPASS, Excercises.CROSSPASS)) /
       Math.max(1,
-          (measurements.AGILITY ? 1 : 0) +
           (measurements.AIM ? 1 : 0) +
           (measurements.SPEED_OF_ACTION ? 1 : 0) +
           (measurements.CROSSPASS ? 1 : 0)
