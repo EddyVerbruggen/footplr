@@ -190,7 +190,7 @@ export const Excercises: { [t in ExerciseType]: Exercise } = {
   STAMINA: new Exercise("ISRT", "ghq4rnYyI7Y", ["PAC", "PHY"], "COUNT", "LOW_HIGH", 0, 125, 12),
   SHOT_STRENGTH: new Exercise("SCHI", "3zXxlNIMg0U", ["SHO"], "SPEED", "LOW_HIGH", 0, 150),
   JUMP_HEIGHT: new Exercise("SPRO", "c6_GQvtBxkg", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 77, 16),
-  CROSSPASS: new Exercise("CRPS", "mrfqNLH9wgY", ["PAS"], "DISTANCE", "LOW_HIGH", 0, 90, 12),
+  CROSSPASS: new Exercise("CRPS", "mrfqNLH9wgY", ["PAS"], "DISTANCE", "LOW_HIGH", 0, 75, 12),
   AIM: new Exercise("MIKK", "3b3lQMI6nrs", ["TEC", "SHO", "PAS"], "POINTS", "LOW_HIGH", 0, 100),
   SPEED_OF_ACTION: new Exercise("HAND", "0GLP93V3-wA", ["PAS", "TEC"], "POINTS", "LOW_HIGH", 0, 10),
   HEADER_HEIGHT: new Exercise("KOPS", "UCLf4CKyGHM", ["PHY"], "HEIGHT", "LOW_HIGH", 0, 300)
